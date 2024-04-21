@@ -47,7 +47,6 @@ create table CoSo
 	NgayCapCNATTP date,
 	NgayHetHanCNATTP date,
 	foreign key (IDChuCoSo) references ChuCoSo(IDChuCoSo)
-
 )
 go
 
@@ -251,11 +250,18 @@ go
 
 --select * from CoSo
 
+create or alter proc pr_TaoBaoCaoViPham
+	@HoTen nvarchar(max),
+	@SDT varchar(11),
+	@CCCD varchar(12),
+	@NgayBaoCao date,
+	@HinhAnhMinhChung varchar(max),
+	@IDCoSo int,
+	@NewId int output
+as
+begin
+	insert into BaoCaoViPham (HoTen, SDT, CCCD, NgayBaoCao, HinhAnhMinhChung, IDCoSo)
+	values (@HoTen, @SDT, @CCCD, @NgayBaoCao, @HinhAnhMinhChung, @IDCoSo)
 
-
-
-
-
-
-
-
+	set @NewId = SCOPE_IDENTITY()
+end

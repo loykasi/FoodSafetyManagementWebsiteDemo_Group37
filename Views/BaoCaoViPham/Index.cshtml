@@ -1,0 +1,147 @@
+﻿@model WebAnToanVeSinhThucPhamDemo.Models.ViolationReportViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h4>Báo cáo cơ sở vi phạm</h4>
+<hr />
+
+@if (TempData["AlertMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["AlertMessage"]
+    </div>
+}
+
+<div class="row">
+    <form asp-action="Index" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label asp-for="HoTen" class="control-label">Họ tên người báo cáo</label>
+            <input asp-for="HoTen" class="form-control" />
+            <span asp-validation-for="HoTen" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="SDT" class="control-label">Số điện thoại</label>
+            <input asp-for="SDT" class="form-control" />
+            <span asp-validation-for="SDT" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="CCCD" class="control-label">Căn cước công dân</label>
+            <input asp-for="CCCD" class="form-control" />
+            <span asp-validation-for="CCCD" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="uploadFiles" class="control-label">Hình ảnh minh chứng</label>
+            <input name="uploadFiles" class="form-control" type="file" multiple />
+            @{
+                var yourFieldError = ViewData.ModelState["uploadFiles"]?.Errors.FirstOrDefault()?.ErrorMessage;
+            }
+
+            @if (!string.IsNullOrEmpty(yourFieldError))
+            {
+                <span class="text-danger">@yourFieldError</span>
+            }
+        </div>
+
+        <div class="form-group">
+            <label asp-for="IDCoSo" class="control-label">Cơ sở</label>
+
+            <div class="form-group row">
+                <div class="col-md-3">
+                    <input name="search" id="searchInput" type="text" class="form-control" placeholder="">
+                </div>
+                <div class="col-md-3">
+                    <input name="pageAction" id="searchButton" type="submit" class="form-control" value="search">
+                </div>
+            </div>
+
+            <span asp-validation-for="IDCoSo" class="text-danger"></span>
+            <div class="form-check" id="coSoGroup">
+                @foreach (var item in Model.CoSoes)
+                {
+                    <input type="radio" asp-for="IDCoSo" name="IDCoSo" value="@item.IdcoSo" id="CoSo@(item.IdcoSo)" class="form-check-input" />
+                    <label class="form-check-label" for="CoSo@(item.IdcoSo)">@(item.TenCoSo + " - " + item.DiaChi)</label>
+                }
+            </div>
+
+            @if (Model.TotalPage != 1)
+            {
+                <div class="form-group row">
+                    <label class="col-md-1 text-center">
+                        <span id="currentPage">@Model.CurrentPage</span>/<span id="totalPage">@Model.TotalPage</span>
+                    </label>
+                    <input name="pageAction" id="backButton" type="button" value="Back" class="col-md-1" />
+                    <input name="pageAction" id="nextButton" type="button" value="Next" class="col-md-1" />
+                </div>
+            }
+        </div>
+
+        <div class="form-group">
+            <input id="submitButton" type="submit" value="Gửi báo cáo" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        var group = document.getElementById("coSoGroup");
+        var currentPageSpan = document.getElementById("currentPage");
+        var totalPageSpan = document.getElementById("totalPage");
+
+        $(document).ready(function () {
+            var url = window.location.href;
+            var urlParams = new URLSearchParams(new URL(url).search);
+            var searchValue = urlParams.has('value') ? urlParams.get('value') : '';
+            $('#submitButton').click(function (e) {
+                console.log($('input[name="IDCoSo"]:checked').val());
+            });
+            $('#searchButton').click(function (e) {
+                e.preventDefault();
+                searchValue = $('#searchInput').val()
+                search(searchValue, null);
+            });
+            $('#nextButton').click(function (e) {
+                var pageNumber = parseInt($('#currentPage').text()) + 1
+                search(searchValue, pageNumber);
+            });
+            $('#backButton').click(function (e) {
+                var pageNumber = parseInt($('#currentPage').text()) - 1
+                search(searchValue, pageNumber);
+            });
+            // $('#backButton').click(function (e) {
+            //     e.preventDefault();
+            //     var page = parseInt($('#currentPage').text()) - 1
+            //     window.location.href = '/BaoCaoViPham/Search?value=' + paramValue + '&pageAction=Back';
+            // });
+        });
+
+        function search(searchValue, pageNumber) {
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("Search")",
+                dataType: "json",
+                data: {
+                    page: pageNumber,
+                    value: searchValue
+                },
+                success: function (response) {
+                    console.log(response);
+                    let html = '';
+                    for (let i = 0; i < response.coSoes.length; i++) {
+                        let item = response.coSoes[i];
+                        html += '<input type="radio" asp-for="IDCoSo" name="IDCoSo" value="' + item.idcoSo + '" id="CoSo' + item.idcoSo + '" class="form-check-input" />'
+                            + '<label class="form-check-label" for="CoSo' + item.idcoSo + '">' + item.tenCoSo + ' - ' + item.diaChi + '</label>';
+                    }
+
+                    group.innerHTML = html;
+                    currentPageSpan.innerText = response.currentPage;
+                    totalPageSpan.innerText = response.totalPage;
+                },
+                error: function (response, status, error) {
+                    console.log(status);
+                },
+            });
+        }
+    </script>
+}

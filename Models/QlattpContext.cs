@@ -45,13 +45,13 @@ public partial class QlattpContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=QLATTP;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False");
+        => optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=QLATTP;Integrated Security=True;Trust Server Certificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<BanCongBoSp>(entity =>
         {
-            entity.HasKey(e => e.IdbanCongBoSp).HasName("PK__BanCongB__57824418B2AEB7B3");
+            entity.HasKey(e => e.IdbanCongBoSp).HasName("PK__BanCongB__57824418F75B6A35");
 
             entity.ToTable("BanCongBoSP");
 
@@ -71,7 +71,7 @@ public partial class QlattpContext : DbContext
 
         modelBuilder.Entity<BaoCaoViPham>(entity =>
         {
-            entity.HasKey(e => e.IdbaoCao).HasName("PK__BaoCaoVi__BC216EF0A853FDD6");
+            entity.HasKey(e => e.IdbaoCao).HasName("PK__BaoCaoVi__BC216EF0CBA2B30F");
 
             entity.ToTable("BaoCaoViPham");
 
@@ -94,7 +94,7 @@ public partial class QlattpContext : DbContext
 
         modelBuilder.Entity<CanBo>(entity =>
         {
-            entity.HasKey(e => e.IdcanBo).HasName("PK__CanBo__D8C385AC7420D539");
+            entity.HasKey(e => e.IdcanBo).HasName("PK__CanBo__D8C385AC26316938");
 
             entity.ToTable("CanBo");
 
@@ -113,7 +113,7 @@ public partial class QlattpContext : DbContext
 
         modelBuilder.Entity<ChiTietDoanThanhTra>(entity =>
         {
-            entity.HasKey(e => new { e.IdkeHoach, e.IdcanBo }).HasName("PK__ChiTietD__4EE32992008214FC");
+            entity.HasKey(e => new { e.IdkeHoach, e.IdcanBo }).HasName("PK__ChiTietD__4EE3299279164694");
 
             entity.ToTable("ChiTietDoanThanhTra");
 
@@ -133,7 +133,7 @@ public partial class QlattpContext : DbContext
 
         modelBuilder.Entity<ChiTietKetQua>(entity =>
         {
-            entity.HasKey(e => new { e.IdkeHoachCoSo, e.IdmucKt }).HasName("PK__ChiTietK__E62BAC593B114B18");
+            entity.HasKey(e => new { e.IdkeHoachCoSo, e.IdmucKt }).HasName("PK__ChiTietK__E62BAC598E2069F4");
 
             entity.ToTable("ChiTietKetQua");
 
@@ -153,7 +153,7 @@ public partial class QlattpContext : DbContext
 
         modelBuilder.Entity<ChuCoSo>(entity =>
         {
-            entity.HasKey(e => e.IdchuCoSo).HasName("PK__ChuCoSo__00A8457314C153D6");
+            entity.HasKey(e => e.IdchuCoSo).HasName("PK__ChuCoSo__00A84573A6921B6C");
 
             entity.ToTable("ChuCoSo");
 
@@ -171,7 +171,7 @@ public partial class QlattpContext : DbContext
 
         modelBuilder.Entity<ChucVu>(entity =>
         {
-            entity.HasKey(e => e.IdchucVu).HasName("PK__ChucVu__70FCCF652716418C");
+            entity.HasKey(e => e.IdchucVu).HasName("PK__ChucVu__70FCCF6573E4AB60");
 
             entity.ToTable("ChucVu");
 
@@ -180,7 +180,7 @@ public partial class QlattpContext : DbContext
 
         modelBuilder.Entity<CoSo>(entity =>
         {
-            entity.HasKey(e => e.IdcoSo).HasName("PK__CoSo__344441C5716816E6");
+            entity.HasKey(e => e.IdcoSo).HasName("PK__CoSo__344441C5C853E241");
 
             entity.ToTable("CoSo");
 
@@ -200,7 +200,7 @@ public partial class QlattpContext : DbContext
 
         modelBuilder.Entity<HoSoCapGiayChungNhan>(entity =>
         {
-            entity.HasKey(e => e.IdgiayChungNhan).HasName("PK__HoSoCapG__729C7BB617160CD8");
+            entity.HasKey(e => e.IdgiayChungNhan).HasName("PK__HoSoCapG__729C7BB669F73274");
 
             entity.ToTable("HoSoCapGiayChungNhan");
 
@@ -215,7 +215,7 @@ public partial class QlattpContext : DbContext
 
         modelBuilder.Entity<KeHoach>(entity =>
         {
-            entity.HasKey(e => e.IdkeHoach).HasName("PK__KeHoach__936F11C8A85196CC");
+            entity.HasKey(e => e.IdkeHoach).HasName("PK__KeHoach__936F11C8E015BC1A");
 
             entity.ToTable("KeHoach");
 
@@ -225,7 +225,7 @@ public partial class QlattpContext : DbContext
 
         modelBuilder.Entity<KeHoachCoSo>(entity =>
         {
-            entity.HasKey(e => e.IdkeHoachCoSo).HasName("PK__KeHoach___146E827EF1EC716F");
+            entity.HasKey(e => e.IdkeHoachCoSo).HasName("PK__KeHoach___146E827ED3210EDC");
 
             entity.ToTable("KeHoach_CoSo");
 
@@ -246,7 +246,7 @@ public partial class QlattpContext : DbContext
 
         modelBuilder.Entity<MucKiemTra>(entity =>
         {
-            entity.HasKey(e => e.IdmucKt).HasName("PK__MucKiemT__2452E27ECB438FBA");
+            entity.HasKey(e => e.IdmucKt).HasName("PK__MucKiemT__2452E27ED2DDDE02");
 
             entity.ToTable("MucKiemTra");
 
@@ -255,7 +255,7 @@ public partial class QlattpContext : DbContext
 
         modelBuilder.Entity<ThongBaoThayDoi>(entity =>
         {
-            entity.HasKey(e => e.IdthongBao).HasName("PK__ThongBao__3EBBFAAEC5198DAB");
+            entity.HasKey(e => e.IdthongBao).HasName("PK__ThongBao__3EBBFAAEC4345EDA");
 
             entity.ToTable("ThongBaoThayDoi");
 
@@ -274,7 +274,7 @@ public partial class QlattpContext : DbContext
 
         modelBuilder.Entity<TinTuc>(entity =>
         {
-            entity.HasKey(e => e.IdtinTuc).HasName("PK__TinTuc__74C0F8F80B49A437");
+            entity.HasKey(e => e.IdtinTuc).HasName("PK__TinTuc__74C0F8F803347603");
 
             entity.ToTable("TinTuc");
 
