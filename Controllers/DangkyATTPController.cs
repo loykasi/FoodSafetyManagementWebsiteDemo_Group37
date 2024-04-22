@@ -2,12 +2,12 @@
 
 namespace WebAnToanVeSinhThucPhamDemo.Controllers
 {
-    public class DangkyATTP : Controller
+    public class DangkyATTPController : Controller
     {
         private readonly IWebHostEnvironment _webHost;
         private DataContext _dataContext;
 
-        public DangkyATTP(IWebHostEnvironment webHost)
+        public DangkyATTPController(IWebHostEnvironment webHost)
         {
             _webHost = webHost;
             _dataContext = new DataContext();
