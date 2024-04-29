@@ -1,13 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using App.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using WebAnToanVeSinhThucPhamDemo.Models.Blog;
+using WebAnToanVeSinhThucPhamDemo.Models.Contact;
 
 namespace WebAnToanVeSinhThucPhamDemo.Models;
 
-public partial class QlattpContext : DbContext
+public partial class QlattpContext : IdentityDbContext<AppUser>
 {
     public QlattpContext()
     {
+        //WebAnToanVeSinhThucPhamDemo.Models.QlattpContext
     }
 
     public QlattpContext(DbContextOptions<QlattpContext> options)
@@ -41,14 +44,45 @@ public partial class QlattpContext : DbContext
 
     public virtual DbSet<ThongBaoThayDoi> ThongBaoThayDois { get; set; }
 
-    public virtual DbSet<TinTuc> TinTucs { get; set; }
+    public virtual DbSet<LienHe> LienHe { get; set; }
 
+    public virtual DbSet<DanhMuc> DanhMuc { get; set; }
+
+    public virtual DbSet<DanhMucBaiDang> DanhMucBaiDang { get; set; }
+    public virtual DbSet<TinTuc> TinTuc { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=QLATTP;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
+        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        {
+            var tableName = entityType.GetTableName();
+            if (tableName.StartsWith("AspNet"))
+            {
+                entityType.SetTableName(tableName.Substring(6));
+            }
+        }
+        modelBuilder.Entity<DanhMuc>(entity =>
+        {
+            entity.HasIndex(c => c.Slug)
+                  .IsUnique();
+        });
+
+        modelBuilder.Entity<DanhMucBaiDang>(entity =>
+        {
+            entity.HasKey(c => new { c.IDBaiDang, c.IDDanhMuc });
+        });
+
+        modelBuilder.Entity<TinTuc>(entity =>
+        {
+            entity.HasIndex(p => p.Slug)
+                  .IsUnique();
+        });
+
         modelBuilder.Entity<BanCongBoSp>(entity =>
         {
             entity.HasKey(e => e.IdbanCongBoSp).HasName("PK__BanCongB__57824418B2AEB7B3");
@@ -271,24 +305,7 @@ public partial class QlattpContext : DbContext
                 .HasForeignKey(d => d.IdcoSo)
                 .HasConstraintName("FK__ThongBaoT__IDCoS__46E78A0C");
         });
-
-        modelBuilder.Entity<TinTuc>(entity =>
-        {
-            entity.HasKey(e => e.IdtinTuc).HasName("PK__TinTuc__74C0F8F80B49A437");
-
-            entity.ToTable("TinTuc");
-
-            entity.Property(e => e.IdtinTuc).HasColumnName("IDTinTuc");
-            entity.Property(e => e.IdcanBo).HasColumnName("IDCanBo");
-            entity.Property(e => e.NoiDung).HasColumnType("text");
-
-            entity.HasOne(d => d.IdcanBoNavigation).WithMany(p => p.TinTucs)
-                .HasForeignKey(d => d.IdcanBo)
-                .HasConstraintName("FK__TinTuc__IDCanBo__4D94879B");
-        });
-
         OnModelCreatingPartial(modelBuilder);
     }
-
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }

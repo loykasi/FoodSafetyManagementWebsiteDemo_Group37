@@ -1,54 +1,40 @@
 ﻿use master
 go
-drop database QLATTP
+drop database ATVSTP
 go
-create database QLATTP
+create database ATVSTP
 go
-use QLATTP
-go
-
-create table ChucVu
-(
-	IDChucVu int primary key identity(1, 1),
-	TenChucVu nvarchar(max)
-)
-go
-
-create table CanBo
-(
-	IDCanBo int primary key identity(1, 1),
-	HoTen nvarchar(max),
-	CCCD varchar(12),
-	MatKhau varchar(max),
-	IDChucVu int,
-	foreign key (IDChucVu) references ChucVu(IDChucVu)
-)
-go
-
-create table ChuCoSo
-(
-	IDChuCoSo int primary key identity(1, 1),
-	HoTen nvarchar(max),
-	CCCD varchar(12),
-	SDT varchar(11),
-	MatKhau varchar(max)
-)
+use ATVSTP
 go
 
 create table CoSo
 (
 	IDCoSo int primary key identity(1, 1),
-	IDChuCoSo int,
+	IDChuCoSo nvarchar(450),
 	TenCoSo nvarchar(max),
 	DiaChi nvarchar(max),
+	IDQuanHuyen int foreign key references QuanHuyen(IDQuanHuyen),
 	LoaiHinhKinhDoanh nvarchar(max),
 	SoGiayPhepKD varchar(max),
 	NgayCapGiayPhepKD date,
 	NgayCapCNATTP date,
 	NgayHetHanCNATTP date,
-	foreign key (IDChuCoSo) references ChuCoSo(IDChuCoSo)
+	foreign key (IDChuCoSo) references NguoiDung(Id)
 
 )
+go
+create table QuanHuyen( 
+	IDQuanHuyen int primary key NOT NULL,
+	TenQuanHuyen nvarchar(255)
+)
+
+go
+create table PhuongXa( 
+	IDPhuongXa int primary key NOT NULL,
+	TenPhuongXa nvarchar(255),
+	IDQuanHuyen int foreign key references QuanHuyen(IDQuanHuyen)
+)
+
 go
 
 create table HoSoCapGiayChungNhan
@@ -84,12 +70,12 @@ create table ThongBaoThayDoi
 (
 	IDThongBao int primary key identity(1, 1),
 	IDCoSo int,
-	IDChuCoSoMoi int,
+	IDChuCoSoMoi nvarchar(450),
 	TenCoSoMoi nvarchar(max),
 	DiaChiMoi nvarchar(max),
 	TrangThai int,
 	foreign key (IDCoSo) references CoSo(IDCoSo),
-	foreign key (IDChuCoSoMoi) references ChuCoSo(IDChuCoSo)
+	foreign key (IDChuCoSoMoi) references NguoiDung(Id)
 )
 go
 
@@ -106,15 +92,35 @@ create table BaoCaoViPham
 )
 go
 
-create table TinTuc
-(
-	IDTinTuc int primary key identity(1, 1),
-	TieuDe nvarchar(max),
-	NoiDung text,
-	NgayDang date,
-	IDCanBo int,
-	foreign key (IDCanBo) references CanBo(IDCanBo)
+CREATE TABLE TinTuc(
+	IDTinTuc int IDENTITY(1,1) Primary key NOT NULL,
+	TieuDe nvarchar(160) NOT NULL,
+	MoTa nvarchar(max) NOT NULL,
+	Slug nvarchar(160) NOT NULL,
+	NoiDung nvarchar(max) NOT NULL,
+	Published bit NOT NULL,
+	IDCanBo nvarchar(450) NOT NULL ,
+	NgayTao datetime2(7) NOT NULL,
+	NgayCapNhat datetime2(7) NOT NULL,
+
+	foreign key (IDCanBo) references NguoiDung(Id)
 )
+CREATE TABLE DanhMuc(
+	Id int IDENTITY(1,1) Primary Key NOT NULL,
+	TenDanhMuc nvarchar(100) NOT NULL,
+	NoiDung nvarchar(max) NOT NULL,
+	Slug nvarchar(100) NOT NULL,
+	IdDanhMucCha int foreign key references DanhMuc(Id) NULL,
+)
+GO
+CREATE TABLE DanhMucBaiDang(
+	IDTinTuc int NOT NULL,
+	IDDanhMuc int NOT NULL,
+
+	primary key(IDTinTuc, IDDanhMuc),
+
+	foreign key (IDTinTuc) references TinTuc(IDTinTuc),
+	foreign key (IDDanhMuc) references DanhMuc(Id))	
 go
 
 create table KeHoach
@@ -128,11 +134,11 @@ create table KeHoach
 create table ChiTietDoanThanhTra
 (
 	IDKeHoach int,
-	IDCanBo int,
+	IDCanBo nvarchar(450),
 	ChucVu nvarchar(max),
 	primary key(IDKeHoach, IDCanBo),
 	foreign key (IDKeHoach) references KeHoach(IDKeHoach),
-	foreign key (IDCanBo) references CanBo(IDCanBo)
+	foreign key (IDCanBo) references NguoiDung(Id)
 )
 
 create table KeHoach_CoSo
@@ -164,6 +170,49 @@ create table ChiTietKetQua
 	foreign key (IDKeHoachCoSo) references KeHoach_CoSo(IDKeHoachCoSo),
 	foreign key (IDMucKT) references MucKiemTra(IDMucKT)
 )
+
+CREATE TABLE VaiTro (
+    Id nvarchar(450) NOT NULL PRIMARY KEY,
+    TenVaiTro nvarchar(256) NULL,
+    TenChuanHoa nvarchar(256) NULL,
+    DauVetDongBo nvarchar(max) NULL
+);
+
+CREATE TABLE NguoiDungVaiTro (
+    NguoiDungId nvarchar(450) NOT NULL,
+    VaiTroId nvarchar(450) NOT NULL,
+    PRIMARY KEY (NguoiDungId, VaiTroId),
+    FOREIGN KEY (NguoiDungId) REFERENCES NguoiDung(Id),
+    FOREIGN KEY (VaiTroId) REFERENCES VaiTro(Id)
+);
+CREATE TABLE NguoiDung (
+    Id nvarchar(450) NOT NULL PRIMARY KEY,
+	CCCD varchar(12) NULL,
+    DiaChiNha nvarchar(400) NULL,
+    NgaySinh datetime2(7) NULL,
+    TenDangNhap nvarchar(256) NULL,
+    TenDangNhapChuanHoa nvarchar(256) NULL,
+    Email nvarchar(256) NULL,
+    EmailChuanHoa nvarchar(256) NULL,
+    EmailDaXacNhan bit NOT NULL,
+    MatKhauHash nvarchar(max) NULL,
+    DauVetBaoMat nvarchar(max) NULL,
+    DauVetDongBo nvarchar(max) NULL,
+    SoDienThoai nvarchar(max) NULL,
+    SoDienThoaiDaXacNhan bit NOT NULL,
+    XacThucHaiYeuTo bit NOT NULL,
+    ThoiGianKhoaCuoiCung datetimeoffset(7) NULL,
+    DaKhoaTaiKhoan bit NOT NULL,
+    SoLanDangNhapThatBai int NOT NULL
+);
+CREATE TABLE XacThucNguoiDung (
+    NguoiDungId nvarchar(450) NOT NULL,
+    NhaCungCapDangNhap nvarchar(450) NOT NULL,
+    Ten nvarchar(450) NOT NULL,
+    GiaTri nvarchar(max) NULL,
+    PRIMARY KEY (NguoiDungId, NhaCungCapDangNhap, Ten),
+    FOREIGN KEY (NguoiDungId) REFERENCES NguoiDung(Id)
+);
 
 
 go

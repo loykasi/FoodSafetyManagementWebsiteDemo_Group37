@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace WebAnToanVeSinhThucPhamDemo.Models;
+﻿namespace WebAnToanVeSinhThucPhamDemo.Models;
 
 public partial class CanBo
 {
@@ -19,5 +16,4 @@ public partial class CanBo
 
     public virtual ChucVu? IdchucVuNavigation { get; set; }
 
-    public virtual ICollection<TinTuc> TinTucs { get; set; } = new List<TinTuc>();
 }
