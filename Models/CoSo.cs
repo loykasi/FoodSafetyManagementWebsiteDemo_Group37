@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using App.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebAnToanVeSinhThucPhamDemo.Models;
 
@@ -12,6 +12,10 @@ public partial class CoSo
     public string? TenCoSo { get; set; }
 
     public string? DiaChi { get; set; }
+
+    [ForeignKey("IDPhuongXa")]
+    public int? IDPhuongXa { get; set; }
+    public virtual PhuongXa PhuongXa { get; set; }
 
     public string? LoaiHinhKinhDoanh { get; set; }
 
@@ -29,7 +33,10 @@ public partial class CoSo
 
     public virtual ICollection<HoSoCapGiayChungNhan> HoSoCapGiayChungNhans { get; set; } = new List<HoSoCapGiayChungNhan>();
 
-    public virtual ChuCoSo? IdchuCoSoNavigation { get; set; }
+    [ForeignKey("IdchuCoSo")]
+    public string ChuCoSoId { get; set; }
+
+    public virtual AppUser ChuCoSo { get; set; }
 
     public virtual ICollection<KeHoachCoSo> KeHoachCoSos { get; set; } = new List<KeHoachCoSo>();
 

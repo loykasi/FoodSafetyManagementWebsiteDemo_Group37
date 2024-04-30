@@ -6,6 +6,9 @@ namespace App.Models
 {
     public class AppUser : IdentityUser
     {
+        [Column(TypeName = "nvarchar(12)")]
+        public string? CCCD { get; set; }
+
         [Column(TypeName = "nvarchar")]
         [StringLength(400)]
         public string? HomeAdress { get; set; }
@@ -15,8 +18,6 @@ namespace App.Models
         [DataType(DataType.Date)]
         public DateTime? BirthDate { get; set; }
 
-        [Required]
-        [Column(TypeName = "nvarchar(12)")]
-        public string CCCD { get; set; }
+
     }
 }

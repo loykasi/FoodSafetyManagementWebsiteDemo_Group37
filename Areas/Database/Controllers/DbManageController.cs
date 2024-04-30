@@ -71,7 +71,7 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.Database.Controllers
                 {
                     UserName = "admin",
                     Email = "admin@example.com",
-                    EmailConfirmed = true,
+                    EmailConfirmed = true
                 };
 
                 await _userManager.CreateAsync(useradmin, "admin123");

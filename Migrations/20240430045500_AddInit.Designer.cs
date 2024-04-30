@@ -12,8 +12,8 @@ using WebAnToanVeSinhThucPhamDemo.Models;
 namespace WebAnToanVeSinhThucPhamDemo.Migrations
 {
     [DbContext(typeof(QlattpContext))]
-    [Migration("20240424151859_AddPostInit")]
-    partial class AddPostInit
+    [Migration("20240430045500_AddInit")]
+    partial class AddInit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,6 +35,9 @@ namespace WebAnToanVeSinhThucPhamDemo.Migrations
 
                     b.Property<DateTime?>("BirthDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("CCCD")
+                        .HasColumnType("nvarchar(12)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -95,6 +98,31 @@ namespace WebAnToanVeSinhThucPhamDemo.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("Users", (string)null);
+                });
+
+            modelBuilder.Entity("ChiTietDoanThanhTra", b =>
+                {
+                    b.Property<int>("IdkeHoach")
+                        .HasColumnType("int")
+                        .HasColumnName("IDKeHoach");
+
+                    b.Property<int>("IdCanBo")
+                        .HasColumnType("int")
+                        .HasColumnName("IDCanBo");
+
+                    b.Property<string>("CanBoId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ChucVu")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IdkeHoach", "IdCanBo")
+                        .HasName("PK__ChiTietD__4EE32992008214FC");
+
+                    b.HasIndex("CanBoId");
+
+                    b.ToTable("ChiTietDoanThanhTra", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -228,6 +256,46 @@ namespace WebAnToanVeSinhThucPhamDemo.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("UserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("ThongBaoThayDoi", b =>
+                {
+                    b.Property<int>("IdthongBao")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("IDThongBao");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdthongBao"));
+
+                    b.Property<string>("ChuCoSoMoiId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("DiaChiMoi")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("IdchuCoSoMoi")
+                        .HasColumnType("int")
+                        .HasColumnName("IDChuCoSoMoi");
+
+                    b.Property<int?>("IdcoSo")
+                        .HasColumnType("int")
+                        .HasColumnName("IDCoSo");
+
+                    b.Property<string>("TenCoSoMoi")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("TrangThai")
+                        .HasColumnType("int");
+
+                    b.HasKey("IdthongBao")
+                        .HasName("PK__ThongBao__3EBBFAAEC5198DAB");
+
+                    b.HasIndex("ChuCoSoMoiId");
+
+                    b.HasIndex("IdcoSo");
+
+                    b.ToTable("ThongBaoThayDoi", (string)null);
                 });
 
             modelBuilder.Entity("WebAnToanVeSinhThucPhamDemo.Models.BanCongBoSp", b =>
@@ -425,61 +493,6 @@ namespace WebAnToanVeSinhThucPhamDemo.Migrations
                     b.ToTable("TinTuc");
                 });
 
-            modelBuilder.Entity("WebAnToanVeSinhThucPhamDemo.Models.CanBo", b =>
-                {
-                    b.Property<int>("IdcanBo")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("IDCanBo");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdcanBo"));
-
-                    b.Property<string>("Cccd")
-                        .HasMaxLength(12)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(12)")
-                        .HasColumnName("CCCD");
-
-                    b.Property<string>("HoTen")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("IdchucVu")
-                        .HasColumnType("int")
-                        .HasColumnName("IDChucVu");
-
-                    b.Property<string>("MatKhau")
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)");
-
-                    b.HasKey("IdcanBo")
-                        .HasName("PK__CanBo__D8C385AC7420D539");
-
-                    b.HasIndex("IdchucVu");
-
-                    b.ToTable("CanBo", (string)null);
-                });
-
-            modelBuilder.Entity("WebAnToanVeSinhThucPhamDemo.Models.ChiTietDoanThanhTra", b =>
-                {
-                    b.Property<int>("IdkeHoach")
-                        .HasColumnType("int")
-                        .HasColumnName("IDKeHoach");
-
-                    b.Property<int>("IdcanBo")
-                        .HasColumnType("int")
-                        .HasColumnName("IDCanBo");
-
-                    b.Property<string>("ChucVu")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("IdkeHoach", "IdcanBo")
-                        .HasName("PK__ChiTietD__4EE32992008214FC");
-
-                    b.HasIndex("IdcanBo");
-
-                    b.ToTable("ChiTietDoanThanhTra", (string)null);
-                });
-
             modelBuilder.Entity("WebAnToanVeSinhThucPhamDemo.Models.ChiTietKetQua", b =>
                 {
                     b.Property<int>("IdkeHoachCoSo")
@@ -501,58 +514,6 @@ namespace WebAnToanVeSinhThucPhamDemo.Migrations
                     b.ToTable("ChiTietKetQua", (string)null);
                 });
 
-            modelBuilder.Entity("WebAnToanVeSinhThucPhamDemo.Models.ChuCoSo", b =>
-                {
-                    b.Property<int>("IdchuCoSo")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("IDChuCoSo");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdchuCoSo"));
-
-                    b.Property<string>("Cccd")
-                        .HasMaxLength(12)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(12)")
-                        .HasColumnName("CCCD");
-
-                    b.Property<string>("HoTen")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MatKhau")
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)");
-
-                    b.Property<string>("Sdt")
-                        .HasMaxLength(11)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(11)")
-                        .HasColumnName("SDT");
-
-                    b.HasKey("IdchuCoSo")
-                        .HasName("PK__ChuCoSo__00A8457314C153D6");
-
-                    b.ToTable("ChuCoSo", (string)null);
-                });
-
-            modelBuilder.Entity("WebAnToanVeSinhThucPhamDemo.Models.ChucVu", b =>
-                {
-                    b.Property<int>("IdchucVu")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("IDChucVu");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdchucVu"));
-
-                    b.Property<string>("TenChucVu")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("IdchucVu")
-                        .HasName("PK__ChucVu__70FCCF652716418C");
-
-                    b.ToTable("ChucVu", (string)null);
-                });
-
             modelBuilder.Entity("WebAnToanVeSinhThucPhamDemo.Models.CoSo", b =>
                 {
                     b.Property<int>("IdcoSo")
@@ -562,8 +523,15 @@ namespace WebAnToanVeSinhThucPhamDemo.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdcoSo"));
 
+                    b.Property<string>("ChuCoSoId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("DiaChi")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("IDPhuongXa")
+                        .HasColumnType("int");
 
                     b.Property<int?>("IdchuCoSo")
                         .HasColumnType("int")
@@ -595,7 +563,9 @@ namespace WebAnToanVeSinhThucPhamDemo.Migrations
                     b.HasKey("IdcoSo")
                         .HasName("PK__CoSo__344441C5716816E6");
 
-                    b.HasIndex("IdchuCoSo");
+                    b.HasIndex("ChuCoSoId");
+
+                    b.HasIndex("IDPhuongXa");
 
                     b.ToTable("CoSo", (string)null);
                 });
@@ -752,40 +722,64 @@ namespace WebAnToanVeSinhThucPhamDemo.Migrations
                     b.ToTable("MucKiemTra", (string)null);
                 });
 
-            modelBuilder.Entity("WebAnToanVeSinhThucPhamDemo.Models.ThongBaoThayDoi", b =>
+            modelBuilder.Entity("WebAnToanVeSinhThucPhamDemo.Models.PhuongXa", b =>
                 {
-                    b.Property<int>("IdthongBao")
+                    b.Property<int>("IDPhuongXa")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("IDThongBao");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdthongBao"));
-
-                    b.Property<string>("DiaChiMoi")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("IdchuCoSoMoi")
-                        .HasColumnType("int")
-                        .HasColumnName("IDChuCoSoMoi");
-
-                    b.Property<int?>("IdcoSo")
-                        .HasColumnType("int")
-                        .HasColumnName("IDCoSo");
-
-                    b.Property<string>("TenCoSoMoi")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("TrangThai")
                         .HasColumnType("int");
 
-                    b.HasKey("IdthongBao")
-                        .HasName("PK__ThongBao__3EBBFAAEC5198DAB");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IDPhuongXa"));
 
-                    b.HasIndex("IdchuCoSoMoi");
+                    b.Property<int>("IDQuanHuyen")
+                        .HasColumnType("int");
 
-                    b.HasIndex("IdcoSo");
+                    b.Property<string>("TenPhuongXa")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
-                    b.ToTable("ThongBaoThayDoi", (string)null);
+                    b.HasKey("IDPhuongXa");
+
+                    b.HasIndex("IDQuanHuyen");
+
+                    b.ToTable("PhuongXa");
+                });
+
+            modelBuilder.Entity("WebAnToanVeSinhThucPhamDemo.Models.QuanHuyen", b =>
+                {
+                    b.Property<int>("IDQuanHuyen")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IDQuanHuyen"));
+
+                    b.Property<string>("TenQuanHuyen")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("IDQuanHuyen");
+
+                    b.ToTable("QuanHuyen");
+                });
+
+            modelBuilder.Entity("ChiTietDoanThanhTra", b =>
+                {
+                    b.HasOne("App.Models.AppUser", "CanBo")
+                        .WithMany()
+                        .HasForeignKey("CanBoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WebAnToanVeSinhThucPhamDemo.Models.KeHoach", "IdkeHoachNavigation")
+                        .WithMany("ChiTietDoanThanhTras")
+                        .HasForeignKey("IdkeHoach")
+                        .IsRequired()
+                        .HasConstraintName("FK__ChiTietDo__IDKeH__52593CB8");
+
+                    b.Navigation("CanBo");
+
+                    b.Navigation("IdkeHoachNavigation");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -837,6 +831,24 @@ namespace WebAnToanVeSinhThucPhamDemo.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ThongBaoThayDoi", b =>
+                {
+                    b.HasOne("App.Models.AppUser", "ChuCoSoMoi")
+                        .WithMany()
+                        .HasForeignKey("ChuCoSoMoiId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WebAnToanVeSinhThucPhamDemo.Models.CoSo", "IdcoSoNavigation")
+                        .WithMany("ThongBaoThayDois")
+                        .HasForeignKey("IdcoSo")
+                        .HasConstraintName("FK__ThongBaoT__IDCoS__46E78A0C");
+
+                    b.Navigation("ChuCoSoMoi");
+
+                    b.Navigation("IdcoSoNavigation");
                 });
 
             modelBuilder.Entity("WebAnToanVeSinhThucPhamDemo.Models.BanCongBoSp", b =>
@@ -898,35 +910,6 @@ namespace WebAnToanVeSinhThucPhamDemo.Migrations
                     b.Navigation("CanBo");
                 });
 
-            modelBuilder.Entity("WebAnToanVeSinhThucPhamDemo.Models.CanBo", b =>
-                {
-                    b.HasOne("WebAnToanVeSinhThucPhamDemo.Models.ChucVu", "IdchucVuNavigation")
-                        .WithMany("CanBos")
-                        .HasForeignKey("IdchucVu")
-                        .HasConstraintName("FK__CanBo__IDChucVu__398D8EEE");
-
-                    b.Navigation("IdchucVuNavigation");
-                });
-
-            modelBuilder.Entity("WebAnToanVeSinhThucPhamDemo.Models.ChiTietDoanThanhTra", b =>
-                {
-                    b.HasOne("WebAnToanVeSinhThucPhamDemo.Models.CanBo", "IdcanBoNavigation")
-                        .WithMany("ChiTietDoanThanhTras")
-                        .HasForeignKey("IdcanBo")
-                        .IsRequired()
-                        .HasConstraintName("FK__ChiTietDo__IDCan__534D60F1");
-
-                    b.HasOne("WebAnToanVeSinhThucPhamDemo.Models.KeHoach", "IdkeHoachNavigation")
-                        .WithMany("ChiTietDoanThanhTras")
-                        .HasForeignKey("IdkeHoach")
-                        .IsRequired()
-                        .HasConstraintName("FK__ChiTietDo__IDKeH__52593CB8");
-
-                    b.Navigation("IdcanBoNavigation");
-
-                    b.Navigation("IdkeHoachNavigation");
-                });
-
             modelBuilder.Entity("WebAnToanVeSinhThucPhamDemo.Models.ChiTietKetQua", b =>
                 {
                     b.HasOne("WebAnToanVeSinhThucPhamDemo.Models.KeHoachCoSo", "IdkeHoachCoSoNavigation")
@@ -948,12 +931,20 @@ namespace WebAnToanVeSinhThucPhamDemo.Migrations
 
             modelBuilder.Entity("WebAnToanVeSinhThucPhamDemo.Models.CoSo", b =>
                 {
-                    b.HasOne("WebAnToanVeSinhThucPhamDemo.Models.ChuCoSo", "IdchuCoSoNavigation")
-                        .WithMany("CoSos")
-                        .HasForeignKey("IdchuCoSo")
-                        .HasConstraintName("FK__CoSo__IDChuCoSo__3E52440B");
+                    b.HasOne("App.Models.AppUser", "ChuCoSo")
+                        .WithMany()
+                        .HasForeignKey("ChuCoSoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
-                    b.Navigation("IdchuCoSoNavigation");
+                    b.HasOne("WebAnToanVeSinhThucPhamDemo.Models.PhuongXa", "PhuongXa")
+                        .WithMany()
+                        .HasForeignKey("IDPhuongXa")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("ChuCoSo");
+
+                    b.Navigation("PhuongXa");
                 });
 
             modelBuilder.Entity("WebAnToanVeSinhThucPhamDemo.Models.HoSoCapGiayChungNhan", b =>
@@ -983,21 +974,15 @@ namespace WebAnToanVeSinhThucPhamDemo.Migrations
                     b.Navigation("IdkeHoachNavigation");
                 });
 
-            modelBuilder.Entity("WebAnToanVeSinhThucPhamDemo.Models.ThongBaoThayDoi", b =>
+            modelBuilder.Entity("WebAnToanVeSinhThucPhamDemo.Models.PhuongXa", b =>
                 {
-                    b.HasOne("WebAnToanVeSinhThucPhamDemo.Models.ChuCoSo", "IdchuCoSoMoiNavigation")
-                        .WithMany("ThongBaoThayDois")
-                        .HasForeignKey("IdchuCoSoMoi")
-                        .HasConstraintName("FK__ThongBaoT__IDChu__47DBAE45");
+                    b.HasOne("WebAnToanVeSinhThucPhamDemo.Models.QuanHuyen", "QuanHuyen")
+                        .WithMany()
+                        .HasForeignKey("IDQuanHuyen")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("WebAnToanVeSinhThucPhamDemo.Models.CoSo", "IdcoSoNavigation")
-                        .WithMany("ThongBaoThayDois")
-                        .HasForeignKey("IdcoSo")
-                        .HasConstraintName("FK__ThongBaoT__IDCoS__46E78A0C");
-
-                    b.Navigation("IdchuCoSoMoiNavigation");
-
-                    b.Navigation("IdcoSoNavigation");
+                    b.Navigation("QuanHuyen");
                 });
 
             modelBuilder.Entity("WebAnToanVeSinhThucPhamDemo.Models.Blog.DanhMuc", b =>
@@ -1008,23 +993,6 @@ namespace WebAnToanVeSinhThucPhamDemo.Migrations
             modelBuilder.Entity("WebAnToanVeSinhThucPhamDemo.Models.Blog.TinTuc", b =>
                 {
                     b.Navigation("DanhMucBaiDangs");
-                });
-
-            modelBuilder.Entity("WebAnToanVeSinhThucPhamDemo.Models.CanBo", b =>
-                {
-                    b.Navigation("ChiTietDoanThanhTras");
-                });
-
-            modelBuilder.Entity("WebAnToanVeSinhThucPhamDemo.Models.ChuCoSo", b =>
-                {
-                    b.Navigation("CoSos");
-
-                    b.Navigation("ThongBaoThayDois");
-                });
-
-            modelBuilder.Entity("WebAnToanVeSinhThucPhamDemo.Models.ChucVu", b =>
-                {
-                    b.Navigation("CanBos");
                 });
 
             modelBuilder.Entity("WebAnToanVeSinhThucPhamDemo.Models.CoSo", b =>

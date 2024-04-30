@@ -17,20 +17,16 @@ public partial class QlattpContext : IdentityDbContext<AppUser>
         : base(options)
     {
     }
+    public virtual DbSet<QuanHuyen> QuanHuyen { get; set; }
 
+    public virtual DbSet<PhuongXa> PhuongXa { get; set; }
     public virtual DbSet<BanCongBoSp> BanCongBoSps { get; set; }
 
     public virtual DbSet<BaoCaoViPham> BaoCaoViPhams { get; set; }
 
-    public virtual DbSet<CanBo> CanBos { get; set; }
-
     public virtual DbSet<ChiTietDoanThanhTra> ChiTietDoanThanhTras { get; set; }
 
     public virtual DbSet<ChiTietKetQua> ChiTietKetQuas { get; set; }
-
-    public virtual DbSet<ChuCoSo> ChuCoSos { get; set; }
-
-    public virtual DbSet<ChucVu> ChucVus { get; set; }
 
     public virtual DbSet<CoSo> CoSos { get; set; }
 
@@ -126,45 +122,24 @@ public partial class QlattpContext : IdentityDbContext<AppUser>
                 .HasConstraintName("FK__BaoCaoViP__IDCoS__4AB81AF0");
         });
 
-        modelBuilder.Entity<CanBo>(entity =>
-        {
-            entity.HasKey(e => e.IdcanBo).HasName("PK__CanBo__D8C385AC7420D539");
-
-            entity.ToTable("CanBo");
-
-            entity.Property(e => e.IdcanBo).HasColumnName("IDCanBo");
-            entity.Property(e => e.Cccd)
-                .HasMaxLength(12)
-                .IsUnicode(false)
-                .HasColumnName("CCCD");
-            entity.Property(e => e.IdchucVu).HasColumnName("IDChucVu");
-            entity.Property(e => e.MatKhau).IsUnicode(false);
-
-            entity.HasOne(d => d.IdchucVuNavigation).WithMany(p => p.CanBos)
-                .HasForeignKey(d => d.IdchucVu)
-                .HasConstraintName("FK__CanBo__IDChucVu__398D8EEE");
-        });
-
         modelBuilder.Entity<ChiTietDoanThanhTra>(entity =>
         {
-            entity.HasKey(e => new { e.IdkeHoach, e.IdcanBo }).HasName("PK__ChiTietD__4EE32992008214FC");
-
+            entity.HasKey(e => new { e.IdkeHoach, e.IdCanBo }).HasName("PK__ChiTietD__4EE32992008214FC");
             entity.ToTable("ChiTietDoanThanhTra");
 
             entity.Property(e => e.IdkeHoach).HasColumnName("IDKeHoach");
-            entity.Property(e => e.IdcanBo).HasColumnName("IDCanBo");
+            entity.Property(e => e.IdCanBo).HasColumnName("IDCanBo");
 
-            entity.HasOne(d => d.IdcanBoNavigation).WithMany(p => p.ChiTietDoanThanhTras)
-                .HasForeignKey(d => d.IdcanBo)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__ChiTietDo__IDCan__534D60F1");
+            entity.HasOne(d => d.CanBo)
+                .WithMany()
+                .HasForeignKey(d => d.CanBoId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             entity.HasOne(d => d.IdkeHoachNavigation).WithMany(p => p.ChiTietDoanThanhTras)
                 .HasForeignKey(d => d.IdkeHoach)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__ChiTietDo__IDKeH__52593CB8");
         });
-
         modelBuilder.Entity<ChiTietKetQua>(entity =>
         {
             entity.HasKey(e => new { e.IdkeHoachCoSo, e.IdmucKt }).HasName("PK__ChiTietK__E62BAC593B114B18");
@@ -185,39 +160,11 @@ public partial class QlattpContext : IdentityDbContext<AppUser>
                 .HasConstraintName("FK__ChiTietKe__IDMuc__5CD6CB2B");
         });
 
-        modelBuilder.Entity<ChuCoSo>(entity =>
-        {
-            entity.HasKey(e => e.IdchuCoSo).HasName("PK__ChuCoSo__00A8457314C153D6");
-
-            entity.ToTable("ChuCoSo");
-
-            entity.Property(e => e.IdchuCoSo).HasColumnName("IDChuCoSo");
-            entity.Property(e => e.Cccd)
-                .HasMaxLength(12)
-                .IsUnicode(false)
-                .HasColumnName("CCCD");
-            entity.Property(e => e.MatKhau).IsUnicode(false);
-            entity.Property(e => e.Sdt)
-                .HasMaxLength(11)
-                .IsUnicode(false)
-                .HasColumnName("SDT");
-        });
-
-        modelBuilder.Entity<ChucVu>(entity =>
-        {
-            entity.HasKey(e => e.IdchucVu).HasName("PK__ChucVu__70FCCF652716418C");
-
-            entity.ToTable("ChucVu");
-
-            entity.Property(e => e.IdchucVu).HasColumnName("IDChucVu");
-        });
 
         modelBuilder.Entity<CoSo>(entity =>
         {
             entity.HasKey(e => e.IdcoSo).HasName("PK__CoSo__344441C5716816E6");
-
             entity.ToTable("CoSo");
-
             entity.Property(e => e.IdcoSo).HasColumnName("IDCoSo");
             entity.Property(e => e.IdchuCoSo).HasColumnName("IDChuCoSo");
             entity.Property(e => e.NgayCapCnattp).HasColumnName("NgayCapCNATTP");
@@ -227,9 +174,17 @@ public partial class QlattpContext : IdentityDbContext<AppUser>
                 .IsUnicode(false)
                 .HasColumnName("SoGiayPhepKD");
 
-            entity.HasOne(d => d.IdchuCoSoNavigation).WithMany(p => p.CoSos)
-                .HasForeignKey(d => d.IdchuCoSo)
-                .HasConstraintName("FK__CoSo__IDChuCoSo__3E52440B");
+            // Thêm đoạn mã mới cho foreign key IDPhuongXa
+            entity.HasOne(c => c.PhuongXa)
+                .WithMany()
+                .HasForeignKey(c => c.IDPhuongXa)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Giữ nguyên đoạn mã cho foreign key IDChuCoSo
+            entity.HasOne(c => c.ChuCoSo)
+                .WithMany()
+                .HasForeignKey(c => c.ChuCoSoId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
 
         modelBuilder.Entity<HoSoCapGiayChungNhan>(entity =>
@@ -290,16 +245,22 @@ public partial class QlattpContext : IdentityDbContext<AppUser>
         modelBuilder.Entity<ThongBaoThayDoi>(entity =>
         {
             entity.HasKey(e => e.IdthongBao).HasName("PK__ThongBao__3EBBFAAEC5198DAB");
-
             entity.ToTable("ThongBaoThayDoi");
 
             entity.Property(e => e.IdthongBao).HasColumnName("IDThongBao");
             entity.Property(e => e.IdchuCoSoMoi).HasColumnName("IDChuCoSoMoi");
             entity.Property(e => e.IdcoSo).HasColumnName("IDCoSo");
 
-            entity.HasOne(d => d.IdchuCoSoMoiNavigation).WithMany(p => p.ThongBaoThayDois)
-                .HasForeignKey(d => d.IdchuCoSoMoi)
-                .HasConstraintName("FK__ThongBaoT__IDChu__47DBAE45");
+            // Xóa đoạn mã cũ
+            // entity.HasOne(d => d.IdchuCoSoMoiNavigation).WithMany(p => p.ThongBaoThayDois)
+            //     .HasForeignKey(d => d.IdchuCoSoMoi)
+            //     .HasConstraintName("FK__ThongBaoT__IDChu__47DBAE45");
+
+            // Thêm đoạn mã mới
+            entity.HasOne(t => t.ChuCoSoMoi)
+                .WithMany()
+                .HasForeignKey(t => t.ChuCoSoMoiId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             entity.HasOne(d => d.IdcoSoNavigation).WithMany(p => p.ThongBaoThayDois)
                 .HasForeignKey(d => d.IdcoSo)
