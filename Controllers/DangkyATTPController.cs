@@ -19,13 +19,9 @@ namespace WebAnToanVeSinhThucPhamDemo.Controllers
 
         public IActionResult Index()
         {
-			List<SelectListItem> li = new List<SelectListItem>();
-			IList<QuanHuyen> listQuanHuyen = dbContext.QuanHuyens.ToList();
-            IList<PhuongXa> listPhuongXa = dbContext.PhuongXas.ToList();
-            ViewData["listQuanHuyen"] = listQuanHuyen;
-            ViewData["listPhuongXa"] = listPhuongXa;
-
-            foreach(var i in listQuanHuyen)
+            List<SelectListItem> li = new List<SelectListItem>();
+            li.Add(new SelectListItem { Text="Chọn quận huyện", Value="0"});
+            foreach(var i in dbContext.QuanHuyens)
             {
                 li.Add(new SelectListItem { Text = i.TenQuanHuyen, Value = i.IdquanHuyen.ToString() });
             }
