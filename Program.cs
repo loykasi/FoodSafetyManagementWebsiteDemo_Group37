@@ -6,6 +6,7 @@ using Microsoft.Extensions.FileProviders;
 using WebAnToanVeSinhThucPhamDemo.Data;
 using WebAnToanVeSinhThucPhamDemo.ExtendMethods;
 using WebAnToanVeSinhThucPhamDemo.Models;
+using WebAnToanVeSinhThucPhamDemo.Repository;
 using WebAnToanVeSinhThucPhamDemo.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,11 @@ string contentRootPath = builder.Environment.ContentRootPath;
 
 builder.Services.AddSingleton(sp => new { ContentRootPath = contentRootPath });
 
+
+var connectionString = builder.Configuration.GetConnectionString("QlattpContext");
+builder.Services.AddDbContext<QlattpContext>(x =>x.UseSqlServer(connectionString));
+
+builder.Services.AddScoped<IDanhMucRepository, DanhMucRepository>();
 //Đọc cấu hình từ appsettings.json
 builder.Configuration.AddJsonFile("appsettings.json");
 

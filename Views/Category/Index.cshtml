@@ -1,0 +1,18 @@
+﻿@model IEnumerable<WebAnToanVeSinhThucPhamDemo.Models.Blog.DanhMuc>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Danh sách danh mục</title>
+</head>
+<body>
+    <h1>Danh sách danh mục</h1>
+    <ul>
+        @foreach (var danhMuc in ViewBag.DanhMucList)
+        {
+            <li>@danhMuc.TenDanhMuc</li>
+        }
+    </ul>
+</body>
+</html>

@@ -6,6 +6,9 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.Identity.Models.ManageViewModels
     {
         [Display(Name = "Tên tài khoản")]
         public string UserName { get; set; }
+        [Display(Name = "Họ tên")]
+        [StringLength(50)]
+        public string HoTen { get; set; }
 
         [Display(Name = "Địa chỉ email")]
         public string UserEmail { get; set; }

@@ -10,6 +10,10 @@ namespace App.Models
         public string? CCCD { get; set; }
 
         [Column(TypeName = "nvarchar")]
+        [StringLength(50)]
+        public string? HoTen { get; set; }
+
+        [Column(TypeName = "nvarchar")]
         [StringLength(400)]
         public string? HomeAdress { get; set; }
 

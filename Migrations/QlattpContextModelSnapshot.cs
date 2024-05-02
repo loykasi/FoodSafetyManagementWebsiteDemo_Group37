@@ -46,6 +46,9 @@ namespace WebAnToanVeSinhThucPhamDemo.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+                    b.Property<string>("HoTen")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar");
 
                     b.Property<string>("HomeAdress")
                         .HasMaxLength(400)

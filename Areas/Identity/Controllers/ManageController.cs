@@ -60,6 +60,8 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.Identity.Controllers
                 {
                     BirthDate = user.BirthDate,
                     HomeAdress = user.HomeAdress,
+                    HoTen = user.HoTen,
+                    CCCD = user.CCCD,
                     UserName = user.UserName,
                     UserEmail = user.Email,
                     PhoneNumber = user.PhoneNumber,
@@ -375,7 +377,9 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.Identity.Controllers
             {
                 BirthDate = user.BirthDate,
                 HomeAdress = user.HomeAdress,
+                HoTen = user.HoTen,
                 UserName = user.UserName,
+                CCCD = user.CCCD,
                 UserEmail = user.Email,
                 PhoneNumber = user.PhoneNumber,
             };
@@ -387,6 +391,8 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.Identity.Controllers
             var user = await GetCurrentUserAsync();
 
             user.HomeAdress = model.HomeAdress;
+            user.HoTen = model.HoTen;
+            user.CCCD = model.CCCD;
             user.BirthDate = model.BirthDate;
             await _userManager.UpdateAsync(user);
 

@@ -29,6 +29,7 @@ CREATE TABLE VaiTro (
 );
 CREATE TABLE NguoiDung (
     Id varchar(450) NOT NULL PRIMARY KEY,
+	HoTen nvarchar(50) NULL,
 	CCCD varchar(12) NULL,
     DiaChiNha nvarchar(400) NULL,
     NgaySinh datetime2(7) NULL,

@@ -109,6 +109,7 @@ namespace WebAnToanVeSinhThucPhamDemo.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    HoTen = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     CCCD = table.Column<string>(type: "nvarchar(12)", nullable: true),
                     HomeAdress = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: true),
                     BirthDate = table.Column<DateTime>(type: "datetime2", nullable: true),
