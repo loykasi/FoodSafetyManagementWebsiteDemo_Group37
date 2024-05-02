@@ -11,16 +11,18 @@ namespace WebAnToanVeSinhThucPhamDemo.Controllers
 
         public DataContext()
         {
-            _connection = new SqlConnection("Data Source=.;Initial Catalog=QLATTP;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
+            _connection = new SqlConnection("Data Source=.;Initial Catalog=ATVSTP;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False");
         }
 
-        public int insertGiayChungNhan_CoSo(string tencoso, string diachi, string loaihinh, string giayphepkd, DateOnly ngaycap, string loaithucpham, string hinhanh)
+        public int insertGiayChungNhan_CoSo(string tencoso,int phuongxa, string diachi, string loaihinh, string giayphepkd, DateOnly ngaycap, string loaithucpham, string hinhanh)
         {
             SqlCommand cmd = _connection.CreateCommand();
-            cmd.CommandText = " execute insertGiayChungNhan_CoSo null,@ten,@diachi,@loaihinh,@giayphep,@ngaycap,@loaithucpham,@hinhanh"; //null la IdChuCoSo
+            cmd.CommandText = " execute insertGiayChungNhan_CoSo null,@ten,@idphuongxa,@diachi,@loaihinh,@giayphep,@ngaycap,@loaithucpham,@hinhanh"; //null la IdChuCoSo
             
             cmd.Parameters.Add("@ten", SqlDbType.NVarChar);
             cmd.Parameters["@ten"].Value = tencoso;
+            cmd.Parameters.Add("@idphuongxa", SqlDbType.Int);
+            cmd.Parameters["@idphuongxa"].Value = phuongxa;
             cmd.Parameters.Add("@diachi", SqlDbType.NVarChar);
             cmd.Parameters["@diachi"].Value = diachi;
             cmd.Parameters.Add("@loaihinh", SqlDbType.NVarChar);
@@ -36,7 +38,7 @@ namespace WebAnToanVeSinhThucPhamDemo.Controllers
             _connection.Open();
             SqlDataReader dataReader = cmd.ExecuteReader();
             dataReader.Read();
-            int result = dataReader.GetInt32(0);
+            int result = Convert.ToInt32(dataReader.GetDecimal(0));
             _connection.Close();
             return result;
         }

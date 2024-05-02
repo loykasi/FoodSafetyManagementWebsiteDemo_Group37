@@ -7,13 +7,23 @@ public partial class TinTuc
 {
     public int IdtinTuc { get; set; }
 
-    public string? TieuDe { get; set; }
+    public string TieuDe { get; set; } = null!;
 
-    public string? NoiDung { get; set; }
+    public string MoTa { get; set; } = null!;
 
-    public DateOnly? NgayDang { get; set; }
+    public string Slug { get; set; } = null!;
 
-    public int? IdcanBo { get; set; }
+    public string NoiDung { get; set; } = null!;
 
-    public virtual CanBo? IdcanBoNavigation { get; set; }
+    public bool Published { get; set; }
+
+    public string IdcanBo { get; set; } = null!;
+
+    public DateTime NgayTao { get; set; }
+
+    public DateTime NgayCapNhat { get; set; }
+
+    public virtual NguoiDung IdcanBoNavigation { get; set; } = null!;
+
+    public virtual ICollection<DanhMuc> IddanhMucs { get; set; } = new List<DanhMuc>();
 }

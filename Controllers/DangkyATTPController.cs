@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebAnToanVeSinhThucPhamDemo.Models;
 
 namespace WebAnToanVeSinhThucPhamDemo.Controllers
 {
@@ -15,37 +16,48 @@ namespace WebAnToanVeSinhThucPhamDemo.Controllers
 
         public IActionResult Index()
         {
+            AtvstpContext dbContext = new AtvstpContext();
+            IList<QuanHuyen> listQuanHuyen = dbContext.QuanHuyens.ToList();
+            IList<PhuongXa> listPhuongXa = dbContext.PhuongXas.ToList();
+            ViewData["listQuanHuyen"] = listQuanHuyen;
+            ViewData["listPhuongXa"] = listPhuongXa;
             return View();
         }
 
         [HttpPost] //Chạy cái action Insert của form ở view Index
-        public ActionResult Insert(string tencoso, string diachi, int? loaihinhkinhdoanh, string sogiayphep, DateOnly ngaycap, string loaithucpham, List<IFormFile> hinhanh)
+        public ActionResult Insert(string tencoso,int phuongxa, string diachi, int? loaihinhkinhdoanh, string sogiayphep, DateOnly ngaycap, string loaithucpham, List<IFormFile> hinhanh)
         {
-            String imageNames = "";
-            String loaihinhkd;
-            foreach(IFormFile file in hinhanh)
+            try
             {
-                imageNames = file.FileName+ ",";
-            }
-            if (loaihinhkinhdoanh == 1)
-                loaihinhkd = "Cơ sở sản xuất, kinh doanh thực phẩm";
-            else
-                loaihinhkd = "Cơ sở kinh doanh dịch vụ ăn uống";
-            // chay lenh insert
-            int maHoSo = _dataContext.insertGiayChungNhan_CoSo(tencoso, diachi, loaihinhkd, sogiayphep, ngaycap, loaithucpham, imageNames);
+				String imageNames = "";
+				String loaihinhkd;
+				foreach (IFormFile file in hinhanh)
+				{
+					imageNames = file.FileName + ",";
+				}
+				if (loaihinhkinhdoanh == 1)
+					loaihinhkd = "Cơ sở sản xuất, kinh doanh thực phẩm";
+				else
+					loaihinhkd = "Cơ sở kinh doanh dịch vụ ăn uống";
+				// chay lenh insert
+				int maHoSo = _dataContext.insertGiayChungNhan_CoSo(tencoso, phuongxa, diachi, loaihinhkd, sogiayphep, ngaycap, loaithucpham, imageNames);
 
-            //luu file
-            string uploadFolder = Path.Combine(_webHost.WebRootPath, "HoSoDangKyATTP", maHoSo.ToString());
-            if (!Directory.Exists(uploadFolder))
-            {
-                Directory.CreateDirectory(uploadFolder);
-            }
-            foreach(IFormFile file in hinhanh)
-            {
-                SaveImage(file, uploadFolder);
-            }
-            return View("Index");
-        }
+				//luu file
+				string uploadFolder = Path.Combine(_webHost.WebRootPath, "HoSoDangKyATTP", maHoSo.ToString());
+				if (!Directory.Exists(uploadFolder))
+				{
+					Directory.CreateDirectory(uploadFolder);
+				}
+				foreach (IFormFile file in hinhanh)
+				{
+					SaveImage(file, uploadFolder);
+				}
+                return Content("Đăng ký thành công");
+			}
+			catch (Exception ex) {
+				return Content("Đăng ký thất bại");
+			}
+		}
 
         //Function lưu hình ảnh
         public async void SaveImage(IFormFile file, string path)
