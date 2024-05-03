@@ -11,5 +11,7 @@ public partial class PhuongXa
 
     public int? IdquanHuyen { get; set; }
 
+    public virtual ICollection<CoSo> CoSos { get; set; } = new List<CoSo>();
+
     public virtual QuanHuyen? IdquanHuyenNavigation { get; set; }
 }

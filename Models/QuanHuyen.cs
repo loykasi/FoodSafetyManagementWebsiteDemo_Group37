@@ -9,7 +9,5 @@ public partial class QuanHuyen
 
     public string? TenQuanHuyen { get; set; }
 
-    public virtual ICollection<CoSo> CoSos { get; set; } = new List<CoSo>();
-
     public virtual ICollection<PhuongXa> PhuongXas { get; set; } = new List<PhuongXa>();
 }

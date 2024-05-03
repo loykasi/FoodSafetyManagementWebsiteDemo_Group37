@@ -13,7 +13,7 @@ public partial class CoSo
 
     public string? DiaChi { get; set; }
 
-    public int? IdquanHuyen { get; set; }
+    public int? IdphuongXa { get; set; }
 
     public string? LoaiHinhKinhDoanh { get; set; }
 
@@ -33,7 +33,7 @@ public partial class CoSo
 
     public virtual NguoiDung? IdchuCoSoNavigation { get; set; }
 
-    public virtual QuanHuyen? IdquanHuyenNavigation { get; set; }
+    public virtual PhuongXa? IdphuongXaNavigation { get; set; }
 
     public virtual ICollection<KeHoachCoSo> KeHoachCoSos { get; set; } = new List<KeHoachCoSo>();
 
