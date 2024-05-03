@@ -37,27 +37,9 @@ namespace WebAnToanVeSinhThucPhamDemo.Controllers
             Log("" + _currentPage);
             return Json(GetViewModel(value));
         }
-        //public ActionResult Search(int page = 1, string value = "")
-        //{
-        //    //switch (pageAction)
-        //    //{
-        //    //    case "Next":
-        //    //        _currentPage++;
-        //    //        Log("Next");
-        //    //        break;
-        //    //    case "Back":
-        //    //        _currentPage--;
-        //    //        Log("Back");
-        //    //        break;
-        //    //}
-        //    //_currentPage = Math.Clamp(_currentPage, 1, _totalPage + 1);
-        //    _currentPage = page;
-        //    Log("" + _currentPage);
-        //    return View("Index", GetViewModel(value));
-        //}
 
         [HttpPost]
-        public ActionResult Index([Bind("HoTen,SDT,CCCD,IDCoSo")] ViolationReportViewModel baoCaoViPham, List<IFormFile> uploadFiles)
+        public ActionResult Index([Bind("HoTen,SDT,CCCD,NoiDung,IDCoSo")] ViolationReportViewModel baoCaoViPham, List<IFormFile> uploadFiles)
         {
             if (uploadFiles.Count == 0)
             {
@@ -89,6 +71,7 @@ namespace WebAnToanVeSinhThucPhamDemo.Controllers
             var hoTenParam = new SqlParameter("@HoTen", baoCaoViPham.HoTen);
             var sdtParam = new SqlParameter("@SDT", baoCaoViPham.SDT);
             var cccdParam = new SqlParameter("@CCCD", baoCaoViPham.CCCD);
+            var noiDungParam = new SqlParameter("@NoiDung", baoCaoViPham.NoiDung);
             var ngayBaoCaoParam = new SqlParameter("@NgayBaoCao", DateTime.Now);
             var hinhAnhMinhChungParam = new SqlParameter("@HinhAnhMinhChung", baoCaoViPham.HinhAnhMinhChung);
             var idCoSoParam = new SqlParameter("@IDCoSo", baoCaoViPham.IDCoSo);
@@ -98,8 +81,8 @@ namespace WebAnToanVeSinhThucPhamDemo.Controllers
                 SqlDbType = SqlDbType.Int,
                 Direction = ParameterDirection.Output
             };
-            _context.Database.ExecuteSqlRaw("Execute pr_TaoBaoCaoViPham @HoTen, @SDT, @CCCD, @NgayBaoCao, @HinhAnhMinhChung, @IDCoSo, @NewId out",
-                                    hoTenParam, sdtParam, cccdParam, ngayBaoCaoParam, hinhAnhMinhChungParam, idCoSoParam, newIdParam);
+            _context.Database.ExecuteSqlRaw("Execute pr_TaoBaoCaoViPham @HoTen, @SDT, @CCCD, @NoiDung, @NgayBaoCao, @HinhAnhMinhChung, @IDCoSo, @NewId out",
+                                    hoTenParam, sdtParam, cccdParam, noiDungParam, ngayBaoCaoParam, hinhAnhMinhChungParam, idCoSoParam, newIdParam);
 
             int id = (int)newIdParam.Value;
             string uploadFolder = Path.Combine(_webHost.WebRootPath, "BaoCaoViPham", id.ToString());
@@ -120,7 +103,7 @@ namespace WebAnToanVeSinhThucPhamDemo.Controllers
         {
             if (isSearching)
             {
-                _viewModel.CoSoes = _context.CoSos.ToList();
+                _viewModel.CoSoes = _context.CoSos.Include(c => c.ChuCoSo).Include(c => c.PhuongXa).ThenInclude(p => p.QuanHuyen).ToList();
 
                 if (!searchValue.ToLower().Equals(""))
                 {
@@ -129,8 +112,7 @@ namespace WebAnToanVeSinhThucPhamDemo.Controllers
 
                 _totalPage = _viewModel.CoSoes.Count;
             }
-
-            _viewModel.CoSoes = _viewModel.CoSoes.OrderBy(c => c.IdchuCoSo).Skip((_currentPage - 1) * _maxRowPerPage).Take(_maxRowPerPage).ToList();
+            _viewModel.CoSoes = _viewModel.CoSoes.OrderBy(c => c.IdcoSo).Skip((_currentPage - 1) * _maxRowPerPage).Take(_maxRowPerPage).ToList();
             _viewModel.CurrentPage = _currentPage;
             _viewModel.TotalPage = ((_totalPage - 1) / _maxRowPerPage) + 1;
             return _viewModel;

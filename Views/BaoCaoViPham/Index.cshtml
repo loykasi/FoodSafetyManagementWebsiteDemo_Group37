@@ -3,13 +3,7 @@
 @{
     ViewData["Title"] = "Index";
 }
-<style>
-    .row {
-        margin-left: 100px;
-    }
-</style>
 
-<h4>Báo cáo cơ sở vi phạm</h4>
 <hr />
 
 @if (TempData["AlertMessage"] != null)
@@ -18,74 +12,90 @@
         @TempData["AlertMessage"]
     </div>
 }
-
+<div class="content container-fluid">
 <div class="row">
-    <form asp-action="Index" method="post" enctype="multipart/form-data">
-        <div class="form-group">
-            <label asp-for="HoTen" class="control-label">Họ tên người báo cáo</label>
-            <input asp-for="HoTen" class="form-control" />
-            <span asp-validation-for="HoTen" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="SDT" class="control-label">Số điện thoại</label>
-            <input asp-for="SDT" class="form-control" />
-            <span asp-validation-for="SDT" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="CCCD" class="control-label">Căn cước công dân</label>
-            <input asp-for="CCCD" class="form-control" />
-            <span asp-validation-for="CCCD" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label for="uploadFiles" class="control-label">Hình ảnh minh chứng</label>
-            <input name="uploadFiles" class="form-control" type="file" multiple />
-            @{
-                var yourFieldError = ViewData.ModelState["uploadFiles"]?.Errors.FirstOrDefault()?.ErrorMessage;
-            }
-
-            @if (!string.IsNullOrEmpty(yourFieldError))
-            {
-                <span class="text-danger">@yourFieldError</span>
-            }
-        </div>
-
-        <div class="form-group">
-            <label asp-for="IDCoSo" class="control-label">Cơ sở</label>
-
-            <div class="form-group row">
-                <div class="col-md-3">
-                    <input name="search" id="searchInput" type="text" class="form-control" placeholder="">
-                </div>
-                <div class="col-md-3">
-                    <input name="pageAction" id="searchButton" type="submit" class="form-control" value="search">
-                </div>
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Báo cáo vi phạm</h5>
             </div>
+            <div class="card-body">
+                <form asp-action="Index" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label asp-for="HoTen" class="control-label">Họ tên người báo cáo</label>
+                        <input asp-for="HoTen" class="form-control" />
+                        <span asp-validation-for="HoTen" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="SDT" class="control-label">Số điện thoại</label>
+                        <input asp-for="SDT" class="form-control" />
+                        <span asp-validation-for="SDT" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="CCCD" class="control-label">Căn cước công dân</label>
+                        <input asp-for="CCCD" class="form-control" />
+                        <span asp-validation-for="CCCD" class="text-danger"></span>
+                    </div>
+                        <div class="form-group">
+                            <label asp-for="NoiDung" class="control-label">Nội dung báo cáo</label>
+                            <input asp-for="NoiDung" class="form-control" />
+                        </div>
+                    <div class="form-group">
+                        <label for="uploadFiles" class="control-label">Hình ảnh minh chứng</label>
+                        <input name="uploadFiles" id="uploadFiles" class="form-control" type="file" multiple />
+                        @{
+                            var yourFieldError = ViewData.ModelState["uploadFiles"]?.Errors.FirstOrDefault()?.ErrorMessage;
+                        }
 
-            <span asp-validation-for="IDCoSo" class="text-danger"></span>
-            <div class="form-check" id="coSoGroup">
-                @foreach (var item in Model.CoSoes)
-                {
-                    <input type="radio" asp-for="IDCoSo" name="IDCoSo" value="@item.IdcoSo" id="CoSo@(item.IdcoSo)" class="form-check-input" />
-                    <label class="form-check-label" for="CoSo@(item.IdcoSo)">@(item.TenCoSo + " - " + item.DiaChi)</label>
-                }
+                        @if (!string.IsNullOrEmpty(yourFieldError))
+                        {
+                            <span class="text-danger">@yourFieldError</span>
+                        }
+
+                        <div id="imagePreview" class="row"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="IDCoSo" class="control-label">Cơ sở</label>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <input name="search" id="searchInput" type="text" class="form-control" placeholder="">
+                            </div>
+                            <div class="col-md-3">
+                                <input name="pageAction" id="searchButton" type="submit" class="form-control" value="search">
+                            </div>
+                        </div>
+
+                        <span asp-validation-for="IDCoSo" class="text-danger"></span>
+                        <div class="form-check" id="coSoGroup">
+                            @foreach (var item in Model.CoSoes)
+                            {
+                                <input type="radio" asp-for="IDCoSo" name="IDCoSo" value="@item.IdcoSo" id="CoSo@(item.IdcoSo)" class="form-check-input" />
+                                    <label class="form-check-label" for="CoSo@(item.IdcoSo)">@(item.TenCoSo + " - " + item.DiaChi + ", " + item.PhuongXa.TenPhuongXa + ", " + item.PhuongXa.QuanHuyen.TenQuanHuyen + " - " + item.ChuCoSo.HoTen)</label>
+                            }
+                        </div>
+
+                        @if (Model.TotalPage != 1)
+                        {
+                            <div class="form-group row">
+                                <label class="col-md-1 text-center">
+                                    <span id="currentPage">@Model.CurrentPage</span>/<span id="totalPage">@Model.TotalPage</span>
+                                </label>
+                                <input name="pageAction" id="backButton" type="button" value="Back" class="col-md-1" />
+                                <input name="pageAction" id="nextButton" type="button" value="Next" class="col-md-1" />
+                            </div>
+                        }
+                    </div>
+
+                    <div class="form-group">
+                        <input id="submitButton" type="submit" value="Gửi báo cáo" class="btn btn-primary" />
+                    </div>
+                </form>
             </div>
-
-            @if (Model.TotalPage != 1)
-            {
-                <div class="form-group row">
-                    <label class="col-md-1 text-center">
-                        <span id="currentPage">@Model.CurrentPage</span>/<span id="totalPage">@Model.TotalPage</span>
-                    </label>
-                    <input name="pageAction" id="backButton" type="button" value="Back" class="col-md-1" />
-                    <input name="pageAction" id="nextButton" type="button" value="Next" class="col-md-1" />
-                </div>
-            }
         </div>
-
-        <div class="form-group">
-            <input id="submitButton" type="submit" value="Gửi báo cáo" class="btn btn-primary" />
-        </div>
-    </form>
+    </div>
+</div>
 </div>
 
 @section Scripts {
@@ -148,5 +158,20 @@
                 },
             });
         }
+
+        $(document).ready(function () {
+            $('#uploadFiles').change(function () {
+                $('#imagePreview').empty();
+                var files = this.files;
+                for (var i = 0; i < files.length; i++) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#imagePreview').append('<img src="' + e.target.result + '" width="300" class="col-lg-4 p-2" />');
+                    }
+                    reader.readAsDataURL(files[i]);
+                }
+            });
+        });
+
     </script>
 }

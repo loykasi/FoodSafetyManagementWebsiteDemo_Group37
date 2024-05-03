@@ -166,7 +166,7 @@ public partial class QlattpContext : IdentityDbContext<AppUser>
             entity.HasKey(e => e.IdcoSo).HasName("PK__CoSo__344441C5716816E6");
             entity.ToTable("CoSo");
             entity.Property(e => e.IdcoSo).HasColumnName("IDCoSo");
-            entity.Property(e => e.IdchuCoSo).HasColumnName("IDChuCoSo");
+            //entity.Property(e => e.IdchuCoSo).HasColumnName("IDChuCoSo");
             entity.Property(e => e.NgayCapCnattp).HasColumnName("NgayCapCNATTP");
             entity.Property(e => e.NgayCapGiayPhepKd).HasColumnName("NgayCapGiayPhepKD");
             entity.Property(e => e.NgayHetHanCnattp).HasColumnName("NgayHetHanCNATTP");

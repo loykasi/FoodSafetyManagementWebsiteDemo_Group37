@@ -7,7 +7,7 @@ public partial class CoSo
 {
     public int IdcoSo { get; set; }
 
-    public int? IdchuCoSo { get; set; }
+    //public int? IdchuCoSo { get; set; }
 
     public string? TenCoSo { get; set; }
 

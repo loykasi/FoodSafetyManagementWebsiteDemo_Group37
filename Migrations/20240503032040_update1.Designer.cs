@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebAnToanVeSinhThucPhamDemo.Models;
 
@@ -11,9 +12,11 @@ using WebAnToanVeSinhThucPhamDemo.Models;
 namespace WebAnToanVeSinhThucPhamDemo.Migrations
 {
     [DbContext(typeof(QlattpContext))]
-    partial class QlattpContextModelSnapshot : ModelSnapshot
+    [Migration("20240503032040_update1")]
+    partial class update1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
