@@ -11,17 +11,7 @@ create table QuanHuyen(
 	IDQuanHuyen int primary key NOT NULL,
 	TenQuanHuyen nvarchar(255)
 )
-go
 
-insert into QuanHuyen(IDQuanHuyen,TenQuanHuyen)
-values(1,N'Quận Cẩm Lệ'),
-(2,N'Quận Hải Châu'),
-(3,N'Quận Liên Chiểu'),
-(4,N'Quận Ngũ Hành Sơn'),
-(5,N'Quận Sơn Trà'),
-(6,N'Quận Thanh Khê'),
-(7,N'Huyện Hòa Vang'),
-(8,N'Huyện Hoàng Sa')
 
 create table PhuongXa( 
 	IDPhuongXa int primary key NOT NULL,
@@ -31,27 +21,6 @@ create table PhuongXa(
 )
 go
 
-insert into PhuongXa(IDPhuongXa,TenPhuongXa,IDQuanHuyen)
-values(1,N'Phường Khuê Trung',1),
-(2,N'Phường Hòa Phát',1),
-(3,N'Phường Hòa An',1),
-(4,N'Phường Hòa Thọ Tây',1),
-(5,N'Phường Hòa Thọ Đông',1),
-(6,N'Phường Hòa Xuân',1),
-(7,N'Phường Thanh Bình',2),
-(8,N'Phường Thuận Phước',2),
-(9,N'Phường Thạch Thang',2),
-(10,N'Phường Hải Châu I',2),
-(11,N'Phường Hải Châu II',2),
-(12,N'Phường Phước Ninh',2),
-(13,N'Phường Hòa Thuận Tây',2),
-(14,N'Phường Hòa Thuận Đông',2),
-(15,N'Phường Nam Dương',2),
-(16,N'Phường Bình Hiên',2),
-(17,N'Phường Bình Thuận',2),
-(18,N'Phường Hòa Cường Bắc',2),
-(19,N'Phường Hòa Cường Nam',2)
-go
 CREATE TABLE VaiTro (
     Id varchar(450) NOT NULL PRIMARY KEY,
     TenVaiTro nvarchar(256) NULL,
@@ -78,6 +47,8 @@ CREATE TABLE NguoiDung (
     DaKhoaTaiKhoan bit NOT NULL,
     SoLanDangNhapThatBai int NOT NULL
 );
+
+go
 CREATE TABLE NguoiDungVaiTro (
     NguoiDungId varchar(450) NOT NULL,
     VaiTroId varchar(450) NOT NULL,
@@ -246,14 +217,86 @@ create table ChiTietKetQua
 	foreign key (IDMucKT) references MucKiemTra(IDMucKT)
 )
 
-
+go
+insert into QuanHuyen(IDQuanHuyen,TenQuanHuyen)
+values(1,N'Quận Cẩm Lệ'),
+(2,N'Quận Hải Châu'),
+(3,N'Quận Liên Chiểu'),
+(4,N'Quận Ngũ Hành Sơn'),
+(5,N'Quận Sơn Trà'),
+(6,N'Quận Thanh Khê'),
+(7,N'Huyện Hòa Vang'),
+(8,N'Huyện Hoàng Sa')
 
 go
+insert into PhuongXa(IDPhuongXa,TenPhuongXa,IDQuanHuyen)
+values(1,N'Phường Khuê Trung',1),
+(2,N'Phường Hòa Phát',1),
+(3,N'Phường Hòa An',1),
+(4,N'Phường Hòa Thọ Tây',1),
+(5,N'Phường Hòa Thọ Đông',1),
+(6,N'Phường Hòa Xuân',1),
+(7,N'Phường Thanh Bình',2),
+(8,N'Phường Thuận Phước',2),
+(9,N'Phường Thạch Thang',2),
+(10,N'Phường Hải Châu I',2),
+(11,N'Phường Hải Châu II',2),
+(12,N'Phường Phước Ninh',2),
+(13,N'Phường Hòa Thuận Tây',2),
+(14,N'Phường Hòa Thuận Đông',2),
+(15,N'Phường Nam Dương',2),
+(16,N'Phường Bình Hiên',2),
+(17,N'Phường Bình Thuận',2),
+(18,N'Phường Hòa Cường Bắc',2),
+(19,N'Phường Hòa Cường Nam',2),
+(20,N'Phường Hòa Hiệp Bắc',3),
+(21,N'Phường Hòa Hiệp Nam',3),
+(22,N'Phường Hòa Khánh Bắc',3),
+(23,N'Phường Hòa Khánh Nam',3),
+(24,N'Phường Hòa Hòa Minh',3),
+(25,N'Phường Hòa Hải',4),
+(26,N'Phường Hòa Quý',4),
+(27,N'Phường Khuê Mỹ',4),
+(28,N'Phường Mỹ An',4),
+(29,N'Phường An Hải Bắc',5),
+(30,N'Phường An Hải Đông',5),
+(31,N'Phường An Hải Tây',5),
+(32,N'Phường Mân Thái',5),
+(33,N'Phường Nại Hiên Đông',5),
+(34,N'Phường Phước Mỹ',5),
+(35,N'Phường Thọ Quang',5),
+(36,N'Phường An Khê',6),
+(37,N'Phường Chính Gián',6),
+(38,N'Phường Hòa Khê',6),
+(39,N'Phường Tam Thuận',6),
+(40,N'Phường Tân Chính',6),
+(41,N'Phường Thạc Gián',6),
+(42,N'Phường Thạch Khê Đông',6),
+(43,N'Phường Thạch Khê Tây',6),
+(44,N'Phường Vĩnh Trung',6),
+(45,N'Phường Xuân Hà',6),
+(46,N'Xã Hòa Bắc',7),
+(47,N'Xã Hòa Châu',7),
+(48,N'Xã Hòa Khương',7),
+(49,N'Xã Hòa Liên',7),
+(50,N'Xã Hòa Nhơn',7),
+(51,N'Xã Hòa Ninh',7),
+(52,N'Xã Hòa Phong',7),
+(53,N'Xã Hòa Phú',7),
+(54,N'Xã Hòa Phước',7),
+(55,N'Xã Hòa Sơn',7),
+(56,N'Xã Hòa Tiến',7)
 
+go
+insert into NguoiDung(Id,TenDangNhap,MatKhauHash,SoLanDangNhapThatBai,EmailDaXacNhan,SoDienThoaiDaXacNhan,XacThucHaiYeuTo,DaKhoaTaiKhoan)
+values(NEWID(),'user','user',0,0,0,0,0),
+(NEWID(),'user2','user2',0,0,0,0,0)
+
+go
 --tao procedure
 -- insert hồ sơ với cơ sở mới 
 create procedure insertGiayChungNhan_CoSo
-	@IDChuCoSo int,
+	@IDChuCoSo varchar(450),
 	@TenCoSo nvarchar(max),
 	@IDPhuongXa int,
 	@DiaChi nvarchar(max),
@@ -273,9 +316,6 @@ begin
 end
 
 go
-exec insertGiayChungNhan_CoSo null,N'Co So A',1,N'48 Cao Thang',N'Nha Hang','KD123/456','3-20-2022',N'Com tam','hinhanh1.jpg'
-
-go
 -- insert hồ sơ với cơ sở đã có sẵn
 create procedure insertGiayChungNhan
 	@IDCoSo int,
@@ -287,6 +327,7 @@ begin
 	declare @TrangThai int = 0 --Trang thai -1: huybo	0:cho xet duyet	1:da duoc duyet
 	insert into HoSoCapGiayChungNhan(IDCoSo,NgayDangKy,LoaiThucPham,HinhAnhMinhChung,TrangThai)
 	values (@IDCoSo,@NgayDangKy,@LoaiThucPham,@HinhAnhMinhChung,@TrangThai)
+	select SCOPE_IDENTITY()
 end
 go
 --exec insertGiayChungNhan 1,N'Banh canh','hinhanh1.jpg'
@@ -314,6 +355,13 @@ begin
 	where IDCoSo = @IDCoSo
 end
 go
+--64676508-1EB8-4748-BE53-8A5A623B4639
+--DB179DE4-DBE4-4129-9165-2BAF71056DF2
+select * from NguoiDung
+--execute insertGiayChungNhan_CoSo 'DB179DE4-DBE4-4129-9165-2BAF71056DF2','tencoso5',1,'diachi','loaihinhkinhdoanh','makinhdoanh','2023-5-5','mathang','hinhanh'
+select * from CoSo
+
+
 
 
 
