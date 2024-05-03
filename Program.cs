@@ -5,10 +5,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<QlattpContext>(options => {
+builder.Services.AddDbContext<AtvstpContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("conString"));
 });
-
+//builder.Services.AddMvc().AddSessionStateTempDataProvider();
+builder.Services.AddSession();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -25,6 +26,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",
