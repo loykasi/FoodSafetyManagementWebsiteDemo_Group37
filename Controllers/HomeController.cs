@@ -13,8 +13,9 @@ namespace WebAnToanVeSinhThucPhamDemo.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public ActionResult Index()
         {
+            ViewBag.TenNguoiDung = HttpContext.Session.GetString("tenNguoiDung");
             return View();
         }
 
@@ -27,6 +28,29 @@ namespace WebAnToanVeSinhThucPhamDemo.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [HttpGet]
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult DangNhap(NguoiDung nguoiDung)
+        {
+            using (AtvstpContext db = new AtvstpContext())
+            {
+                var obj = db.NguoiDungs.Where(a => a.TenDangNhap.Equals(nguoiDung.TenDangNhap) && a.MatKhauHash.Equals(nguoiDung.MatKhauHash)).FirstOrDefault();
+                if(obj != null)
+                {
+                    ISession session = HttpContext.Session;
+                    session.SetString("idNguoiDung", obj.Id.ToString());
+                    session.SetString("tenNguoiDung", obj.TenDangNhap);
+                    return Redirect("Index");
+                }
+            }
+            return Content("that bai");
         }
     }
 }
