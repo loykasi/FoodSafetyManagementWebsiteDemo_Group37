@@ -1,0 +1,37 @@
+﻿@model NguoiDung 
+
+
+@using(Html.BeginForm("Login","Home",FormMethod.Post))
+{
+    <fieldset>
+        <legend>Mvc Simple Login Application Demo</legend>
+
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        @if (ViewBag.Message != null)
+        {
+            <p style="border: 1px solid red">
+                @ViewBag.Message
+            </p>
+        }
+
+        <table>
+            <tr>
+                <td>@Html.LabelFor(a => a.TenDangNhap)</td>
+                <td>@Html.TextBoxFor(a => a.TenDangNhap)</td>
+                <td>@Html.ValidationMessageFor(a => a.TenDangNhap)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(a => a.MatKhauHash)</td>
+                <td>@Html.PasswordFor(a => a.MatKhauHash)</td>
+                <td>@Html.ValidationMessageFor(a => a.MatKhauHash)</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value="Login" /></td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
