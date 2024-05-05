@@ -1,0 +1,16 @@
+﻿@model WebAnToanVeSinhThucPhamDemo.Models.CoSo
+
+@{
+    ViewData["Title"] = "Xóa Cơ Sở";
+}
+
+<h1>@ViewData["Title"]</h1>
+<p>Có chắc chắn xóa cơ sở?</p>
+<h4>@Model.TenCoSo</h4>
+<div>
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="IdcoSo" />
+        <input type="submit" value="Xóa" class="btn btn-danger" /> |
+        <a asp-action="Index">Danh sách cơ sở</a>
+    </form>
+</div>

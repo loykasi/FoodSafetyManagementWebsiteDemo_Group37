@@ -1,0 +1,67 @@
+﻿@model WebAnToanVeSinhThucPhamDemo.Models.CoSo
+
+@{
+    ViewData["Title"] = "Chi tiết cơ sở";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div>
+    <h4>Thông tin cơ sở:</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TenCoSo)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TenCoSo)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ChuCoSo.HoTen)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ChuCoSo.HoTen)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DiaChi)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DiaChi)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LoaiHinhKinhDoanh)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LoaiHinhKinhDoanh)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SoGiayPhepKd)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SoGiayPhepKd)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NgayCapCnattp)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NgayCapCnattp)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NgayCapGiayPhepKd)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NgayCapGiayPhepKd)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NgayHetHanCnattp)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NgayHetHanCnattp)
+        </dd>
+
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Quay lại danh sách</a>
+</div>

@@ -64,6 +64,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\Blog\Data\" />
+    <Folder Include="Areas\Blog\Models\" />
     <Folder Include="Areas\Contact\Data\" />
     <Folder Include="Areas\Contact\Models\" />
     <Folder Include="Areas\Database\Data\" />
@@ -71,10 +72,17 @@
     <Folder Include="Areas\Files\Data\" />
     <Folder Include="Areas\Files\Models\" />
     <Folder Include="Areas\Files\Views\FileManager\" />
+    <Folder Include="Areas\HoSo\Models\" />
     <Folder Include="wwwroot\css\" />
+    <Folder Include="wwwroot\CoSo\" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Areas\Blog\Views\CoSo\Create.cshtml" />
+    <None Include="Areas\Blog\Views\CoSo\Delete.cshtml" />
+    <None Include="Areas\Blog\Views\CoSo\Details.cshtml" />
+    <None Include="Areas\Blog\Views\CoSo\Index.cshtml" />
+    <None Include="Areas\HoSo\Views\HoSoATTP\Index.cshtml" />
     <None Include="Views\BaoCaoViPham\Index.cshtml" />
     <None Include="wwwroot\asset\assets\fonts\feathericon.svg" />
     <None Include="wwwroot\asset\assets\fonts\MaterialIcons-Regular.woff2" />

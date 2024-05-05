@@ -11,7 +11,7 @@ public partial class CoSo
 
     public string? TenCoSo { get; set; }
 
-    public string? DiaChi { get; set; }
+	public string? DiaChi { get; set; }
 
     [ForeignKey("IDPhuongXa")]
     public int? IDPhuongXa { get; set; }

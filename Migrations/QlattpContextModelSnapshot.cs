@@ -530,8 +530,10 @@ namespace WebAnToanVeSinhThucPhamDemo.Migrations
                     b.Property<string>("ChuCoSoId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("DiaChi")
+					b.Property<string>("HinhAnh")
+					   .IsUnicode(false)
+					   .HasColumnType("varchar(max)");
+					b.Property<string>("DiaChi")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("IDPhuongXa")

@@ -68,13 +68,17 @@
                         </div>
 
                         <span asp-validation-for="IDCoSo" class="text-danger"></span>
-                        <div class="form-check" id="coSoGroup">
-                            @foreach (var item in Model.CoSoes)
-                            {
-                                <input type="radio" asp-for="IDCoSo" name="IDCoSo" value="@item.IdcoSo" id="CoSo@(item.IdcoSo)" class="form-check-input" />
-                                    <label class="form-check-label" for="CoSo@(item.IdcoSo)">@(item.TenCoSo + " - " + item.DiaChi + ", " + item.PhuongXa.TenPhuongXa + ", " + item.PhuongXa.QuanHuyen.TenQuanHuyen + " - " + item.ChuCoSo.HoTen)</label>
-                            }
-                        </div>
+                            <div class="form-check" id="coSoGroup">
+                                @foreach (var item in Model.CoSoes)
+                                {
+                                    <input type="radio" asp-for="IDCoSo" name="IDCoSo" value="@item.IdcoSo" id="CoSo@(item.IdcoSo)" class="form-check-input" />
+                                    <label class="form-check-label" for="CoSo@(item.IdcoSo)">
+                                        
+                                        @(item.TenCoSo + " - " + item.DiaChi + ", " + (item.PhuongXa != null ? item.PhuongXa.TenPhuongXa : "") + ", " + (item.PhuongXa != null && item.PhuongXa.QuanHuyen != null ? item.PhuongXa.QuanHuyen.TenQuanHuyen : "") + " - " + item.ChuCoSo.HoTen)
+                                    </label>
+                                }
+                            </div>
+
 
                         @if (Model.TotalPage != 1)
                         {

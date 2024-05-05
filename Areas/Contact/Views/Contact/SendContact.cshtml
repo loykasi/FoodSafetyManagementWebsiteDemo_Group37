@@ -3,20 +3,15 @@
 @{
     ViewData["Title"] = "Gửi liên hệ đến VFA Đà Nẵng";
 }
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Create</title>
-</head>
-<body>
-  
+@{
+    ViewData["Title"] = "Liên Hệ";
+    Layout = "_Layout";
+}
+<div class="content container-fluid">
 <div class="row">
         <div class="contact-firstcol p-2 h-100">
         <div class="col-md-auto">
-                <img src="./assets/img/email.png" alt="Girl in a jacket" width="500" height="600">
+                <img src="./assets/img/email.png" alt="Girl in a jacket" width="100" height="100">
             <h1>@ViewData["Title"]</h1>
             <h4>Chúng tôi luôn lắng nghe ý kiến của các bạn!</h4>
         </div>
@@ -51,10 +46,9 @@
         </form>
     </div>
 </div>
-
+</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
-</body>
-</html>
+

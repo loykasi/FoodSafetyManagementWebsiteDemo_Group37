@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using WebAnToanVeSinhThucPhamDemo.Data;
 using WebAnToanVeSinhThucPhamDemo.Models;
 
 namespace WebAnToanVeSinhThucPhamDemo.Controllers
 {
+   
     public class DangkyATTPController : Controller
     {
         private readonly QlattpContext _context;
@@ -18,7 +22,7 @@ namespace WebAnToanVeSinhThucPhamDemo.Controllers
             _dataContext = new DataContext();
         }
 
-        public IActionResult Index()
+        public IActionResult DangKyGiayChungNhanMoi()
         {
             List<SelectListItem> li = new List<SelectListItem>();
             li.Add(new SelectListItem { Text = "Chọn quận huyện", Value = "0" });
@@ -27,11 +31,11 @@ namespace WebAnToanVeSinhThucPhamDemo.Controllers
                 li.Add(new SelectListItem { Text = i.TenQuanHuyen, Value = i.IDQuanHuyen.ToString() });
             }
             ViewData["quanhuyen"] = li;
-            return View();
+            return View("Index");
         }
 
         [HttpPost] //Chạy cái action Insert của form ở view Index
-        public ActionResult Insert(string tencoso, int phuongxa, string diachi, int? loaihinhkinhdoanh, string sogiayphep, DateOnly ngaycap, string loaithucpham, List<IFormFile> hinhanh)
+        public ActionResult DangKyGiayChungNhanMoi(string tencoso, int phuongxa, string diachi, int? loaihinhkinhdoanh, string sogiayphep, DateOnly ngaycap, string loaithucpham, List<IFormFile> hinhanh)
         {
             try
             {
@@ -39,7 +43,7 @@ namespace WebAnToanVeSinhThucPhamDemo.Controllers
                 String loaihinhkd;
                 foreach (IFormFile file in hinhanh)
                 {
-                    imageNames = file.FileName + ",";
+                    imageNames += file.FileName + ",";
                 }
                 if (loaihinhkinhdoanh == 1)
                     loaihinhkd = "Cơ sở sản xuất, kinh doanh thực phẩm";
@@ -88,6 +92,95 @@ namespace WebAnToanVeSinhThucPhamDemo.Controllers
                 phuongxas.Add(new SelectListItem { Text = i.TenPhuongXa, Value = i.IDPhuongXa.ToString() });
             }
             return Json(new SelectList(phuongxas, "Value", "Text"));
+        }
+
+        //Code đăng ký lại giấy chứng nhận
+        [HttpGet]
+        public IActionResult DangKyLaiGiayChungNhan()
+        {
+            //lấy danh sách cơ sở theo idChuCoSo
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var listCoSo = _context.CoSos.Where(a => a.ChuCoSoId == userId);
+            List<SelectListItem> li = new List<SelectListItem>();
+            foreach (var i in listCoSo)
+            {
+                li.Add(new SelectListItem { Text = i.TenCoSo, Value = i.IdcoSo.ToString() });
+            }
+            ViewData["listCoSo"] = li;
+            return View("Index1");
+        }
+
+        [HttpPost]
+        public IActionResult DangKyLaiGiayChungNhan(string coso, string loaithucpham, List<IFormFile> hinhanh)
+        {
+            try
+            {
+                
+                String imageNames = "";
+                foreach (IFormFile file in hinhanh)
+                {
+                    imageNames += file.FileName + ",";
+                }
+                //insert HoSoDangKyGiayChungNhan
+                int maHoSo = _dataContext.insertGiayChungNhan(Int32.Parse(coso), loaithucpham, imageNames);
+
+                //luu file
+                string uploadFolder = Path.Combine(_webHost.WebRootPath, "HoSoDangKyATTP", maHoSo.ToString());
+                if (!Directory.Exists(uploadFolder))
+                {
+                    Directory.CreateDirectory(uploadFolder);
+                }
+                foreach (IFormFile file in hinhanh)
+                {
+                    SaveImage(file, uploadFolder);
+                }
+                return Content("Đăng ký thành công");
+
+            }
+            catch (Exception ex)
+            {
+                return Content("Đăng ký that bai");
+            }
+        }
+
+        //Xem trang thai ho so
+        [HttpGet]
+        public IActionResult XemDanhSachHoSo()
+        {
+            var currentUserRole = User.FindFirstValue(ClaimTypes.Role);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            IQueryable<HoSoCapGiayChungNhan> hoSoQuery;
+
+            if (currentUserRole == "Admin")
+            {
+                hoSoQuery = _context.HoSoCapGiayChungNhans
+                    .Include(h => h.IdcoSoNavigation)
+                        .ThenInclude(c => c.ChuCoSo);
+            }
+            else
+            {
+                hoSoQuery = _context.HoSoCapGiayChungNhans
+                    .Include(h => h.IdcoSoNavigation)
+                        .ThenInclude(c => c.ChuCoSo)
+                    .Where(hoSo => hoSo.IdcoSoNavigation.ChuCoSoId == userId);
+            }
+
+            var listHoSo = from hoSo in hoSoQuery
+                           orderby hoSo.NgayDangKy descending
+                           select new
+                           {
+                               tencoso = hoSo.IdcoSoNavigation.TenCoSo,
+                               loaithucpham = hoSo.LoaiThucPham,
+                               hinhanh = hoSo.HinhAnhMinhChung,
+                               ngaydangky = hoSo.NgayDangKy,
+                               trangthai = hoSo.TrangThai,
+                               maHoSo = hoSo.IdgiayChungNhan,
+                               tenChuCoSo = hoSo.IdcoSoNavigation.ChuCoSo.HoTen
+                           };
+
+            ViewBag.ListHoSo = listHoSo.ToList();
+            return View("Index2");
         }
 
     }

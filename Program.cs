@@ -42,6 +42,14 @@ builder.Services.AddAuthorization(options =>
         builder.RequireRole(RoleName.Administrator);
     });
 });
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("MemberManagerMenu", builder =>
+    {
+        builder.RequireAuthenticatedUser();
+        builder.RequireRole(RoleName.Member);
+    });
+});
 
 builder.Services.AddIdentity<AppUser, IdentityRole>()
     .AddEntityFrameworkStores<QlattpContext>()
