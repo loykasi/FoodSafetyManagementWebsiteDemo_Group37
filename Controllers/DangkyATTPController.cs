@@ -35,6 +35,7 @@ namespace WebAnToanVeSinhThucPhamDemo.Controllers
         }
 
         [HttpPost] //Chạy cái action Insert của form ở view Index
+        [ActionName("Insert")]
         public ActionResult DangKyGiayChungNhanMoi(string tencoso, int phuongxa, string diachi, int? loaihinhkinhdoanh, string sogiayphep, DateOnly ngaycap, string loaithucpham, List<IFormFile> hinhanh)
         {
             try

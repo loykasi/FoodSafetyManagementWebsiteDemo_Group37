@@ -68,16 +68,15 @@
                         </div>
 
                         <span asp-validation-for="IDCoSo" class="text-danger"></span>
-                            <div class="form-check" id="coSoGroup">
-                                @foreach (var item in Model.CoSoes)
-                                {
-                                    <input type="radio" asp-for="IDCoSo" name="IDCoSo" value="@item.IdcoSo" id="CoSo@(item.IdcoSo)" class="form-check-input" />
-                                    <label class="form-check-label" for="CoSo@(item.IdcoSo)">
-                                        
-                                        @(item.TenCoSo + " - " + item.DiaChi + ", " + (item.PhuongXa != null ? item.PhuongXa.TenPhuongXa : "") + ", " + (item.PhuongXa != null && item.PhuongXa.QuanHuyen != null ? item.PhuongXa.QuanHuyen.TenQuanHuyen : "") + " - " + item.ChuCoSo.HoTen)
-                                    </label>
-                                }
-                            </div>
+                        <div class="form-check" id="coSoGroup">
+                            @foreach (var item in Model.CoSoes)
+                            {
+                                <div>
+                                <input type="radio" asp-for="IDCoSo" name="IDCoSo" value="@item.IdcoSo" id="CoSo@(item.IdcoSo)" class="form-check-input" />
+                                <label class="form-check-label" for="CoSo@(item.IdcoSo)">@(item.TenCoSo + " - " + item.DiaChi + ", " + item.PhuongXa.TenPhuongXa + ", " + item.PhuongXa.QuanHuyen.TenQuanHuyen + " - " + item.ChuCoSo.HoTen)</label>
+                                </div>
+                            }
+                        </div>
 
 
                         @if (Model.TotalPage != 1)
@@ -149,8 +148,8 @@
                     let html = '';
                     for (let i = 0; i < response.coSoes.length; i++) {
                         let item = response.coSoes[i];
-                        html += '<input type="radio" asp-for="IDCoSo" name="IDCoSo" value="' + item.idcoSo + '" id="CoSo' + item.idcoSo + '" class="form-check-input" />'
-                            + '<label class="form-check-label" for="CoSo' + item.idcoSo + '">' + item.tenCoSo + ' - ' + item.diaChi + '</label>';
+                        html += '<div><input type="radio" asp-for="IDCoSo" name="IDCoSo" value="' + item.idcoSo + '" class="form-check-input" />'
+                            + '<label class="form-check-label" for="CoSo' + item.idcoSo + '">' + item.tenCoSo + ' - ' + item.diaChi + ', ' + item.phuongXa.tenPhuongXa + ', ' + item.phuongXa.quanHuyen.tenQuanHuyen + '</label></div>';
                     }
 
                     group.innerHTML = html;
