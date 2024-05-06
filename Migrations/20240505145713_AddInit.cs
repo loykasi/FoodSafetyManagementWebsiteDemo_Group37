@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -19,7 +18,7 @@ namespace WebAnToanVeSinhThucPhamDemo.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TenDanhMuc = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     NoiDung = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Slug = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Slug = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     ParentCategoryId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -206,7 +205,7 @@ namespace WebAnToanVeSinhThucPhamDemo.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TieuDe = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false),
                     MoTa = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Slug = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false),
+                    Slug = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: true),
                     NoiDung = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Published = table.Column<bool>(type: "bit", nullable: false),
                     IDCanBo = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -617,7 +616,8 @@ namespace WebAnToanVeSinhThucPhamDemo.Migrations
                 name: "IX_TinTuc_Slug",
                 table: "TinTuc",
                 column: "Slug",
-                unique: true);
+                unique: true,
+                filter: "[Slug] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserClaims_UserId",

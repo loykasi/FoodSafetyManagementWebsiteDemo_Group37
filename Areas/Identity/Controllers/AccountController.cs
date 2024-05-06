@@ -604,7 +604,7 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.Identity.Controllers
         public async Task<IActionResult> VerifyAuthenticatorCode(VerifyAuthenticatorCodeViewModel model)
         {
             model.ReturnUrl ??= Url.Content("~/");
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 return View(model);
             }
@@ -651,7 +651,7 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.Identity.Controllers
         public async Task<IActionResult> UseRecoveryCode(UseRecoveryCodeViewModel model)
         {
             model.ReturnUrl ??= Url.Content("~/");
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 return View(model);
             }

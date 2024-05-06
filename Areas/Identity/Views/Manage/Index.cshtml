@@ -11,47 +11,60 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-4">Thông tin cơ bản:</dt>
-        <dd class="col-sm-6"> 
+        <dd class="col-sm-6">
             <dl class="row">
-                 <dt class = "col-sm-6">
+                <dt class="col-sm-6">
                     @Html.DisplayNameFor(m => Model.profile.UserName)
-                 </dt>   
-                 <dd class = "col-sm-6">
+                </dt>
+                <dd class="col-sm-6">
                     @Html.DisplayFor(m => Model.profile.UserName)
-                 </dd>
+                </dd>
             </dl>
-             <dl class="row">
-                 <dt class = "col-sm-6">
+
+            <dl class="row">
+                <dt class="col-sm-6">
                     @Html.DisplayNameFor(m => Model.profile.UserEmail)
-                 </dt>   
-                 <dd class = "col-sm-6">
+                </dt>
+                <dd class="col-sm-6">
                     @Html.DisplayFor(m => Model.profile.UserEmail)
-                 </dd>
+                </dd>
             </dl>
-              <dl class="row">
-                 <dt class = "col-sm-6">
+
+            <dl class="row">
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(m => Model.profile.CCCD)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(m => Model.profile.CCCD)
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="col-sm-6">
                     @Html.DisplayNameFor(m => Model.profile.PhoneNumber)
-                 </dt>   
-                 <dd class = "col-sm-6">
+                </dt>
+                <dd class="col-sm-6">
                     @Html.DisplayFor(m => Model.profile.PhoneNumber)
-                 </dd>
+                </dd>
             </dl>
-               <dl class="row">
-                 <dt class = "col-sm-6">
+
+            <dl class="row">
+                <dt class="col-sm-6">
                     @Html.DisplayNameFor(m => Model.profile.HomeAdress)
-                 </dt>   
-                 <dd class = "col-sm-6">
+                </dt>
+                <dd class="col-sm-6">
                     @Html.DisplayFor(m => Model.profile.HomeAdress)
-                 </dd>
-            </dl>                   
-                <dl class="row">
-                 <dt class = "col-sm-6">
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="col-sm-6">
                     @Html.DisplayNameFor(m => Model.profile.BirthDate)
-                 </dt>   
-                 <dd class = "col-sm-6">
+                </dt>
+                <dd class="col-sm-6">
                     @Html.DisplayFor(m => Model.profile.BirthDate)
-                 </dd>
-            </dl>   
+                </dd>
+            </dl>
             
             <a asp-action="EditProfile" class="btn btn-primary btn-sm">Sửa</a>
  

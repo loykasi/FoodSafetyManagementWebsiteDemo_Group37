@@ -471,7 +471,6 @@ namespace WebAnToanVeSinhThucPhamDemo.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Slug")
-                        .IsRequired()
                         .HasMaxLength(160)
                         .HasColumnType("nvarchar(160)");
 
@@ -485,7 +484,8 @@ namespace WebAnToanVeSinhThucPhamDemo.Migrations
                     b.HasIndex("IDCanBo");
 
                     b.HasIndex("Slug")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[Slug] IS NOT NULL");
 
                     b.ToTable("TinTuc");
                 });

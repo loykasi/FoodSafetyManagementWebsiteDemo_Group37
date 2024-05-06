@@ -40,5 +40,30 @@ namespace WebAnToanVeSinhThucPhamDemo.Models.Blog
         [Display(Name = "Danh mục cha")]
         public DanhMuc ParentCategory { set; get; }
 
+        public void ChildCategoryIDs(ICollection<DanhMuc> childcates, List<int> lists)
+        {
+            if (childcates == null)
+                childcates = this.CategoryChildren;
+
+            foreach (DanhMuc category in childcates)
+            {
+                lists.Add(category.Id);
+                ChildCategoryIDs(category.CategoryChildren, lists);
+
+            }
+        }
+        public List<DanhMuc> ListParents()
+        {
+            List<DanhMuc> li = new List<DanhMuc>();
+            var parent = this.ParentCategory;
+            while (parent != null)
+            {
+                li.Add(parent);
+                parent = parent.ParentCategory;
+
+            }
+            li.Reverse();
+            return li;
+        }
     }
 }

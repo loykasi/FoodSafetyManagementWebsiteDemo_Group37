@@ -20,16 +20,16 @@ create table PhuongXa(
 	foreign key (IDQuanHuyen) references QuanHuyen(IDQuanHuyen)
 )
 go
-
 CREATE TABLE VaiTro (
-    Id varchar(450) NOT NULL PRIMARY KEY,
+    Id nvarchar(450) NOT NULL PRIMARY KEY,
     TenVaiTro nvarchar(256) NULL,
     TenChuanHoa nvarchar(256) NULL,
     DauVetDongBo nvarchar(max) NULL
 );
+
 CREATE TABLE NguoiDung (
-    Id varchar(450) NOT NULL PRIMARY KEY,
-	CCCD varchar(12) NULL,
+    Id nvarchar(450) NOT NULL PRIMARY KEY,
+    CCCD varchar(12) NULL,
     DiaChiNha nvarchar(400) NULL,
     NgaySinh datetime2(7) NULL,
     TenDangNhap nvarchar(256) NULL,
@@ -47,26 +47,52 @@ CREATE TABLE NguoiDung (
     DaKhoaTaiKhoan bit NOT NULL,
     SoLanDangNhapThatBai int NOT NULL
 );
+
 CREATE TABLE NguoiDungVaiTro (
-    NguoiDungId varchar(450) NOT NULL,
-    VaiTroId varchar(450) NOT NULL,
+    NguoiDungId nvarchar(450) NOT NULL,
+    VaiTroId nvarchar(450) NOT NULL,
     PRIMARY KEY (NguoiDungId, VaiTroId),
-    FOREIGN KEY (NguoiDungId) REFERENCES NguoiDung(Id),
-    FOREIGN KEY (VaiTroId) REFERENCES VaiTro(Id)
-);
-CREATE TABLE XacThucNguoiDung (
-    NguoiDungId varchar(450) NOT NULL,
-    NhaCungCapDangNhap varchar(450) NOT NULL,
-    Ten varchar(450) NOT NULL,
-    GiaTri nvarchar(max) NULL,
-    PRIMARY KEY (NguoiDungId, NhaCungCapDangNhap, Ten),
-    FOREIGN KEY (NguoiDungId) REFERENCES NguoiDung(Id)
+    FOREIGN KEY (NguoiDungId) REFERENCES NguoiDung(Id) ON DELETE CASCADE,
+    FOREIGN KEY (VaiTroId) REFERENCES VaiTro(Id) ON DELETE CASCADE
 );
 
+CREATE TABLE XacThucNguoiDung (
+    NguoiDungId nvarchar(450) NOT NULL,
+    NhaCungCapDangNhap nvarchar(450) NOT NULL,
+    Ten nvarchar(450) NOT NULL,
+    GiaTri nvarchar(max) NULL,
+    PRIMARY KEY (NguoiDungId, NhaCungCapDangNhap, Ten),
+    FOREIGN KEY (NguoiDungId) REFERENCES NguoiDung(Id) ON DELETE CASCADE
+);
+
+CREATE TABLE LienKetTaiKhoan(
+    NhaCungCapDangNhap nvarchar(450) NOT NULL,
+    KhoaNhaCungCap nvarchar(450) NOT NULL,
+    TenHienThi nvarchar(max) NULL,
+    NguoiDungId nvarchar(450) NOT NULL,
+    PRIMARY KEY (NhaCungCapDangNhap, KhoaNhaCungCap),
+    FOREIGN KEY (NguoiDungId) REFERENCES NguoiDung(Id) ON DELETE CASCADE
+);
+
+CREATE TABLE QuyenYeuCau(
+    Id int IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    VaiTroId nvarchar(450) NOT NULL,
+    LoaiYeuCau nvarchar(max) NULL,
+    GiaTriYeuCau nvarchar(max) NULL,
+    FOREIGN KEY (VaiTroId) REFERENCES VaiTro(Id) ON DELETE CASCADE
+);
+
+CREATE TABLE NguoiDungYeuCau(
+    Id int IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    NguoiDungId nvarchar(450) NOT NULL,
+    LoaiYeuCau nvarchar(max) NULL,
+    GiaTriYeuCau nvarchar(max) NULL,
+    FOREIGN KEY (NguoiDungId) REFERENCES NguoiDung(Id) ON DELETE CASCADE
+);
 create table CoSo
 (
 	IDCoSo int primary key identity(1, 1),
-	IDChuCoSo varchar(450),
+	IDChuCoSo nvarchar(450),
 	TenCoSo nvarchar(max),
 	DiaChi nvarchar(max),
 	IDPhuongXa int,
@@ -113,7 +139,7 @@ create table ThongBaoThayDoi
 (
 	IDThongBao int primary key identity(1, 1),
 	IDCoSo int,
-	IDChuCoSoMoi varchar(450),
+	IDChuCoSoMoi nvarchar(450),
 	TenCoSoMoi nvarchar(max),
 	DiaChiMoi nvarchar(max),
 	TrangThai int,
@@ -142,7 +168,7 @@ CREATE TABLE TinTuc(
 	Slug nvarchar(160) NOT NULL,
 	NoiDung nvarchar(max) NOT NULL,
 	Published bit NOT NULL,
-	IDCanBo varchar(450) NOT NULL ,
+	IDCanBo nvarchar(450) NOT NULL ,
 	NgayTao datetime2(7) NOT NULL,
 	NgayCapNhat datetime2(7) NOT NULL,
 
@@ -178,7 +204,7 @@ create table KeHoach
 create table ChiTietDoanThanhTra
 (
 	IDKeHoach int,
-	IDCanBo varchar(450),
+	IDCanBo nvarchar(450),
 	ChucVu nvarchar(max),
 	primary key(IDKeHoach, IDCanBo),
 	foreign key (IDKeHoach) references KeHoach(IDKeHoach),

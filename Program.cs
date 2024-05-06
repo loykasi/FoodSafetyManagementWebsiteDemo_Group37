@@ -65,6 +65,8 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.SignIn.RequireConfirmedEmail = true;
     options.SignIn.RequireConfirmedPhoneNumber = false;
     options.SignIn.RequireConfirmedAccount = true;
+
+
 });
 
 // Cấu hình ApplicationCookie

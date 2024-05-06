@@ -126,6 +126,7 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.Blog.Controllers
             if (!ModelState.IsValid)
             {
                 var user = await _userManager.GetUserAsync(this.User);
+                post.NgayTao = post.NgayTao = DateTime.Now;
                 post.NgayCapNhat = post.NgayCapNhat = DateTime.Now;
                 post.IDCanBo = user.Id;
                 _dbcontext.Add(post);
@@ -194,11 +195,11 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.Blog.Controllers
             {
                 return NotFound();
             }
+
             var categories = await _dbcontext.DanhMuc.ToListAsync();
             ViewData["categories"] = new MultiSelectList(categories, "Id", "TenDanhMuc");
 
-
-            if (post.Slug == null)
+            if (post.Slug == null || post.Slug != AppUtilities.GenerateSlug(post.TieuDe))
             {
                 post.Slug = AppUtilities.GenerateSlug(post.TieuDe);
             }
@@ -209,12 +210,10 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.Blog.Controllers
                 return View(post);
             }
 
-
             if (!ModelState.IsValid)
             {
                 try
                 {
-
                     var postUpdate = await _dbcontext.TinTuc.Include(p => p.DanhMucBaiDangs).FirstOrDefaultAsync(p => p.IDTinTuc == id);
                     if (postUpdate == null)
                     {
@@ -223,26 +222,22 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.Blog.Controllers
 
                     postUpdate.TieuDe = post.TieuDe;
                     postUpdate.MoTa = post.MoTa;
+                    postUpdate.Slug = post.Slug;
                     postUpdate.NoiDung = post.NoiDung;
                     postUpdate.Published = post.Published;
-                    postUpdate.Slug = post.Slug;
                     postUpdate.NgayCapNhat = DateTime.Now;
 
                     // Update PostCategory
                     if (post.IDChuyenMucs == null) post.IDChuyenMucs = new int[] { };
-
                     var oldCateIds = postUpdate.DanhMucBaiDangs.Select(c => c.IDDanhMuc).ToArray();
                     var newCateIds = post.IDChuyenMucs;
-
                     var removeCatePosts = from postCate in postUpdate.DanhMucBaiDangs
                                           where (!newCateIds.Contains(postCate.IDDanhMuc))
                                           select postCate;
                     _dbcontext.DanhMucBaiDang.RemoveRange(removeCatePosts);
-
                     var addCateIds = from CateId in newCateIds
                                      where !oldCateIds.Contains(CateId)
                                      select CateId;
-
                     foreach (var CateId in addCateIds)
                     {
                         _dbcontext.DanhMucBaiDang.Add(new DanhMucBaiDang()
@@ -253,7 +248,6 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.Blog.Controllers
                     }
 
                     _dbcontext.Update(postUpdate);
-
                     await _dbcontext.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -267,9 +261,11 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.Blog.Controllers
                         throw;
                     }
                 }
+
                 StatusMessage = "Vừa cập nhật bài viết";
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["AuthorId"] = new SelectList(_dbcontext.Users, "Id", "Id", post.IDCanBo);
             return View(post);
         }

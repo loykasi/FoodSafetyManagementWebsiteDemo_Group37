@@ -12,7 +12,7 @@ using WebAnToanVeSinhThucPhamDemo.Models;
 namespace WebAnToanVeSinhThucPhamDemo.Migrations
 {
     [DbContext(typeof(QlattpContext))]
-    [Migration("20240430045500_AddInit")]
+    [Migration("20240505145713_AddInit")]
     partial class AddInit
     {
         /// <inheritdoc />
@@ -474,7 +474,6 @@ namespace WebAnToanVeSinhThucPhamDemo.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Slug")
-                        .IsRequired()
                         .HasMaxLength(160)
                         .HasColumnType("nvarchar(160)");
 
@@ -488,7 +487,8 @@ namespace WebAnToanVeSinhThucPhamDemo.Migrations
                     b.HasIndex("IDCanBo");
 
                     b.HasIndex("Slug")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[Slug] IS NOT NULL");
 
                     b.ToTable("TinTuc");
                 });

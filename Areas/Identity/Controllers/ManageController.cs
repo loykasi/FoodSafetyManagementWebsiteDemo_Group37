@@ -58,6 +58,7 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.Identity.Controllers
                 AuthenticatorKey = await _userManager.GetAuthenticatorKeyAsync(user),
                 profile = new EditExtraProfileModel()
                 {
+                    CCCD = user.CCCD,
                     BirthDate = user.BirthDate,
                     HomeAdress = user.HomeAdress,
                     UserName = user.UserName,
@@ -373,6 +374,7 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.Identity.Controllers
 
             var model = new EditExtraProfileModel()
             {
+                CCCD = user.CCCD,
                 BirthDate = user.BirthDate,
                 HomeAdress = user.HomeAdress,
                 UserName = user.UserName,
@@ -386,6 +388,7 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.Identity.Controllers
         {
             var user = await GetCurrentUserAsync();
 
+            user.CCCD = model.CCCD;
             user.HomeAdress = model.HomeAdress;
             user.BirthDate = model.BirthDate;
             await _userManager.UpdateAsync(user);
