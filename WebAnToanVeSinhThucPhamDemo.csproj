@@ -73,7 +73,6 @@
     <Folder Include="Areas\Files\Models\" />
     <Folder Include="Areas\Files\Views\FileManager\" />
     <Folder Include="Areas\HoSo\Models\" />
-    <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\CoSo\" />
   </ItemGroup>
 
