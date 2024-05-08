@@ -10,7 +10,7 @@
     }
 
     .navbar-brand {
-        color:#b9c3ce;
+        color: #b9c3ce;
 
         &:hover {
             color: #888188 !important;
@@ -20,5 +20,35 @@
     .dropdown-toggle {
         border-color: transparent !important;
         color: white;
+    }
+}
+
+.categorysidebar {
+    ul, li {
+        list-style: none;
+        padding-left: 10px;
+    }
+
+    a {
+        text-decoration: none;
+
+        &:hover {
+            color: #a04747;
+        }
+
+        &.active {
+            color: red !important;
+        }
+    }
+
+    > ul > li > a {
+        font-weight: bold
+    }
+
+    h3 {
+        text-transform: uppercase;
+        font-size: 1.3em;
+        border-bottom: 1px solid blue;
+        padding-bottom: 10px;
     }
 }

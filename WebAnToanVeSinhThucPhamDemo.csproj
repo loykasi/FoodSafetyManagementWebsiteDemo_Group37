@@ -82,8 +82,13 @@
     <None Include="Areas\Blog\Views\CoSo\Delete.cshtml" />
     <None Include="Areas\Blog\Views\CoSo\Details.cshtml" />
     <None Include="Areas\Blog\Views\CoSo\Index.cshtml" />
+    <None Include="Areas\Blog\Views\HienThiTinTuc\Detail.cshtml" />
+    <None Include="Areas\Blog\Views\HienThiTinTuc\Index.cshtml" />
+    <None Include="Areas\Blog\Views\HienThiTinTuc\_LayoutBlog.cshtml" />
+    <None Include="Areas\Blog\Views\HienThiTinTuc\_ViewStart.cshtml" />
     <None Include="Areas\HoSo\Views\HoSoATTP\Index.cshtml" />
     <None Include="Views\BaoCaoViPham\Index.cshtml" />
+    <None Include="Views\Shared\Components\CategorySidebar\Default.cshtml" />
     <None Include="wwwroot\asset\assets\fonts\feathericon.svg" />
     <None Include="wwwroot\asset\assets\fonts\MaterialIcons-Regular.woff2" />
     <None Include="wwwroot\asset\assets\js\bootstrap-datetimepicker.min.js" />

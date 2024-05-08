@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -317,7 +316,7 @@ namespace WebAnToanVeSinhThucPhamDemo.Migrations
                     IDCoSo = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IDChuCoSo = table.Column<int>(type: "int", nullable: true),
-					TenCoSo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TenCoSo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DiaChi = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IDPhuongXa = table.Column<int>(type: "int", nullable: true),
                     LoaiHinhKinhDoanh = table.Column<string>(type: "nvarchar(max)", nullable: true),

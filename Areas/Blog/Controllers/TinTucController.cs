@@ -126,6 +126,7 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.Blog.Controllers
             if (!ModelState.IsValid)
             {
                 var user = await _userManager.GetUserAsync(this.User);
+                post.NgayTao = post.NgayTao = DateTime.Now;
                 post.NgayCapNhat = post.NgayCapNhat = DateTime.Now;
                 post.IDCanBo = user.Id;
                 _dbcontext.Add(post);
