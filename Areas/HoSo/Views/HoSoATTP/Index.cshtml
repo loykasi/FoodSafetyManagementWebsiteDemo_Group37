@@ -1,23 +1,12 @@
 ﻿@model IEnumerable<WebAnToanVeSinhThucPhamDemo.Models.HoSoCapGiayChungNhan>
 
-@{
-    ViewData["Title"] = "Index";
-}
 
 @{
     Layout = "_Layout";
 }
 
-<div class="content container-fluid">
-    <div class="page-header">
-        <div class="row align-items-center">
-            <div class="col">
-                <div class="mt-5">
-                    <h4 class="card-title float-left mt-2">Danh Sách Hồ Sơ</h4>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="content container-fluid" style="margin-top:-100px;">
+
     <div class="row">
         <div class="col-lg-12">
 
@@ -26,7 +15,7 @@
                     <h5>Tìm Kiếm Hồ Sơ</h5>
                     <form asp-action="Index" method="get" class="search-form">
                         <div class="input-group mt-3">
-                            <input type="text" name="searchString" placeholder="Tìm kiếm..." class="form-control">
+                            <input type="text" name="searchString" placeholder="Tìm tên cơ sở, chủ cơ sở, số giấy phép..." class="form-control">
                             <div class="input-group-append">
                                 <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
                             </div>
@@ -40,42 +29,52 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label>Lọc Theo Phường Xã</label>
-                            <select class="form-control" id="phuongXaId" name="phuongXaId" onchange="this.form.submit()">
+                            <select class="form-control" id="phuongXaId" name="phuongXaId">
                                 <option value="">Chọn Phường Xã</option>
                                 @foreach (var phuongXa in ViewBag.PhuongXaList)
                                 {
-                                    <option value="@phuongXa.IDPhuongXa">@phuongXa.TenPhuongXa</option>
+                                    <option value="@phuongXa.IDPhuongXa" @(phuongXa.IDPhuongXa == ViewBag.SelectedPhuongXaId ? "selected" : "")>@phuongXa.TenPhuongXa</option>
                                 }
                             </select>
                         </div>
                     </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Lọc Theo Trạng Thái</label>
+                            <select class="form-control" id="trangThai" name="trangThai">
+                                <option value="">Tất cả</option>
+                                <option value="1" @(ViewBag.SelectedTrangThai == 1 ? "selected" : "")>Đã duyệt</option>
+                                <option value="0" @(ViewBag.SelectedTrangThai == 0 ? "selected" : "")>Chưa duyệt</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Ngày Bắt Đầu</label>
+                            <input type="date" class="form-control" id="ngayBatDau" name="ngayBatDau" value="@ViewBag.SelectedNgayBatDau">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Ngày Kết Thúc</label>
+                            <input type="date" class="form-control" id="ngayKetThuc" name="ngayKetThuc" value="@ViewBag.SelectedNgayKetThuc">
+                        </div>
+                    </div>
 
-                    <form action="Index" method="get">
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>Từ</label>
-                                <div class="cal-icon">
-                                    <input type="text" id="fromDate" name="fromDate" class="form-control datetimepicker">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>Đến</label>
-                                <div class="cal-icon">
-                                    <input type="text" id="toDate" name="toDate" class="form-control datetimepicker">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
+                    <div class="col-md-3">
+                        <div class="form-group">
                             <button type="submit" class="btn btn-primary" style="margin-top: 32px;">Lọc</button>
+                            @if (ViewBag.SelectedPhuongXaId != null || ViewBag.SelectedTrangThai != null)
+                            {
+                                <a href="@Url.Action("Index", "HoSoATTP")" class="btn btn-secondary" style="margin-top: 32px;">Bỏ lọc</a>
+                            }
                         </div>
-                    </form>
-                    
+                    </div>
 
-                   
+
                 </div>
             </form>
+
         </div>
     </div>
 
@@ -93,6 +92,7 @@
                                     <th>Tên Cơ Sở</th>
                                     <th>Họ Tên Chủ Cơ Sở</th>
                                     <th>Phường Xã</th>
+                                    <th>Trạng Thái</th>
                                     <th class="text-right">Actions</th>
                                 </tr>
                             </thead>
@@ -100,18 +100,30 @@
                                 @foreach (var item in Model)
                                 {
                                     <tr>
+
                                         <td>@Html.DisplayFor(modelItem => item.IdgiayChungNhan)</td>
                                         <td>@Html.DisplayFor(modelItem => item.NgayDangKy)</td>
                                         <td>@Html.DisplayFor(modelItem => item.LoaiThucPham)</td>
                                         <td>@Html.DisplayFor(modelItem => item.IdcoSoNavigation.TenCoSo)</td>
                                         <td>@Html.DisplayFor(modelItem => item.IdcoSoNavigation.ChuCoSo.HoTen)</td>
                                         <td>@Html.DisplayFor(modelItem => item.IdcoSoNavigation.PhuongXa.TenPhuongXa)</td>
+                                        <td>@(item.TrangThai == 1 ? "Đã duyệt" : "Chưa duyệt")</td>
                                         <td class="text-right">
                                             <div class="dropdown dropdown-action">
-                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v ellipse_color"></i></a>
-                                                <div class="dropdown-menu dropdown-menu-right"> <a class="dropdown-item" href="edit-asset.html"><i class="fas fa-pencil-alt m-r-5"></i> Edit</a> <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_asset"><i class="fas fa-trash-alt m-r-5"></i> Delete</a> </div>
+                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-v ellipse_color"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right">
+                                                    <a class="dropdown-item" href="@Url.Action("Details", "HoSoATTP", new { id = item.IdgiayChungNhan })">
+                                                        <i class="fas fa-pencil-alt m-r-5"></i> Xem chi tiết
+                                                    </a>
+                                                    <a class="dropdown-item" href="@Url.Action("Delete", "HoSoATTP", new { id = item.IdgiayChungNhan })">
+                                                        <i class="fas fa-trash-alt m-r-5"></i> Xóa
+                                                    </a>
+                                                </div>
                                             </div>
                                         </td>
+
                                     </tr>
                                 }
                             </tbody>
@@ -122,32 +134,6 @@
         </div>
     </div>
 
-    <div id="delete_asset" class="modal fade delete-modal" role="dialog">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-body text-center">
-                    <img src="assets/img/sent.png" alt="" width="50" height="46">
-                    <h3 class="delete_class">Are you sure want to delete this Asset?</h3>
-                    <div class="m-t-20">
-                        <a href="#" class="btn btn-white" data-dismiss="modal">Close</a>
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+   
+
 </div>
-
-
-@section Scripts {
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" />
-    <script>
-        $(function () {
-            $('.datetimepicker').datetimepicker({
-                timepicker: false,
-                format: 'd-m-Y' // định dạng ngày YYYY-MM-DD
-            });
-        });
-    </script>
-}

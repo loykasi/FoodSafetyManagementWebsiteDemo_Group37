@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\CoSo\**" />
+    <Content Remove="wwwroot\CoSo\**" />
+    <EmbeddedResource Remove="wwwroot\CoSo\**" />
+    <None Remove="wwwroot\CoSo\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="mailssave\eb669926-72d0-43bc-b146-e02d2ba13a81.eml" />
     <None Remove="Uploads\customer1.jpg" />
   </ItemGroup>
@@ -73,7 +80,6 @@
     <Folder Include="Areas\Files\Models\" />
     <Folder Include="Areas\Files\Views\FileManager\" />
     <Folder Include="Areas\HoSo\Models\" />
-    <Folder Include="wwwroot\CoSo\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -81,14 +81,13 @@
                         <li class="submenu">
                             <a href="#"><i class="fas fa-user"></i> <span> Cơ Sở Kinh Doanh</span> <span class="menu-arrow"></span></a>
                             <ul class="submenu_class" style="display: none;">
-                                <li><a href="all-customer.html"> Danh Sách Cơ Sở Kinh Doanh</a></li>
-                                <li><a href="edit-customer.html"> Đăng Ký Cơ Sở Kinh Doanh </a></li>
+                                <li><a href=@Url.Action("Index", "CoSo", new { area = "Blog" })> Quản lý Cơ Sở Kinh Doanh</a></li>
+                                <li><a href=@Url.Action("Create", "CoSo", new { area = "Blog" })> Đăng Ký Cơ Sở Kinh Doanh </a></li>
                             </ul>
                         </li>
                         <li class="submenu">
                             <a href="#"><i class="fas fa-key"></i> <span> Báo Cáo Vi Phạm </span> <span class="menu-arrow"></span></a>
                             <ul class="submenu_class" style="display: none;">
-                                <li><a href=@Url.Action("Index", "BaoCaoViPham")>Danh Sách Vi Phạm ATTP </a></li>
                                 <li><a href=@Url.Action("Index", "BaoCaoViPham")> Báo Cáo Vi Phạm </a></li>
                      
                             </ul>
