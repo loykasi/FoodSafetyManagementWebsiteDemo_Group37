@@ -68,7 +68,68 @@
                         </div>
 
                         <span asp-validation-for="IDCoSo" class="text-danger"></span>
-                        <div class="form-check" id="coSoGroup">
+
+                        @*
+                            <table>
+                            <tr>
+                            <th>Company</th>
+                            <th>Contact</th>
+                            <th>Country</th>
+                            </tr>
+                            <tr>
+                            <td>Alfreds Futterkiste</td>
+                            <td>Maria Anders</td>
+                            <td>Germany</td>
+                            </tr>
+                            <tr>
+                            <td>Centro comercial Moctezuma</td>
+                            <td>Francisco Chang</td>
+                            <td>Mexico</td>
+                            </tr>
+                            </table>
+                        *@
+
+                        
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Tên cơ sở</th>
+                                        <th>Địa chỉ</th>
+                                        <th>Phường</th>
+                                        <th>Quận</th>
+                                        <th>Chủ cơ sở</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="coSoGroup">
+                                @foreach (var item in Model.CoSoes)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="radio" asp-for="IDCoSo" name="IDCoSo" value="@item.IdcoSo" id="CoSo@(item.IdcoSo)" />
+                                        </td>
+                                        <td>
+                                            @item.TenCoSo
+                                        </td>
+                                        <td>
+                                            @item.DiaChi
+                                        </td>
+                                        <td>
+                                            @item.PhuongXa.TenPhuongXa
+                                        </td>
+                                        <td>
+                                            @item.PhuongXa.QuanHuyen.TenQuanHuyen
+                                        </td>
+                                        <td>
+                                            @item.ChuCoSo.HoTen
+                                        </td>
+                                    </tr>
+                                }
+                                </tbody>
+                            </table>
+                        
+
+                        @*<div class="form-check" id="coSoGroup">
                             @foreach (var item in Model.CoSoes)
                             {
                                 <div>
@@ -76,8 +137,7 @@
                                 <label class="form-check-label" for="CoSo@(item.IdcoSo)">@(item.TenCoSo + " - " + item.DiaChi + ", " + item.PhuongXa.TenPhuongXa + ", " + item.PhuongXa.QuanHuyen.TenQuanHuyen + " - " + item.ChuCoSo.HoTen)</label>
                                 </div>
                             }
-                        </div>
-
+                        </div>*@
 
                         @if (Model.TotalPage != 1)
                         {
@@ -148,19 +208,33 @@
                     let html = '';
                     for (let i = 0; i < response.coSoes.length; i++) {
                         let item = response.coSoes[i];
-                        html += '<div><input type="radio" asp-for="IDCoSo" name="IDCoSo" value="' + item.idcoSo + '" class="form-check-input" />'
-                            + '<label class="form-check-label" for="CoSo' + item.idcoSo + '">' + item.tenCoSo + ' - ' + item.diaChi + ', ' + item.phuongXa.tenPhuongXa + ', ' + item.phuongXa.quanHuyen.tenQuanHuyen + '</label></div>';
+                        html += '<tr><td><input type="radio" asp-for="IDCoSo" name="IDCoSo" value="' + item.idcoSo + '" /></td>'
+                            + '<td>' + item.tenCoSo + '</td>'
+                            + '<td>' + item.diaChi + '</td>'
+                            + '<td>' + item.phuongXa.tenPhuongXa + '</td>'
+                            + '<td>' + item.phuongXa.quanHuyen.tenQuanHuyen + '</td>'
+                            + '<td>' + item.chuCoSo.hoTen + '</td></tr>'
                     }
 
                     group.innerHTML = html;
                     currentPageSpan.innerText = response.currentPage;
                     totalPageSpan.innerText = response.totalPage;
+                    applyRowSelect();
                 },
                 error: function (response, status, error) {
                     console.log(status);
                 },
             });
-        }
+        };
+
+        $('#coSoGroup').on('click', 'tr', function(event) {
+            if (event.target.type !== 'radio') {
+                $(':radio', this).trigger('click');
+                $('#coSoGroup tr').removeClass('table-active');
+                $(this).addClass('table-active');
+            }
+        });
+
 
         $(document).ready(function () {
             $('#uploadFiles').change(function () {
