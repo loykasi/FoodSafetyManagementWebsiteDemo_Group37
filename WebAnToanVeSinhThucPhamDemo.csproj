@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -7,12 +7,113 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="mailssave\eb669926-72d0-43bc-b146-e02d2ba13a81.eml" />
+    <None Remove="Uploads\customer1.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Uploads\customer1.jpg">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Bogus" Version="35.5.0" />
+    <PackageReference Include="elFinder.NetCore" Version="1.4.0" />
+    <PackageReference Include="MailKit" Version="4.5.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="8.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="8.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.oAuth" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIDConnect" Version="8.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" Version="8.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid" Version="8.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor" Version="2.2.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Razor" Version="6.0.29" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.4">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration" Version="8.0.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Core" Version="8.0.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore" Version="8.0.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Utils" Version="8.0.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGenerators.Mvc" Version="8.0.2" />
+    <PackageReference Include="MimeKit" Version="4.5.0" />
+    <PackageReference Include="MySql.Data.EntityFramework" Version="8.3.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Blog\Data\" />
+    <Folder Include="Areas\Blog\Models\" />
+    <Folder Include="Areas\Contact\Data\" />
+    <Folder Include="Areas\Contact\Models\" />
+    <Folder Include="Areas\Database\Data\" />
+    <Folder Include="Areas\Database\Models\" />
+    <Folder Include="Areas\Files\Data\" />
+    <Folder Include="Areas\Files\Models\" />
+    <Folder Include="Areas\Files\Views\FileManager\" />
+    <Folder Include="Areas\HoSo\Models\" />
+    <Folder Include="wwwroot\CoSo\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Areas\Blog\Views\CoSo\Create.cshtml" />
+    <None Include="Areas\Blog\Views\CoSo\Delete.cshtml" />
+    <None Include="Areas\Blog\Views\CoSo\Details.cshtml" />
+    <None Include="Areas\Blog\Views\CoSo\Index.cshtml" />
+    <None Include="Areas\Blog\Views\HienThiTinTuc\Detail.cshtml" />
+    <None Include="Areas\Blog\Views\HienThiTinTuc\Index.cshtml" />
+    <None Include="Areas\Blog\Views\HienThiTinTuc\_LayoutBlog.cshtml" />
+    <None Include="Areas\Blog\Views\HienThiTinTuc\_ViewStart.cshtml" />
+    <None Include="Areas\HoSo\Views\HoSoATTP\Index.cshtml" />
+    <None Include="Views\BaoCaoViPham\Index.cshtml" />
+    <None Include="Views\Shared\Components\CategorySidebar\Default.cshtml" />
+    <None Include="wwwroot\asset\assets\fonts\feathericon.svg" />
+    <None Include="wwwroot\asset\assets\fonts\MaterialIcons-Regular.woff2" />
+    <None Include="wwwroot\asset\assets\js\bootstrap-datetimepicker.min.js" />
+    <None Include="wwwroot\asset\assets\js\bootstrap.min.js" />
+    <None Include="wwwroot\asset\assets\js\chart.morris.js" />
+    <None Include="wwwroot\asset\assets\js\jquery-3.5.1.min.js" />
+    <None Include="wwwroot\asset\assets\js\jquery-ui.min.js" />
+    <None Include="wwwroot\asset\assets\js\moment.min.js" />
+    <None Include="wwwroot\asset\assets\js\popper.min.js" />
+    <None Include="wwwroot\asset\assets\js\script.js" />
+    <None Include="wwwroot\asset\assets\js\select2.min.js" />
+    <None Include="wwwroot\asset\assets\plugins\datatables\datatables.min.js" />
+    <None Include="wwwroot\asset\assets\plugins\datatables\jquery.dataTables.min.js" />
+    <None Include="wwwroot\asset\assets\plugins\fontawesome\webfonts\fa-brands-400.svg" />
+    <None Include="wwwroot\asset\assets\plugins\fontawesome\webfonts\fa-brands-400.woff2" />
+    <None Include="wwwroot\asset\assets\plugins\fontawesome\webfonts\fa-regular-400.svg" />
+    <None Include="wwwroot\asset\assets\plugins\fontawesome\webfonts\fa-regular-400.woff2" />
+    <None Include="wwwroot\asset\assets\plugins\fontawesome\webfonts\fa-solid-900.svg" />
+    <None Include="wwwroot\asset\assets\plugins\fontawesome\webfonts\fa-solid-900.woff2" />
+    <None Include="wwwroot\asset\assets\plugins\fullcalendar\fullcalendar.min.js" />
+    <None Include="wwwroot\asset\assets\plugins\fullcalendar\jquery.fullcalendar.js" />
+    <None Include="wwwroot\asset\assets\plugins\morris\morris.min.js" />
+    <None Include="wwwroot\asset\assets\plugins\raphael\raphael.min.js" />
+    <None Include="wwwroot\asset\assets\plugins\slimscroll\jquery.slimscroll.min.js" />
+    <None Include="wwwroot\asset\assets\plugins\summernote\dist\font\summernote.woff2" />
+    <None Include="wwwroot\asset\assets\plugins\summernote\dist\summernote-bs4.min.js" />
   </ItemGroup>
 
 </Project>

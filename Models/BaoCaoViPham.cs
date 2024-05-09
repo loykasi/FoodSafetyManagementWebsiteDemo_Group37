@@ -12,6 +12,7 @@ public partial class BaoCaoViPham
     public string? Sdt { get; set; }
 
     public string? Cccd { get; set; }
+    public string? NoiDung { get; set; }
 
     public DateOnly? NgayBaoCao { get; set; }
 

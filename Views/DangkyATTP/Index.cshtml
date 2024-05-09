@@ -1,88 +1,193 @@
 ﻿@{
 	ViewBag.Title = "Index";
 }
+<link href="~/css/ImageClick.css" rel="stylesheet" />
+<hr />
+
 <div class="content container-fluid">
+    
+    @*<div class="page-header">
+        <div class="row">
+            <div class="col">
+                <h3 class="page-title">Horizontal Form</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Horizontal Form</li>
+                </ul>
+            </div>
+        </div>
+    </div>*@
 
-	<div class="page-header">
-		<div class="row">
-			<div class="col">
-				<h3 class="page-title">Horizontal Form</h3>
-				<ul class="breadcrumb">
-					<li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-					<li class="breadcrumb-item active">Horizontal Form</li>
-				</ul>
-			</div>
-		</div>
-	</div>
-
-	<div class="row">
-		<div class="col-md-12">
-			<div class="card">
-				<div class="card-header">
-					<h5 class="card-title">Đăng ký giấy chứng nhận vệ sinh an toàn thực phẩm</h5>
-				</div>
-				<div class="card-body">
-					<form asp-action="Insert" method="post" enctype="multipart/form-data">
-						<div class="row">
-							<div class="col-xl-6">
-								<h5 class="card-title">Thông tin cơ sở</h5>
-								<div class="form-group row">
-									<label class="col-lg-3 col-form-label">Tên cơ sở</label>
-									<div class="col-lg-9">
-										<input type="text" name="tencoso" class="form-control">
-									</div>
-								</div>
-								<div class="form-group row">
-									<label class="col-lg-3 col-form-label">Địa chỉ</label>
-									<div class="col-lg-9">
-										<input type="text" name="diachi" class="form-control">
-									</div>
-								</div>
-								<div class="form-group row">
-									<label class="col-lg-3 col-form-label">Loại hình kinh doanh</label>
-									<div class="col-lg-9">
-										<select name="loaihinhkinhdoanh" class="select">
-											<option>Select</option>
-											<option value="1">Cơ sở sản xuất, kinh doanh thực phẩm</option>
-											<option value="2">Cơ sở kinh doanh dịch vụ ăn uống</option>
-										</select>
-									</div>
-								</div>
-								<div class="form-group row">
-									<label class="col-lg-3 col-form-label">Số giấy phép kinh doanh</label>
-									<div class="col-lg-9">
-										<input type="text" name="sogiayphep" class="form-control">
-									</div>
-								</div>
-								<div class="form-group row">
-									<label class="col-lg-3 col-form-label">Ngày cấp giấy phép</label>
-									<div class="col-lg-9">
-										<input type="date" name="ngaycap" class="form-control">
-									</div>
-								</div>
-							</div>
-							<div class="col-xl-6">
-								<h5 class="card-title">Thông tin giấy chứng nhận</h5>
-								<div class="form-group row">
-									<label class="col-lg-3 col-form-label">Loại thực phẩm</label>
-									<div class="col-lg-9">
-										<input type="text" name="loaithucpham" class="form-control">
-									</div>
-								</div>
-								<div class="form-group row">
-									<label class="col-lg-3 col-form-label">Hình ảnh minh chứng</label>
-									<div class="col-lg-9">
-										<input type="file" name="hinhanh" class="form-control" multiple>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="text-end">
-							<button type="submit" class="btn btn-primary">Submit</button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Đăng ký giấy chứng nhận vệ sinh an toàn thực phẩm</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Insert" method="post" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <h5 class="card-title">Thông tin cơ sở</h5>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Tên cơ sở</label>
+                                    <div class="col-lg-9">
+                                        <input type="text" name="tencoso" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Địa chỉ</label>
+                                    <div class="col-lg-9">
+                                        <input type="text" name="diachi" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Quận/Huyện</label>
+                                    <div class="col-lg-9">
+                                        @Html.DropDownList("quanhuyen", ViewData["quanhuyen"] as List<SelectListItem>)
+                                        @* <select id ="quanhuyen" name="quanhuyen" class="select">
+                                        <option>Select</option>
+                                        @foreach (var item in ViewData["listQuanHuyen"] as IList<QuanHuyen>){
+                                        <option value="@item.IdquanHuyen">@item.TenQuanHuyen</option>
+                                        }
+                                        </select> *@
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Phường/Xã</label>
+                                    <div class="col-lg-9">
+                                        @Html.DropDownList("phuongxa", new SelectList(string.Empty, "Value", "Text"),"Chọn phường xã")
+                                        @* <select id="phuongxa" name="phuongxa" class="select">
+                                        <option>Select</option>
+                                        @foreach(var item in ViewData["listPhuongXa"] as IList<PhuongXa>)
+                                        {
+                                        <option value="@item.IdphuongXa">@item.TenPhuongXa</option>
+                                        }
+                                        </select> *@
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Loại hình kinh doanh</label>
+                                    <div class="col-lg-9">
+                                        <select name="loaihinhkinhdoanh" >
+                                            <option value="0">Select</option>
+                                            <option value="1">Cơ sở sản xuất, kinh doanh thực phẩm</option>
+                                            <option value="2">Cơ sở kinh doanh dịch vụ ăn uống</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Số giấy phép kinh doanh</label>
+                                    <div class="col-lg-9">
+                                        <input type="text" name="sogiayphep" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Ngày cấp giấy phép</label>
+                                    <div class="col-lg-9">
+                                        <input type="date" name="ngaycap" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <h5 class="card-title">Thông tin giấy chứng nhận</h5>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Loại thực phẩm</label>
+                                    <div class="col-lg-9">
+                                        <input type="text" name="loaithucpham" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Hình ảnh minh chứng</label>
+                                    <div class="col-lg-9">
+                                        <input id="files" type="file" name="hinhanh" class="form-control" accept="image/*" multiple>
+                                        <div id="preview"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                    <div id="myModal" class="modal">
+                        <span class="close">&times;</span>
+                        <img class="modal-content" id="img01">
+                        <!-- <div id="caption"></div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+    	$("#quanhuyen").change(function () {
+    		$.ajax({
+    			type: 'POST',
+    			url: '@Url.Action("GetPhuongXa")', // we are calling json method
+    			dataType: 'json',
+    			data: { id: $("#quanhuyen").val() },
+    				success: function(phuongxas) {
+                        $("#phuongxa").empty();
+    					$.each(phuongxas, function (i, item ) {
+                                $("#phuongxa").append('<option value="'
+                            + item.value + '">'
+                            + item.text + '</option>');
+
+                    });
+    				},
+    			error: function (ex) {
+    				alert('failed to retrieve states.' + ex);
+    			}
+    		})
+    	})
+    });
+</script>
+
+<script type="text/javascript">
+    const removeoldImg = () => {
+        var container = document.getElementById("preview");
+        container.replaceChildren();
+    }
+    const preview = (file) => {
+        removeoldImg();
+        const fr = new FileReader();
+        fr.onload = () => {
+            const img = document.createElement("img");
+            img.src = fr.result;  // String Base64
+            img.alt = file.name;
+            img.width = 100;
+            img.height = 100;
+            img.className = "myImages";
+            img.onclick = function (evt) {
+                modal.style.display = "block";
+                modalImg.src = this.currentSrc;
+            }
+            document.querySelector('#preview').append(img);
+            // to all images -- note I'm using a class!
+            var images = document.getElementsByClassName('myImages');
+        };
+        fr.readAsDataURL(file);
+    };
+    // đổi #files sang id của input files
+    document.querySelector("#files").addEventListener("change", (ev) => {
+        if (!ev.target.files) return; // Do nothing.
+        [...ev.target.files].forEach(preview);
+    });
+</script>
+<script>
+    // create references to the modal...
+    var modal = document.getElementById('myModal');
+    // to all images -- note I'm using a class!
+    var images = document.getElementsByClassName('myImages');
+    // the image in the modal
+    var modalImg = document.getElementById("img01");
+    var span = document.getElementsByClassName("close")[0];
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+</script>

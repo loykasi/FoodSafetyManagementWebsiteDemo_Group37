@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace WebAnToanVeSinhThucPhamDemo.Models;
+﻿namespace WebAnToanVeSinhThucPhamDemo.Models;
 
 public partial class BanCongBoSp
 {
@@ -12,6 +9,7 @@ public partial class BanCongBoSp
     public DateOnly? NgayCongBo { get; set; }
 
     public string? TenSanPham { get; set; }
+
 
     public string? ThanhPhan { get; set; }
 

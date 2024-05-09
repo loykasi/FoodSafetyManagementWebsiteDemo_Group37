@@ -1,0 +1,87 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using App.Models
+
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <form asp-area="Identity" asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" class="navbar-right">
+        <ul class="nav navbar-nav navbar-right">
+            <li class="nav-item">
+                <a class="nav-link user-name" asp-area="Identity" asp-controller="Manage" asp-action="Index" title="Manage">Xin chào @UserManager.GetUserName(User)!</a>
+            </li>
+            <li class="nav-item">
+                <button type="submit" class="btn btn-link navbar-btn navbar-link">Đăng xuất</button>
+            </li>
+        </ul>
+    </form>
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li class="nav-item">
+            <a class="nav-link register-button" asp-area="Identity" asp-controller="Account" asp-action="Register">Đăng ký</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link login-button" asp-area="Identity" asp-controller="Account" asp-action="Login">Đăng nhập</a>
+        </li>
+    </ul>
+
+}
+
+<style>
+    /* CSS cho màu chữ khi nền trắng */
+    .navbar-light .user-name,
+    .navbar-light .nav-link {
+        color: black;
+    }
+
+    /* CSS cho màu chữ khi nền đen */
+    .navbar-dark .user-name,
+    .navbar-dark .nav-link {
+        color: white;
+    }
+
+    /* Sắp xếp các phần tử ngang */
+    .navbar-nav {
+        display: inline-block;
+    }
+
+    .nav-item {
+        margin-left: 10px; /* Khoảng cách giữa các mục */
+    }
+
+    .nav-link {
+        color: #333;
+        text-decoration: none;
+        padding: 6px 10px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        border: none; /* Loại bỏ viền */
+     
+    }
+
+        .nav-link:hover {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc; /* Hiện border khi hover */
+        }
+
+        .nav-link:focus {
+            outline: none;
+        }
+
+        .nav-link:active {
+            transform: translateY(1px);
+        }
+
+   
+        /* Màu nền và màu chữ khi di chuột vào */
+        .register-button:hover,
+        .login-button:hover {
+           
+            border: 1px solid #1565C3; /* Hiện border khi hover */
+        }
+</style>
+
+

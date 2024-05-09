@@ -1,0 +1,254 @@
+﻿@model WebAnToanVeSinhThucPhamDemo.Models.ViolationReportViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<hr />
+
+@if (TempData["AlertMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["AlertMessage"]
+    </div>
+}
+<div class="content container-fluid">
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Báo cáo vi phạm</h5>
+            </div>
+            <div class="card-body">
+                <form asp-action="Index" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label asp-for="HoTen" class="control-label">Họ tên người báo cáo</label>
+                        <input asp-for="HoTen" class="form-control" />
+                        <span asp-validation-for="HoTen" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="SDT" class="control-label">Số điện thoại</label>
+                        <input asp-for="SDT" class="form-control" />
+                        <span asp-validation-for="SDT" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="CCCD" class="control-label">Căn cước công dân</label>
+                        <input asp-for="CCCD" class="form-control" />
+                        <span asp-validation-for="CCCD" class="text-danger"></span>
+                    </div>
+                        <div class="form-group">
+                            <label asp-for="NoiDung" class="control-label">Nội dung báo cáo</label>
+                            <input asp-for="NoiDung" class="form-control" />
+                        </div>
+                    <div class="form-group">
+                        <label for="uploadFiles" class="control-label">Hình ảnh minh chứng</label>
+                        <input name="uploadFiles" id="uploadFiles" class="form-control" type="file" multiple />
+                        @{
+                            var yourFieldError = ViewData.ModelState["uploadFiles"]?.Errors.FirstOrDefault()?.ErrorMessage;
+                        }
+
+                        @if (!string.IsNullOrEmpty(yourFieldError))
+                        {
+                            <span class="text-danger">@yourFieldError</span>
+                        }
+
+                        <div id="imagePreview" class="row"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="IDCoSo" class="control-label">Cơ sở</label>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <input name="search" id="searchInput" type="text" class="form-control" placeholder="">
+                            </div>
+                            <div class="col-md-3">
+                                <input name="pageAction" id="searchButton" type="submit" class="form-control" value="search">
+                            </div>
+                        </div>
+
+                        <span asp-validation-for="IDCoSo" class="text-danger"></span>
+
+                        @*
+                            <table>
+                            <tr>
+                            <th>Company</th>
+                            <th>Contact</th>
+                            <th>Country</th>
+                            </tr>
+                            <tr>
+                            <td>Alfreds Futterkiste</td>
+                            <td>Maria Anders</td>
+                            <td>Germany</td>
+                            </tr>
+                            <tr>
+                            <td>Centro comercial Moctezuma</td>
+                            <td>Francisco Chang</td>
+                            <td>Mexico</td>
+                            </tr>
+                            </table>
+                        *@
+
+                        
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Tên cơ sở</th>
+                                        <th>Địa chỉ</th>
+                                        <th>Phường</th>
+                                        <th>Quận</th>
+                                        <th>Chủ cơ sở</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="coSoGroup">
+                                @foreach (var item in Model.CoSoes)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="radio" asp-for="IDCoSo" name="IDCoSo" value="@item.IdcoSo" id="CoSo@(item.IdcoSo)" />
+                                        </td>
+                                        <td>
+                                            @item.TenCoSo
+                                        </td>
+                                        <td>
+                                            @item.DiaChi
+                                        </td>
+                                        <td>
+                                            @item.PhuongXa.TenPhuongXa
+                                        </td>
+                                        <td>
+                                            @item.PhuongXa.QuanHuyen.TenQuanHuyen
+                                        </td>
+                                        <td>
+                                            @item.ChuCoSo.HoTen
+                                        </td>
+                                    </tr>
+                                }
+                                </tbody>
+                            </table>
+                        
+
+                        @*<div class="form-check" id="coSoGroup">
+                            @foreach (var item in Model.CoSoes)
+                            {
+                                <div>
+                                <input type="radio" asp-for="IDCoSo" name="IDCoSo" value="@item.IdcoSo" id="CoSo@(item.IdcoSo)" class="form-check-input" />
+                                <label class="form-check-label" for="CoSo@(item.IdcoSo)">@(item.TenCoSo + " - " + item.DiaChi + ", " + item.PhuongXa.TenPhuongXa + ", " + item.PhuongXa.QuanHuyen.TenQuanHuyen + " - " + item.ChuCoSo.HoTen)</label>
+                                </div>
+                            }
+                        </div>*@
+
+                        @if (Model.TotalPage != 1)
+                        {
+                            <div class="form-group row">
+                                <label class="col-md-1 text-center">
+                                    <span id="currentPage">@Model.CurrentPage</span>/<span id="totalPage">@Model.TotalPage</span>
+                                </label>
+                                <input name="pageAction" id="backButton" type="button" value="Back" class="col-md-1" />
+                                <input name="pageAction" id="nextButton" type="button" value="Next" class="col-md-1" />
+                            </div>
+                        }
+                    </div>
+
+                    <div class="form-group">
+                        <input id="submitButton" type="submit" value="Gửi báo cáo" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+@section Scripts {
+    <script>
+        var group = document.getElementById("coSoGroup");
+        var currentPageSpan = document.getElementById("currentPage");
+        var totalPageSpan = document.getElementById("totalPage");
+
+        $(document).ready(function () {
+            var url = window.location.href;
+            var urlParams = new URLSearchParams(new URL(url).search);
+            var searchValue = urlParams.has('value') ? urlParams.get('value') : '';
+            $('#submitButton').click(function (e) {
+                console.log($('input[name="IDCoSo"]:checked').val());
+            });
+            $('#searchButton').click(function (e) {
+                e.preventDefault();
+                searchValue = $('#searchInput').val()
+                search(searchValue, null);
+            });
+            $('#nextButton').click(function (e) {
+                var pageNumber = parseInt($('#currentPage').text()) + 1
+                search(searchValue, pageNumber);
+            });
+            $('#backButton').click(function (e) {
+                var pageNumber = parseInt($('#currentPage').text()) - 1
+                search(searchValue, pageNumber);
+            });
+            // $('#backButton').click(function (e) {
+            //     e.preventDefault();
+            //     var page = parseInt($('#currentPage').text()) - 1
+            //     window.location.href = '/BaoCaoViPham/Search?value=' + paramValue + '&pageAction=Back';
+            // });
+        });
+
+        function search(searchValue, pageNumber) {
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("Search")",
+                dataType: "json",
+                data: {
+                    page: pageNumber,
+                    value: searchValue
+                },
+                success: function (response) {
+                    console.log(response);
+                    let html = '';
+                    for (let i = 0; i < response.coSoes.length; i++) {
+                        let item = response.coSoes[i];
+                        html += '<tr><td><input type="radio" asp-for="IDCoSo" name="IDCoSo" value="' + item.idcoSo + '" /></td>'
+                            + '<td>' + item.tenCoSo + '</td>'
+                            + '<td>' + item.diaChi + '</td>'
+                            + '<td>' + item.phuongXa.tenPhuongXa + '</td>'
+                            + '<td>' + item.phuongXa.quanHuyen.tenQuanHuyen + '</td>'
+                            + '<td>' + item.chuCoSo.hoTen + '</td></tr>'
+                    }
+
+                    group.innerHTML = html;
+                    currentPageSpan.innerText = response.currentPage;
+                    totalPageSpan.innerText = response.totalPage;
+                    applyRowSelect();
+                },
+                error: function (response, status, error) {
+                    console.log(status);
+                },
+            });
+        };
+
+        $('#coSoGroup').on('click', 'tr', function(event) {
+            if (event.target.type !== 'radio') {
+                $(':radio', this).trigger('click');
+                $('#coSoGroup tr').removeClass('table-active');
+                $(this).addClass('table-active');
+            }
+        });
+
+
+        $(document).ready(function () {
+            $('#uploadFiles').change(function () {
+                $('#imagePreview').empty();
+                var files = this.files;
+                for (var i = 0; i < files.length; i++) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#imagePreview').append('<img src="' + e.target.result + '" width="300" class="col-lg-4 p-2" />');
+                    }
+                    reader.readAsDataURL(files[i]);
+                }
+            });
+        });
+
+    </script>
+}
