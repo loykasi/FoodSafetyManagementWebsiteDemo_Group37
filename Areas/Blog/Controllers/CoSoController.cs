@@ -98,7 +98,7 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.Blog.Controllers
             if (!ModelState.IsValid)
             {
                 var user = await _userManager.GetUserAsync(this.User);
-                
+
                 post.ChuCoSoId = user.Id;
                 _dbContext.Add(post);
 
@@ -137,20 +137,26 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.Blog.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var post = await _dbContext.CoSos.FindAsync(id);
-
-            if (post == null)
+            var coSo = await _dbContext.CoSos.FindAsync(id);
+            if (coSo == null)
             {
                 return NotFound();
             }
 
-            _dbContext.CoSos.Remove(post);
+            // Xóa các bản ghi tham chiếu
+            var references = await _dbContext.HoSoCapGiayChungNhans.Where(r => r.IdcoSo == id).ToListAsync();
+            _dbContext.HoSoCapGiayChungNhans.RemoveRange(references);
+
+            // Xóa bản ghi trong bảng CoSos
+            _dbContext.CoSos.Remove(coSo);
+
             await _dbContext.SaveChangesAsync();
 
-            StatusMessage = "Bạn vừa xóa cơ sở: " + post.TenCoSo;
+            StatusMessage = "Bạn vừa xóa cơ sở: " + coSo.TenCoSo;
 
             return RedirectToAction(nameof(Index));
         }
+
 
 
 

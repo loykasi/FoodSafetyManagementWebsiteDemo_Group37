@@ -9,22 +9,21 @@
 
 <partial name="_AlertMessage" />
 
-<aside class="col-md-4">
-    <div class="widget search-widget">
-        <h5>Tìm Kiếm Cơ Sở</h5>
-        <form asp-action="Index" method="get" class="search-form">
-            <div class="input-group mt-3">
-                <input type="text" name="searchString" placeholder="Tìm cơ sở, chủ cơ sở, số giấy phép..." class="form-control">
-                <div class="input-group-append">
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
-                </div>
-            </div>
-        </form>
-    </div>
-</aside>
-
-<div class="content container-fluid">
+<div class="content container-fluid" style="margin-top:-150px;>
     <div class="page-header">
+        <aside class="col-md-4">
+            <div class="widget search-widget">
+                <h5>Tìm Kiếm Cơ Sở</h5>
+                <form asp-action="Index" method="get" class="search-form">
+                    <div class="input-group mt-3">
+                        <input type="text" name="searchString" placeholder="Tìm cơ sở, chủ cơ sở, số giấy phép..." class="form-control">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </aside>
         <div class="row align-items-center">
             <div class="col">
                 <div class="mt-5">
@@ -55,12 +54,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var item in Model)
-                                {
+                            @foreach (var item in Model)
+                            {
                                     <tr>
                                         <td>
                                             <a asp-action="Details" asp-route-id="@item.IdcoSo">
-                                                @Html.DisplayFor(modelItem => item.TenCoSo)
+                                            @Html.DisplayFor(modelItem => item.TenCoSo)
                                             </a>
                                         </td>
                                         <td>@Html.DisplayFor(modelItem => item.ChuCoSo.HoTen)</td>
@@ -87,7 +86,7 @@
                                             </div>
                                         </td>
                                     </tr>
-                                }
+                            }
                             </tbody>
                         </table>
                     </div>

@@ -123,22 +123,25 @@ end
 
 go
 --duyet ho so cap giay chung nhan
-create procedure duyetGiayChungNhan
-	@IDGiayChungNhan int
-as
-begin 
---0:chua duyet, 1:duyet, -1:huybo
-	update HoSoCapGiayChungNhan
-	set TrangThai= 1 
-	where IDGiayChungNhan=@IDGiayChungNhan
+CREATE PROCEDURE duyetGiayChungNhan
+    @IDGiayChungNhan INT
+AS
+BEGIN 
+    -- 0: chưa duyệt, 1: duyệt, -1: hủy bỏ
+    UPDATE HoSoCapGiayChungNhan
+    SET TrangThai = 1 
+    WHERE IdgiayChungNhan = @IDGiayChungNhan;
 
-	declare @IDCoSo int = ( select IDCoSo from HoSoCapGiayChungNhan where IDGiayChungNhan=@IDGiayChungNhan)
-	declare @NgayXetDuyet date = getdate()
-	declare @NgayHetHan date = dateadd(year,3,@NgayXetDuyet)
-	update CoSo
-	set NgayCapCNATTP=@NgayXetDuyet, NgayHetHanCNATTP=@NgayHetHan
-	where IDCoSo = @IDCoSo
-end
+    DECLARE @IDCoSo INT = (SELECT IdcoSo FROM HoSoCapGiayChungNhan WHERE IdgiayChungNhan = @IDGiayChungNhan);
+    DECLARE @NgayXetDuyet DATE = GETDATE();
+    DECLARE @NgayHetHan DATE = DATEADD(YEAR, 3, @NgayXetDuyet);
+
+    UPDATE CoSo
+    SET NgayCapCnattp = @NgayXetDuyet, NgayHetHanCnattp = @NgayHetHan
+    WHERE IdcoSo = @IDCoSo;
+END
+GO
+EXEC duyetGiayChungNhan @IDGiayChungNhan = 1;
 go
 
 

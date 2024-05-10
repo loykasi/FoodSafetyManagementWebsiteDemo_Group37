@@ -16,11 +16,9 @@
         <div class="dropdown-menu" aria-labelledby="managedropdownmenu">
             @if (isMember.Succeeded)
             {
-                <a class="dropdown-item" asp-action="Index" asp-controller="CoSo" asp-area="Blog">
-                    Quản lý Cơ Sở
-                </a>
-               
-                <a class="dropdown-item" asp-area="Identity" asp-controller="Quản Lý" asp-action="Index">
+
+
+                <a class="dropdown-item" asp-area="Identity" asp-controller="Manage" asp-action="Index">
                     Thông Tin Cá Nhân
                 </a>
                 
