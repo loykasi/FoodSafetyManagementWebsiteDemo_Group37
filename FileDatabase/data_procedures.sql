@@ -123,7 +123,7 @@ end
 
 go
 --duyet ho so cap giay chung nhan
-CREATE PROCEDURE duyetGiayChungNhan
+CREATE OR ALTER PROCEDURE duyetGiayChungNhan
     @IDGiayChungNhan INT
 AS
 BEGIN 
