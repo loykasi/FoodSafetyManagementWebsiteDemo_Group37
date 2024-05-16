@@ -3,13 +3,25 @@
 @{
     Layout = "_Layout";
 }
+@{
+    ViewBag.Title = "Chi tiết hồ sơ";
+}
+
+<h1>Chi tiết hồ sơ</h1>
+
 @if (ViewBag.DuyetSuccess != null)
 {
-    <div class="alert alert-success" role="alert">
+    <div class="alert alert-success">
         @ViewBag.DuyetSuccess
     </div>
 }
 
+@if (ViewBag.DuyetWarning != null)
+{
+    <div class="alert alert-warning">
+        @ViewBag.DuyetWarning
+    </div>
+}
 <div class="content container-fluid">
     <div class="row">
         <div class="col-md-12">

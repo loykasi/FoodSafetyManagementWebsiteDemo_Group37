@@ -129,6 +129,10 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.HoSo.Controllers
             {
                 ViewBag.DuyetSuccess = TempData["DuyetSuccess"].ToString();
             }
+            if (TempData["DuyetWarning"] != null)
+            {
+                ViewBag.DuyetWarning = TempData["DuyetWarning"].ToString();
+            }
 
             var listHoSo = from h in _dbContext.HoSoCapGiayChungNhans
                            where h.IdcoSo == hoSo.IdcoSo && h.IdgiayChungNhan != id
@@ -150,6 +154,8 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.HoSo.Controllers
         }
 
 
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Duyet(int id)
@@ -162,14 +168,21 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.HoSo.Controllers
                     return NotFound();
                 }
 
+                // Kiểm tra trạng thái của hồ sơ
+                if (hoSo.TrangThai == 1) // Giả sử 1 là trạng thái đã duyệt
+                {
+                    TempData["DuyetWarning"] = "Hồ sơ đã được duyệt trước đó";
+                    return RedirectToAction(nameof(Details), new { id = id });
+                }
+
                 // Gọi procedure duyetGiayChungNhan với id của hồ sơ cần duyệt
                 await _dbContext.Database.ExecuteSqlInterpolatedAsync($"EXEC duyetGiayChungNhan {id}");
 
                 // Set TempData
-                TempData["DuyetSuccess"] = "Đã duyệt hồ sơ";
+                TempData["DuyetSuccess"] = "Đã duyệt hồ sơ thành công";
 
                 // Cập nhật lại dữ liệu và trả về trang chi tiết hồ sơ
-                return RedirectToAction(nameof(Index), new { id = id });
+                return RedirectToAction(nameof(Details), new { id = id });
             }
             catch (Exception ex)
             {
@@ -178,6 +191,8 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.HoSo.Controllers
                 return RedirectToAction(nameof(Index)); // Hoặc chuyển hướng đến một trang lỗi khác
             }
         }
+
+
     }
 }
 
