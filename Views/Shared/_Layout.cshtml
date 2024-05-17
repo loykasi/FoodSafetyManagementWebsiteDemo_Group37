@@ -62,14 +62,12 @@
                 <div id="sidebar-menu" class="sidebar-menu">
                     <ul>
                         <li>
-                            <a href="@Url.Action("Index", "Home")"><i class="fas fa-tachometer-alt"></i> <span>Trang Chủ</span></a>
-                        </li>
-                        <li>
                             <a href="@Url.Action("Index", "HienThiTinTuc", new { area = "Blog" })">
-                                <i class="fa fa-spinner fa-spin"></i> <span>Tin Tức</span>
+                                <i class="fas fa-tachometer-alt"></i> <span>Trang Chủ</span>
                             </a>
+                            
                         </li>
-                       
+                        
                         <li class="submenu">
                             <a href="#"><i class="fas fa-suitcase"></i> <span> Đăng Ký Chứng Nhận  </span> <span class="menu-arrow"></span></a>
                             <ul class="submenu_class" style="display: none;">
@@ -88,8 +86,8 @@
                         <li class="submenu">
                             <a href="#"><i class="fas fa-key"></i> <span> Báo Cáo Vi Phạm </span> <span class="menu-arrow"></span></a>
                             <ul class="submenu_class" style="display: none;">
+                                <li><a href=@Url.Action("List", "BaoCaoViPham")> Danh sách báo Cáo </a></li>
                                 <li><a href=@Url.Action("Index", "BaoCaoViPham")> Báo Cáo Vi Phạm </a></li>
-                     
                             </ul>
                         </li>
                         <li>

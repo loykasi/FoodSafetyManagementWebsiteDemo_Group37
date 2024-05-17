@@ -14,14 +14,36 @@ namespace WebAnToanVeSinhThucPhamDemo.Controllers
         private readonly IWebHostEnvironment _webHost;
 
         private int _currentPage = 1;
-        private int _maxRowPerPage = 6;
+        private int _maxRowPerPage = 8;
         private int _totalPage = 0;
-        private Models.ViolationReportViewModel _viewModel = new Models.ViolationReportViewModel();
+        private ViolationReportViewModel _viewModel = new ViolationReportViewModel();
 
         public BaoCaoViPhamController(QlattpContext context, IWebHostEnvironment webHost)
         {
             _context = context;
             _webHost = webHost;
+        }
+
+        public ActionResult List()
+        {
+            var baoCaoViPhams = _context.BaoCaoViPhams.Include(b => b.IdcoSoNavigation)
+                                                        .ThenInclude(c => c.PhuongXa)
+                                                        .ThenInclude(p => p.QuanHuyen);
+            return View(baoCaoViPhams);
+        }
+
+        public async Task<IActionResult> Detail(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var baoCaoViPham = await _context.BaoCaoViPhams.Include(b => b.IdcoSoNavigation)
+                                                        .ThenInclude(c => c.PhuongXa)
+                                                        .ThenInclude(p => p.QuanHuyen)
+                                                        .FirstOrDefaultAsync(b => b.IdbaoCao == id);
+            return View(baoCaoViPham);
         }
 
         public ActionResult Index()

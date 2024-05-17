@@ -64,7 +64,8 @@ namespace WebAnToanVeSinhThucPhamDemo.Controllers
                 {
                     SaveImage(file, uploadFolder);
                 }
-                return Content("Đăng ký thành công");
+                TempData["AlertMessage"] = "Gửi thành công";
+                return RedirectToAction("DangKyGiayChungNhanMoi");
             }
             catch (Exception ex)
             {

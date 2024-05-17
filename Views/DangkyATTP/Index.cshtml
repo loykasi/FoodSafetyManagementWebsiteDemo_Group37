@@ -4,6 +4,12 @@
 <link href="~/css/ImageClick.css" rel="stylesheet" />
 <hr />
 
+@if (TempData["AlertMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["AlertMessage"]
+    </div>
+}
 <div class="content container-fluid">
     
     @*<div class="page-header">

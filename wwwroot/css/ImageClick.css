@@ -44,8 +44,8 @@ to {transform:scale(1)}
 /* The Close Button */
 .close {
 position: absolute;
-top: 15px;
-right: 35px;
+top: 100px;
+right: 100px;
 color: #f1f1f1;
 font-size: 40px;
 font-weight: bold;
