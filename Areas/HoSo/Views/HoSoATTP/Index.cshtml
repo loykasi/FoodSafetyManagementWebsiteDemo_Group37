@@ -102,7 +102,7 @@
                                     <tr>
 
                                         <td>@Html.DisplayFor(modelItem => item.IdgiayChungNhan)</td>
-                                        <td>@Html.DisplayFor(modelItem => item.NgayDangKy)</td>
+                                        <td>@String.Format("{0:dd/MM/yyyy}", item.NgayDangKy)</td>
                                         <td>@Html.DisplayFor(modelItem => item.LoaiThucPham)</td>
                                         <td>@Html.DisplayFor(modelItem => item.IdcoSoNavigation.TenCoSo)</td>
                                         <td>@Html.DisplayFor(modelItem => item.IdcoSoNavigation.ChuCoSo.HoTen)</td>

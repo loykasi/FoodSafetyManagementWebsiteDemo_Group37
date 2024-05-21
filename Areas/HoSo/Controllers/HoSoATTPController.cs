@@ -8,6 +8,7 @@ using WebAnToanVeSinhThucPhamDemo.Data;
 using WebAnToanVeSinhThucPhamDemo.Models;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 
 namespace WebAnToanVeSinhThucPhamDemo.Areas.HoSo.Controllers
 {
@@ -18,12 +19,14 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.HoSo.Controllers
     {
         private readonly QlattpContext _dbContext;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IEmailSender _emailSender;
 
-        public HoSoATTPController(QlattpContext dbContext, UserManager<AppUser> userManager)
+        public HoSoATTPController(QlattpContext dbContext, UserManager<AppUser> userManager, IEmailSender emailSender)
         {
             _dbContext = dbContext;
             _userManager = userManager;
             StatusMessage = string.Empty;
+            _emailSender = emailSender;
         }
 
         [TempData]
@@ -105,6 +108,8 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.HoSo.Controllers
             return View(hoSoList);
         }
 
+
+
         // GET: hoso/HoSoATTP/Details/5
         [HttpGet]
         public async Task<IActionResult> Details(int? id)
@@ -133,7 +138,10 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.HoSo.Controllers
             {
                 ViewBag.DuyetWarning = TempData["DuyetWarning"].ToString();
             }
-
+            if (TempData["KhongDuyetSuccess"] != null)
+            {
+                ViewBag.KhongDuyetSuccess = TempData["KhongDuyetSuccess"].ToString();
+            }
             var listHoSo = from h in _dbContext.HoSoCapGiayChungNhans
                            where h.IdcoSo == hoSo.IdcoSo && h.IdgiayChungNhan != id
                            orderby h.NgayDangKy descending
@@ -155,43 +163,119 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.HoSo.Controllers
 
 
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Duyet(int id)
+        public async Task<IActionResult> Duyet(int id, string ghiChu)
         {
             try
             {
-                var hoSo = await _dbContext.HoSoCapGiayChungNhans.FirstOrDefaultAsync(h => h.IdgiayChungNhan == id);
+                var hoSo = await _dbContext.HoSoCapGiayChungNhans
+                    .Include(h => h.IdcoSoNavigation)
+                    .FirstOrDefaultAsync(h => h.IdgiayChungNhan == id);
+
                 if (hoSo == null)
                 {
                     return NotFound();
                 }
 
-                // Kiểm tra trạng thái của hồ sơ
-                if (hoSo.TrangThai == 1) // Giả sử 1 là trạng thái đã duyệt
+                if (hoSo.TrangThai == 1)
                 {
                     TempData["DuyetWarning"] = "Hồ sơ đã được duyệt trước đó";
                     return RedirectToAction(nameof(Details), new { id = id });
                 }
 
-                // Gọi procedure duyetGiayChungNhan với id của hồ sơ cần duyệt
                 await _dbContext.Database.ExecuteSqlInterpolatedAsync($"EXEC duyetGiayChungNhan {id}");
 
-                // Set TempData
                 TempData["DuyetSuccess"] = "Đã duyệt hồ sơ thành công";
 
-                // Cập nhật lại dữ liệu và trả về trang chi tiết hồ sơ
+                var user = await _userManager.FindByIdAsync(hoSo.IdcoSoNavigation.ChuCoSoId);
+                if (user != null)
+                {
+                    var subject = "Thông báo: Hồ sơ đăng ký chứng nhận ATTP của bạn đã được duyệt";
+                    var message = $@"
+            <html>
+            <head>
+            <style>
+                p {{
+                    color: blue;
+                }}
+            </style>
+            </head>
+            <body>
+            <p>Xin chào <strong>{user.HoTen}</strong>,</p>
+            <p style='color: green;'>Hồ sơ đăng ký chứng nhận An toàn thực phẩm của cơ sở <strong>{hoSo.IdcoSoNavigation.TenCoSo}</strong> đã được duyệt thành công.</p>
+            <p>Ghi chú: {ghiChu}</p>
+            <p>Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi.</p>
+            <p>Trân trọng,</p>
+            <p>Ban quản lý An toàn thực phẩm TP Đà Nẵng</p>
+            </body>
+            </html>";
+
+                    await _emailSender.SendEmailAsync(user.Email, subject, message);
+                }
+
                 return RedirectToAction(nameof(Details), new { id = id });
             }
             catch (Exception ex)
             {
-                // Xử lý nếu có lỗi xảy ra
-                // Ví dụ: log lỗi, hiển thị thông báo lỗi cho người dùng, ...
-                return RedirectToAction(nameof(Index)); // Hoặc chuyển hướng đến một trang lỗi khác
+                return RedirectToAction(nameof(Index));
             }
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> KhongDuyet(int id, string ghiChu)
+        {
+            try
+            {
+                var hoSo = await _dbContext.HoSoCapGiayChungNhans
+                    .Include(h => h.IdcoSoNavigation)
+                    .FirstOrDefaultAsync(h => h.IdgiayChungNhan == id);
+
+                if (hoSo == null)
+                {
+                    return NotFound();
+                }
+
+                hoSo.TrangThai = 0;
+                _dbContext.Update(hoSo);
+                await _dbContext.SaveChangesAsync();
+
+                TempData["KhongDuyetSuccess"] = "Hồ sơ đã bị từ chối";
+
+                var user = await _userManager.FindByIdAsync(hoSo.IdcoSoNavigation.ChuCoSoId);
+                if (user != null)
+                {
+                    var subject = "Thông báo: Hồ sơ đăng ký chứng nhận ATTP của bạn đã bị từ chối";
+                    var message = $@"
+            <html>
+            <head>
+            <style>
+                p {{
+                    color: blue;
+                }}
+            </style>
+            </head>
+            <body>
+            <p>Xin chào <strong>{user.HoTen}</strong>,</p>
+            <p style='color: red;'>Hồ sơ đăng ký chứng nhận An toàn thực phẩm Cơ sở <strong>{hoSo.IdcoSoNavigation.TenCoSo}</strong> đã bị từ chối.</p>
+            <p>Ghi chú: {ghiChu}</p>
+            <p>Vui lòng kiểm tra lại thông tin và nộp lại hồ sơ.</p>
+            <p>Trân trọng,</p>
+            <p>Ban quản lý An toàn thực phẩm TP Đà Nẵng</p>
+            </body>
+            </html>";
+
+                    await _emailSender.SendEmailAsync(user.Email, subject, message);
+                }
+
+                return RedirectToAction(nameof(Details), new { id = id });
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+        }
 
     }
 }

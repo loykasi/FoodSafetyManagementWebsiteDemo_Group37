@@ -1,35 +1,49 @@
-﻿﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewData["Title"] = "Đăng ký giấy chứng nhận vệ sinh an toàn thực phẩm";
 }
-<div class="content container-fluid">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <title>@ViewData["Title"]</title>
+    <style>
+        
+        .container-fluid {
+            padding-top: 50px;
+        }
 
-    @* <div class="page-header">
-    <div class="row">
-    <div class="col">
-    <h3 class="page-title">Horizontal Form</h3>
-    <ul class="breadcrumb">
-    <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-    <li class="breadcrumb-item active">Horizontal Form</li>
-    </ul>
-    </div>
-    </div>
-    </div> *@
+        .card-header {
+            background-color: #007bff;
+            color: #007bff;
+        }
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title">Đăng ký giấy chứng nhận vệ sinh an toàn thực phẩm</h5>
-                </div>
-                <div class="card-body">
-                    <form asp-action="DangKyLaiGiayChungNhan" method="post" enctype="multipart/form-data">
-                        <div class="row">
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .text-end button {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="content container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Đăng ký giấy chứng nhận vệ sinh an toàn thực phẩm</h4>
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="DangKyLaiGiayChungNhan" method="post" enctype="multipart/form-data">
+                            <h5 class="card-title">Thông tin cơ sở</h5>
                             <div class="form-group row">
                                 <label class="col-lg-3 col-form-label">Cơ Sở</label>
                                 <div class="col-lg-9">
-                                    @Html.DropDownList("coso", ViewData["listCoSo"] as List<SelectListItem>)
+                                    @Html.DropDownList("coso", ViewData["listCoSo"] as List<SelectListItem>, new { @class = "form-control" })
                                 </div>
                             </div>
                             <h5 class="card-title">Thông tin giấy chứng nhận</h5>
@@ -45,41 +59,38 @@
                                     <input type="file" name="hinhanh" class="form-control" multiple>
                                 </div>
                             </div>
-                        </div>
-                        <div class="text-end">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                    </form>
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
 
-
-<script type="text/javascript">
-
-    $(document).ready(function () {
-        $("#quanhuyen").change(function () {
-            $.ajax({
-                type: 'POST',
-                url: '@Url.Action("GetPhuongXa")', // we are calling json method
-                dataType: 'json',
-                data: { id: $("#quanhuyen").val() },
-                success: function (phuongxas) {
-                    $("#phuongxa").empty();
-                    $.each(phuongxas, function (i, item) {
-                        $("#phuongxa").append('<option value="'
-                            + item.value + '">'
-                            + item.text + '</option>');
-
-                    });
-                },
-                error: function (ex) {
-                    alert('failed to retrieve states.' + ex);
-                }
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#quanhuyen").change(function () {
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetPhuongXa")',
+                    dataType: 'json',
+                    data: { id: $("#quanhuyen").val() },
+                    success: function (phuongxas) {
+                        $("#phuongxa").empty();
+                        $.each(phuongxas, function (i, item) {
+                            $("#phuongxa").append('<option value="' + item.value + '">' + item.text + '</option>');
+                        });
+                    },
+                    error: function (ex) {
+                        alert('failed to retrieve states.' + ex);
+                    }
+                })
             })
-        })
-    });
-</script>
+        });
+    </script>
+</body>
+</html>
