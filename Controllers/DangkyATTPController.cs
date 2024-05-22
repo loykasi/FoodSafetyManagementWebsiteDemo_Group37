@@ -1,10 +1,16 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Build.Framework;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Globalization;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 using WebAnToanVeSinhThucPhamDemo.Data;
 using WebAnToanVeSinhThucPhamDemo.Models;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace WebAnToanVeSinhThucPhamDemo.Controllers
 {
@@ -21,9 +27,10 @@ namespace WebAnToanVeSinhThucPhamDemo.Controllers
             _webHost = webHost;
             _dataContext = new DataContext();
         }
-
+        //Note
         public IActionResult DangKyGiayChungNhanMoi()
         {
+            string tempPhuongXa = TempData["phuongXa"] == null ? "0" : TempData["phuongXa"].ToString();
             List<SelectListItem> li = new List<SelectListItem>();
             li.Add(new SelectListItem { Text = "Chọn quận huyện", Value = "0" });
             foreach (var i in _context.QuanHuyen)
@@ -31,29 +38,33 @@ namespace WebAnToanVeSinhThucPhamDemo.Controllers
                 li.Add(new SelectListItem { Text = i.TenQuanHuyen, Value = i.IDQuanHuyen.ToString() });
             }
             ViewData["quanhuyen"] = li;
+
+            List<SelectListItem> li2 = new List<SelectListItem>();
+            li2.Add(new SelectListItem { Text = "Chọn phường xã", Value = "0" });
+            foreach (var i in _context.PhuongXa)
+            {
+                if (tempPhuongXa == i.IDPhuongXa.ToString())
+                {
+                    li2.Add(new SelectListItem { Text = i.TenPhuongXa, Value = i.IDPhuongXa.ToString(), Selected = true });
+                }
+                else
+                {
+                    li2.Add(new SelectListItem { Text = i.TenPhuongXa, Value = i.IDPhuongXa.ToString(), Selected = false });
+                }
+            }
+            ViewData["quanhuyen"] = li;
+            ViewData["phuongxa"] = li2;
             return View("Index");
         }
 
+        //Note
         [HttpPost] //Chạy cái action Insert của form ở view Index
         [ActionName("Insert")]
-        public ActionResult DangKyGiayChungNhanMoi(string tencoso, int phuongxa, string diachi, int? loaihinhkinhdoanh, string sogiayphep, DateOnly ngaycap, string loaithucpham, List<IFormFile> hinhanh)
+        public ActionResult DangKyGiayChungNhanMoi(IFormCollection form)
         {
-            try
-            {
-                String imageNames = "";
-                String loaihinhkd;
-                foreach (IFormFile file in hinhanh)
-                {
-                    imageNames += file.FileName + ",";
-                }
-                if (loaihinhkinhdoanh == 1)
-                    loaihinhkd = "Cơ sở sản xuất, kinh doanh thực phẩm";
-                else
-                    loaihinhkd = "Cơ sở kinh doanh dịch vụ ăn uống";
-                // chay lenh insert
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                int maHoSo = _dataContext.insertGiayChungNhan_CoSo(userId, tencoso, phuongxa, diachi, loaihinhkd, sogiayphep, ngaycap, loaithucpham, imageNames);
+            bool isValid = true;
 
+<<<<<<< Updated upstream
                 //luu file
                 string uploadFolder = Path.Combine(_webHost.WebRootPath, "HoSoDangKyATTP", maHoSo.ToString());
                 if (!Directory.Exists(uploadFolder))
@@ -67,10 +78,113 @@ namespace WebAnToanVeSinhThucPhamDemo.Controllers
                 return Content("Đăng ký thành công");
             }
             catch (Exception ex)
+=======
+            string tencoso = form["tencoso"];
+            string phuongxa = form["phuongxa"];
+            string diachi = form["diachi"];
+            string loaihinhkinhdoanh = form["loaihinhkinhdoanh"];
+            string sogiayphep = form["sogiayphep"];
+            DateOnly ngaycap;
+            isValid = DateOnly.TryParse(form["ngaycap"].ToString(), out ngaycap);
+
+            string loaithucpham = form["loaithucpham"];
+
+            //độ dài 10 -> 100, ko chứ kí tự đặc biệt !@#
+            string checkSpecialCharacter = @"^[^!@#]{10,100}$";
+            string checkString = @"^[^!@#0-9]{10,100}$";
+            //kí tự đầu là 0, 9 kí tự sau là số
+            string checkPhone = @"^[0][1-9]{9}$";
+            string checkSoDoanhNghiep = @"^[0-9]{10}$";
+            if (!new Regex(checkSpecialCharacter).IsMatch(tencoso))
+>>>>>>> Stashed changes
             {
-                System.Diagnostics.Debug.WriteLine(ex);
-                return Content("Đăng ký thất bại");
+                isValid = false;
+                TempData["errorTenCoSo"] = "Tên không hợp lệ.";
             }
+            if (!new Regex(checkSpecialCharacter).IsMatch(diachi))
+            {
+                isValid = false;
+                TempData["errorDiaChi"] = "Địa chỉ không hợp lệ.";
+            }
+            if(loaihinhkinhdoanh == "0")
+            {
+                isValid = false;
+                TempData["errorLoaiHinhKinhDoanh"] = "Hãy chọn loại hình kinh doanh.";
+            }
+            if(phuongxa == "0")
+            {
+                isValid = false;
+                TempData["errorPhuongXa"] = "Hãy chọn phường xã.";
+            }
+            if (!new Regex(checkSoDoanhNghiep).IsMatch(sogiayphep))
+            {
+                isValid = false;
+                TempData["errorSoGiayPhep"] = "Số giấy phép kinh doanh không hợp lệ";
+            }
+            if(ngaycap.Year < 1900)
+            {
+                TempData["errorNgayCap"] = "Ngày cấp giấy phép kinh doanh không hợp lệ";
+            }
+            if(!new Regex(checkString).IsMatch(loaithucpham))
+            {
+                isValid = false;
+                TempData["errorLoaiThucPham"] = "Loại thực phẩm không hợp lệ";
+            }
+            if (form.Files.Count < 4)
+            {
+                isValid = false;
+                TempData["errorHinhAnh"] = "Số lượng hình ảnh không đủ";
+            }
+            if(isValid == false)
+            {
+                TempData["tenCoSo"] = tencoso;
+                TempData["diaChi"] = diachi;
+                TempData["phuongXa"] = phuongxa;
+                TempData["loaiHinhKinhDoanh"] = loaihinhkinhdoanh;
+                TempData["soGiayPhep"] = sogiayphep;
+                string test = ngaycap.ToString("yyyy-MM-dd");
+                TempData["ngayCap"] = test;
+                TempData["loaiThucPham"] = loaithucpham;
+                //TempData["hinhAnh"] = form.Files;
+                return RedirectToActionPermanent("DangKyGiayChungNhanMoi");
+            }
+            else
+            {
+                try
+                {
+                    String imageNames = "";
+                    String loaihinhkd;
+                    foreach (var file in form.Files)
+                    {
+                        imageNames += file.FileName + ",";
+                    }
+                    if (loaihinhkinhdoanh == "1")
+                        loaihinhkd = "Cơ sở sản xuất, kinh doanh thực phẩm";
+                    else
+                        loaihinhkd = "Cơ sở kinh doanh dịch vụ ăn uống";
+                    // chay lenh insert
+                    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    int maHoSo = _dataContext.insertGiayChungNhan_CoSo(userId, tencoso, Convert.ToInt16(phuongxa), diachi, loaihinhkd, sogiayphep, ngaycap, loaithucpham, imageNames);
+
+                    //luu file
+                    string uploadFolder = Path.Combine(_webHost.WebRootPath, "HoSoDangKyATTP", maHoSo.ToString());
+                    if (!Directory.Exists(uploadFolder))
+                    {
+                        Directory.CreateDirectory(uploadFolder);
+                    }
+                    foreach (var file in form.Files)
+                    {
+                        SaveImage(file, uploadFolder);
+                    }
+                    TempData["AlertMessage"] = "Gửi thành công";
+                    return RedirectToAction("DangKyGiayChungNhanMoi");
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex);
+                    return Content("Đăng ký thất bại");
+                }
+            }  
         }
 
         //Function lưu hình ảnh
@@ -83,16 +197,14 @@ namespace WebAnToanVeSinhThucPhamDemo.Controllers
                 await file.CopyToAsync(stream);
             }
         }
-
+        //Note
         public JsonResult GetPhuongXa(string id)
         {
-            List<PhuongXa> listPhuongXa = _context.PhuongXa.Where(i => i.IDQuanHuyen.ToString() == id).ToList();
-            List<SelectListItem> phuongxas = new List<SelectListItem>();
-            foreach (var i in listPhuongXa)
+            if (id == "0")
             {
-                phuongxas.Add(new SelectListItem { Text = i.TenPhuongXa, Value = i.IDPhuongXa.ToString() });
+                return Json(new SelectList(_context.PhuongXa, "IDPhuongXa", "TenPhuongXa"));
             }
-            return Json(new SelectList(phuongxas, "Value", "Text"));
+            return Json(new SelectList(_context.PhuongXa.Where(x=> x.IDQuanHuyen.ToString()  == id), "IDPhuongXa", "TenPhuongXa"));
         }
 
         //Code đăng ký lại giấy chứng nhận
