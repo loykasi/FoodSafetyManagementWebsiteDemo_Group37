@@ -20,28 +20,33 @@
                 <h5 class="card-title">Báo cáo vi phạm</h5>
             </div>
             <div class="card-body">
-                <form asp-action="Index" method="post" enctype="multipart/form-data">
+                <form id="reportForm" asp-action="Index" method="post" enctype="multipart/form-data">
                     <div class="form-group">
-                        <label asp-for="HoTen" class="control-label">Họ tên người báo cáo</label>
+                        <label asp-for="HoTen" class="control-label">Họ tên người báo cáo *</label>
+                        <span id="HoTen-log" class="text-danger"></span>
                         <input asp-for="HoTen" class="form-control" />
                         <span asp-validation-for="HoTen" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="SDT" class="control-label">Số điện thoại</label>
+                        <label asp-for="SDT" class="control-label">Số điện thoại *</label>
+                        <span id="SDT-log" class="text-danger"></span>
                         <input asp-for="SDT" class="form-control" />
                         <span asp-validation-for="SDT" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="CCCD" class="control-label">Căn cước công dân</label>
+                        <label asp-for="CCCD" class="control-label">Căn cước công dân *</label>
+                        <span id="CCCD-log" class="text-danger"></span>
                         <input asp-for="CCCD" class="form-control" />
                         <span asp-validation-for="CCCD" class="text-danger"></span>
                     </div>
-                        <div class="form-group">
-                            <label asp-for="NoiDung" class="control-label">Nội dung báo cáo</label>
-                            <input asp-for="NoiDung" class="form-control" />
-                        </div>
                     <div class="form-group">
-                        <label for="uploadFiles" class="control-label">Hình ảnh minh chứng</label>
+                        <label asp-for="NoiDung" class="control-label">Nội dung báo cáo *</label>
+                        <span id="NoiDung-log" class="text-danger"></span>
+                        <input asp-for="NoiDung" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="uploadFiles" class="control-label">Hình ảnh minh chứng *</label>
+                        <span id="uploadFiles-log" class="text-danger"></span>
                         <input name="uploadFiles" id="uploadFiles" class="form-control" type="file" multiple />
                         @{
                             var yourFieldError = ViewData.ModelState["uploadFiles"]?.Errors.FirstOrDefault()?.ErrorMessage;
@@ -51,94 +56,60 @@
                         {
                             <span class="text-danger">@yourFieldError</span>
                         }
-
                         <div id="imagePreview" class="row"></div>
                     </div>
 
                     <div class="form-group">
-                        <label asp-for="IDCoSo" class="control-label">Cơ sở</label>
-
-                        <div class="form-group row">
+                        <label asp-for="IDCoSo" class="control-label mb-3">Cơ sở *</label>
+                        <span id="IDCoSo-log" class="text-danger"></span>
+                        @* <div class="form-group row">
                             <div class="col-md-3">
                                 <input name="search" id="searchInput" type="text" class="form-control" placeholder="">
                             </div>
                             <div class="col-md-3">
                                 <input name="pageAction" id="searchButton" type="submit" class="form-control" value="search">
                             </div>
-                        </div>
-
+                        </div *@
                         <span asp-validation-for="IDCoSo" class="text-danger"></span>
 
-                        @*
-                            <table>
-                            <tr>
-                            <th>Company</th>
-                            <th>Contact</th>
-                            <th>Country</th>
-                            </tr>
-                            <tr>
-                            <td>Alfreds Futterkiste</td>
-                            <td>Maria Anders</td>
-                            <td>Germany</td>
-                            </tr>
-                            <tr>
-                            <td>Centro comercial Moctezuma</td>
-                            <td>Francisco Chang</td>
-                            <td>Mexico</td>
-                            </tr>
-                            </table>
-                        *@
-
-                        
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>Tên cơ sở</th>
-                                        <th>Địa chỉ</th>
-                                        <th>Phường</th>
-                                        <th>Quận</th>
-                                        <th>Chủ cơ sở</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="coSoGroup">
-                                @foreach (var item in Model.CoSoes)
-                                {
-                                    <tr>
-                                        <td>
-                                            <input type="radio" asp-for="IDCoSo" name="IDCoSo" value="@item.IdcoSo" id="CoSo@(item.IdcoSo)" />
-                                        </td>
-                                        <td>
-                                            @item.TenCoSo
-                                        </td>
-                                        <td>
-                                            @item.DiaChi
-                                        </td>
-                                        <td>
-                                            @item.PhuongXa.TenPhuongXa
-                                        </td>
-                                        <td>
-                                            @item.PhuongXa.QuanHuyen.TenQuanHuyen
-                                        </td>
-                                        <td>
-                                            @item.ChuCoSo.HoTen
-                                        </td>
-                                    </tr>
-                                }
-                                </tbody>
-                            </table>
-                        
-
-                        @*<div class="form-check" id="coSoGroup">
+                        <table class="table table-hover" id="coSoTable">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Tên cơ sở</th>
+                                    <th>Địa chỉ</th>
+                                    <th>Phường</th>
+                                    <th>Quận</th>
+                                    <th>Chủ cơ sở</th>
+                                </tr>
+                            </thead>
+                            <tbody id="coSoGroup">
                             @foreach (var item in Model.CoSoes)
                             {
-                                <div>
-                                <input type="radio" asp-for="IDCoSo" name="IDCoSo" value="@item.IdcoSo" id="CoSo@(item.IdcoSo)" class="form-check-input" />
-                                <label class="form-check-label" for="CoSo@(item.IdcoSo)">@(item.TenCoSo + " - " + item.DiaChi + ", " + item.PhuongXa.TenPhuongXa + ", " + item.PhuongXa.QuanHuyen.TenQuanHuyen + " - " + item.ChuCoSo.HoTen)</label>
-                                </div>
+                                <tr>
+                                    <td>
+                                        <input type="radio" asp-for="IDCoSo" name="IDCoSo" value="@item.IdcoSo" id="CoSo@(item.IdcoSo)" />
+                                    </td>
+                                    <td>
+                                        @item.TenCoSo
+                                    </td>
+                                    <td>
+                                        @item.DiaChi
+                                    </td>
+                                    <td>
+                                        @item.PhuongXa.TenPhuongXa
+                                    </td>
+                                    <td>
+                                        @item.PhuongXa.QuanHuyen.TenQuanHuyen
+                                    </td>
+                                    <td>
+                                        @item.ChuCoSo.HoTen
+                                    </td>
+                                </tr>
                             }
-                        </div>*@
-
+                            </tbody>
+                        </table>
+@* 
                         @if (Model.TotalPage != 1)
                         {
                             <div class="form-group row">
@@ -148,7 +119,7 @@
                                 <input name="pageAction" id="backButton" type="button" value="Back" class="col-md-1" />
                                 <input name="pageAction" id="nextButton" type="button" value="Next" class="col-md-1" />
                             </div>
-                        }
+                        } *@
                     </div>
 
                     <div class="form-group">
@@ -162,18 +133,89 @@
 </div>
 
 @section Scripts {
+    @* @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} *@
     <script>
         var group = document.getElementById("coSoGroup");
         var currentPageSpan = document.getElementById("currentPage");
         var totalPageSpan = document.getElementById("totalPage");
+        var reportForm = document.getElementById("reportForm");
+        var isValid = true;
+        var phoneNumberPattern = /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/;
+        var identificationPattern = /^(00[1-9]|0[1-8][0-9]|09[0-6])\d\d{2}\d{6}$/;
+        var fieldTop = Number.MIN_VALUE;
 
-        $(document).ready(function () {
+        reportForm.addEventListener('submit', (e) => {
+            isValid = true;
+            fieldTop = Number.MIN_VALUE
+            let hoTenField = document.getElementById("HoTen");
+            let sdtField = document.getElementById("SDT");
+            let cccdField = document.getElementById("CCCD");
+            let noiDungField = document.getElementById("NoiDung");
+            let fileField = document.getElementById("uploadFiles");
+            let selector = document.querySelector('input[name="IDCoSo"]:checked');
+
+            DisplayValidatationLog("HoTen", "", true);
+            DisplayValidatationLog("SDT", "", true);
+            DisplayValidatationLog("CCCD", "", true);
+            DisplayValidatationLog("NoiDung", "", true);
+            DisplayValidatationLog("uploadFiles", "", true);
+            DisplayValidatationLog("IDCoSo", "", true);
+
+            if (hoTenField.value == "") {
+                DisplayValidatationLog("HoTen", "Nhập họ và tên", false);
+            }
+
+            if (sdtField.value == "") {
+                DisplayValidatationLog("SDT", "Nhập số điện thoại", false);
+            } else if (!phoneNumberPattern.test(sdtField.value)) {
+                DisplayValidatationLog("SDT", "Sai định dạng", false);
+            }
+
+            if (cccdField.value == "") {
+                DisplayValidatationLog("CCCD", "Nhập số căn cước công dân", false);
+            } else if (!identificationPattern.test(cccdField.value)) {
+                DisplayValidatationLog("CCCD", "Sai đinh dạng", false);
+            }
+
+            if (noiDungField.value == "") {
+                DisplayValidatationLog("NoiDung", "Nhập nội dung lý do", false);
+            }
+
+            if (fileField.files.length == 0) {
+                DisplayValidatationLog("uploadFiles", "Cần tải ảnh minh chứng", false);
+            }
+            
+            if (!selector) {
+                DisplayValidatationLog("IDCoSo", "Chọn cơ sở", false);
+            }
+        
+            console.log(isValid);
+            if (!isValid) {
+                e.preventDefault();
+                window.scroll({
+                    top: fieldTop + window.pageYOffset - 100,
+                    behavior: 'smooth'
+                });
+            }
+            
+        });
+
+        function DisplayValidatationLog(idField, log, value) {
+            let logField = document.getElementById(idField + "-log");
+            logField.innerText = (log == "") ? "" : '(' + log + ')';
+            if (!value)
+            {
+                if (logField.getBoundingClientRect().top < fieldTop) {
+                    fieldTop = logField.getBoundingClientRect().top;
+                }
+            }
+            isValid = value;
+        }
+
+        @* $(document).ready(function () {
             var url = window.location.href;
             var urlParams = new URLSearchParams(new URL(url).search);
             var searchValue = urlParams.has('value') ? urlParams.get('value') : '';
-            $('#submitButton').click(function (e) {
-                console.log($('input[name="IDCoSo"]:checked').val());
-            });
             $('#searchButton').click(function (e) {
                 e.preventDefault();
                 searchValue = $('#searchInput').val()
@@ -187,14 +229,9 @@
                 var pageNumber = parseInt($('#currentPage').text()) - 1
                 search(searchValue, pageNumber);
             });
-            // $('#backButton').click(function (e) {
-            //     e.preventDefault();
-            //     var page = parseInt($('#currentPage').text()) - 1
-            //     window.location.href = '/BaoCaoViPham/Search?value=' + paramValue + '&pageAction=Back';
-            // });
-        });
+        }); *@
 
-        function search(searchValue, pageNumber) {
+        @* function search(searchValue, pageNumber) {
             $.ajax({
                 type: "GET",
                 url: "@Url.Action("Search")",
@@ -225,7 +262,7 @@
                     console.log(status);
                 },
             });
-        };
+        }; *@
 
         $('#coSoGroup').on('click', 'tr', function(event) {
             if (event.target.type !== 'radio') {
@@ -250,5 +287,38 @@
             });
         });
 
+
+        $(document).ready( function () {
+            table = $('#coSoTable').DataTable({
+                language: {
+                    "decimal":        "",
+                    "emptyTable":     "No data available in table",
+                    "info":           "", @* "Hiện từ _START_ đến _END_ trong số _TOTAL_ dòng", *@
+                    "infoEmpty":      "", @* "Hiện từ 0 đến 0 trong số 0 dòng", *@
+                    "infoFiltered":   "", @* "(filtered from _MAX_ total entries)", *@
+                    "infoPostFix":    "",
+                    "thousands":      ",",
+                    "lengthMenu":     "Hiển thị _MENU_ dòng",
+                    "loadingRecords": "Loading...",
+                    "processing":     "",
+                    "search":         "Tìm kiếm:",
+                    "zeroRecords":    "Không có dữ liệu phù hợp",
+                    "paginate": {
+                        "first":      "Đầu tiên",
+                        "last":       "Cuối cùng",
+                        "next":       "Tiếp theo",
+                        "previous":   "Trang trước"
+                    },
+                    "aria": {
+                        "orderable":  "Order by this column",
+                        "orderableReverse": "Reverse order this column"
+                    }
+                },
+                "order": [],
+                "columnDefs": [
+                    { "orderable": false, "targets": 0 }
+                ],
+            });
+        });
     </script>
 }

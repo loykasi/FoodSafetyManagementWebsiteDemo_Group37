@@ -66,6 +66,7 @@ namespace WebAnToanVeSinhThucPhamDemo.Controllers
             if (uploadFiles.Count == 0)
             {
                 ModelState.AddModelError("uploadFiles", "Chọn hình ảnh minh chứng");
+                return View(GetViewModel(""));
             }
 
             if (!ModelState.IsValid)
@@ -79,7 +80,7 @@ namespace WebAnToanVeSinhThucPhamDemo.Controllers
                 return View(GetViewModel(""));
             }
 
-            Models.ViolationReportViewModel viewModel = new Models.ViolationReportViewModel();
+            ViolationReportViewModel viewModel = new ViolationReportViewModel();
             int imageCount = 0;
             for (int i = 0; i < uploadFiles.Count; i++)
             {
@@ -134,7 +135,7 @@ namespace WebAnToanVeSinhThucPhamDemo.Controllers
 
                 _totalPage = _viewModel.CoSoes.Count;
             }
-            _viewModel.CoSoes = _viewModel.CoSoes.OrderBy(c => c.IdcoSo).Skip((_currentPage - 1) * _maxRowPerPage).Take(_maxRowPerPage).ToList();
+            // _viewModel.CoSoes = _viewModel.CoSoes.OrderBy(c => c.IdcoSo).Skip((_currentPage - 1) * _maxRowPerPage).Take(_maxRowPerPage).ToList();
             _viewModel.CurrentPage = _currentPage;
             _viewModel.TotalPage = ((_totalPage - 1) / _maxRowPerPage) + 1;
             return _viewModel;
