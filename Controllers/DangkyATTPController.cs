@@ -63,22 +63,6 @@ namespace WebAnToanVeSinhThucPhamDemo.Controllers
         public ActionResult DangKyGiayChungNhanMoi(IFormCollection form)
         {
             bool isValid = true;
-
-<<<<<<< Updated upstream
-                //luu file
-                string uploadFolder = Path.Combine(_webHost.WebRootPath, "HoSoDangKyATTP", maHoSo.ToString());
-                if (!Directory.Exists(uploadFolder))
-                {
-                    Directory.CreateDirectory(uploadFolder);
-                }
-                foreach (IFormFile file in hinhanh)
-                {
-                    SaveImage(file, uploadFolder);
-                }
-                return Content("Đăng ký thành công");
-            }
-            catch (Exception ex)
-=======
             string tencoso = form["tencoso"];
             string phuongxa = form["phuongxa"];
             string diachi = form["diachi"];
@@ -96,7 +80,7 @@ namespace WebAnToanVeSinhThucPhamDemo.Controllers
             string checkPhone = @"^[0][1-9]{9}$";
             string checkSoDoanhNghiep = @"^[0-9]{10}$";
             if (!new Regex(checkSpecialCharacter).IsMatch(tencoso))
->>>>>>> Stashed changes
+
             {
                 isValid = false;
                 TempData["errorTenCoSo"] = "Tên không hợp lệ.";
@@ -214,12 +198,7 @@ namespace WebAnToanVeSinhThucPhamDemo.Controllers
             //lấy danh sách cơ sở theo idChuCoSo
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var listCoSo = _context.CoSos.Where(a => a.ChuCoSoId == userId);
-            List<SelectListItem> li = new List<SelectListItem>();
-            foreach (var i in listCoSo)
-            {
-                li.Add(new SelectListItem { Text = i.TenCoSo, Value = i.IdcoSo.ToString() });
-            }
-            ViewData["listCoSo"] = li;
+            ViewData["listCoSo"] = new SelectList(listCoSo, "IdcoSo", "TenCoSo");
             return View("Index1");
         }
 
