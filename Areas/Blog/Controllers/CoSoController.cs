@@ -76,6 +76,7 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.Blog.Controllers
 
 
         // GET: Blog/Post/Create
+        [Authorize(Roles = RoleName.Member)]
         public async Task<IActionResult> CreateAsync()
         {
             var phuongxa = await _dbContext.PhuongXa.ToListAsync();
@@ -90,8 +91,14 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.Blog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = RoleName.Member)]
         public async Task<IActionResult> Create([Bind("TenCoSo,DiaChi,LoaiHinhKinhDoanh,SoGiayPhepKd,NgayCapGiayPhepKd,NgayCapCnattp,NgayHetHanCnattp,IDPhuongXa")] CoSo post)
         {
+            if (User.IsInRole(RoleName.Administrator))
+            {
+                StatusMessage = "Admin không thể thêm cơ sở.";
+                return RedirectToAction(nameof(Index));
+            }
             var phuongxa = await _dbContext.PhuongXa.ToListAsync();
             ViewData["phuongxa"] = new MultiSelectList(phuongxa, "IDPhuongXa", "TenPhuongXa");
 
@@ -181,8 +188,14 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.Blog.Controllers
 
 
         // GET: Blog/CoSo/Edit/5
+        [Authorize(Roles = RoleName.Member)]
         public async Task<IActionResult> Edit(int? id)
         {
+            if (User.IsInRole(RoleName.Administrator))
+            {
+                StatusMessage = "Admin không thể chỉnh sửa cơ sở.";
+                return RedirectToAction(nameof(Index));
+            }
             if (id == null)
             {
                 return NotFound();
@@ -213,8 +226,14 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.Blog.Controllers
         // POST: Blog/CoSo/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = RoleName.Member)]
         public async Task<IActionResult> Edit(int id, [Bind("IdcoSo,TenCoSo,DiaChi,LoaiHinhKinhDoanh,SoGiayPhepKd,NgayCapGiayPhepKd,NgayCapCnattp,NgayHetHanCnattp,IDPhuongXa")] CoSo post)
         {
+            if (User.IsInRole(RoleName.Administrator))
+            {
+                StatusMessage = "Admin không thể chỉnh sửa cơ sở.";
+                return RedirectToAction(nameof(Index));
+            }
             if (id != post.IdcoSo)
             {
                 return NotFound();
@@ -236,6 +255,9 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.Blog.Controllers
                 // Update cơ sở và lưu vào database
                 _dbContext.Update(post);
                 await _dbContext.SaveChangesAsync();
+                // Set the success message
+                TempData["StatusMessage"] = "Chỉnh sửa thành công";
+                return RedirectToAction(nameof(Index));
 
                 return RedirectToAction(nameof(Index));
             }

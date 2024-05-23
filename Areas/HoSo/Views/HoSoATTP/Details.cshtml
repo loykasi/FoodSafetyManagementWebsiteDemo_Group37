@@ -22,6 +22,11 @@
         @ViewBag.DuyetWarning
     </div>
 }
+
+@if (ViewBag.KhongDuyetSuccess != null)
+{
+    <div class="alert alert-danger">@ViewBag.KhongDuyetSuccess</div>
+}
 <div class="content container-fluid">
     <div class="row">
         <div class="col-md-12">
@@ -133,11 +138,28 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label></label>
+                            <!-- Form Duyệt -->
                             <form method="post" action="@Url.Action("Duyet", "HoSoATTP")">
                                 @Html.AntiForgeryToken()
                                 <input type="hidden" name="id" value="@Model.IdgiayChungNhan" />
+                                <div class="form-group">
+                                    <label for="duyetGhiChu">Ghi chú:</label>
+                                    <textarea id="duyetGhiChu" name="ghiChu" class="form-control" placeholder="Nhập ghi chú..."></textarea>
+                                </div>
                                 <button type="submit" class="btn btn-success">Duyệt hồ sơ</button>
                             </form>
+
+                            <!-- Form Không Duyệt -->
+                            <form method="post" action="@Url.Action("KhongDuyet", "HoSoATTP")">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@Model.IdgiayChungNhan" />
+                                <div class="form-group">
+                                    <label for="khongDuyetGhiChu">Ghi chú:</label>
+                                    <textarea id="khongDuyetGhiChu" name="ghiChu" class="form-control" placeholder="Nhập ghi chú..."></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-danger">Không duyệt hồ sơ</button>
+                            </form>
+
                         </div>
                     </div>
 

@@ -14,7 +14,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace WebAnToanVeSinhThucPhamDemo.Controllers
 {
-   
+    [Authorize(Roles = RoleName.Editor + "," + RoleName.Member)]
     public class DangkyATTPController : Controller
     {
         private readonly QlattpContext _context;
