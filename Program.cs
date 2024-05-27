@@ -16,7 +16,7 @@ string contentRootPath = builder.Environment.ContentRootPath;
 builder.Services.AddSingleton(sp => new { ContentRootPath = contentRootPath });
 
 
-var connectionString = builder.Configuration.GetConnectionString("QlattpContext");
+var connectionString = builder.Configuration.GetConnectionString("conString");
 builder.Services.AddDbContext<QlattpContext>(x =>x.UseSqlServer(connectionString));
 
 //Đọc cấu hình từ appsettings.json
@@ -75,9 +75,9 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.User.RequireUniqueEmail = true;
 
     // Cấu hình đăng nhập
-    options.SignIn.RequireConfirmedEmail = false;
+    options.SignIn.RequireConfirmedEmail = true;
     options.SignIn.RequireConfirmedPhoneNumber = false;
-    options.SignIn.RequireConfirmedAccount = false;
+    options.SignIn.RequireConfirmedAccount = true;
 });
 
 // Cấu hình ApplicationCookie

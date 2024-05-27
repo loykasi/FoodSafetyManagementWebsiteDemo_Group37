@@ -12,6 +12,7 @@ namespace WebAnToanVeSinhThucPhamDemo.Controllers
         public DataContext()
         {
             _connection = new SqlConnection("Data Source=.;Initial Catalog=QLATTP;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
+            // _connection = new SqlConnection("Data Source=SQL6032.site4now.net;Initial Catalog=db_aa8cda_quanlyattp;User Id=db_aa8cda_quanlyattp_admin;Password=SmarterASP!1");
         }
 
         public int insertGiayChungNhan_CoSo(string idchucoso, string tencoso, int phuongxa, string diachi, string loaihinh, string giayphepkd, DateOnly ngaycap, string loaithucpham, string hinhanh)

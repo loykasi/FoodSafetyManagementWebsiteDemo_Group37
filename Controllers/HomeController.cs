@@ -18,6 +18,11 @@ namespace WebAnToanVeSinhThucPhamDemo.Controllers
             return View();
         }
 
+        public IActionResult Guide()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();
