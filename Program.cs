@@ -16,7 +16,7 @@ string contentRootPath = builder.Environment.ContentRootPath;
 builder.Services.AddSingleton(sp => new { ContentRootPath = contentRootPath });
 
 
-var connectionString = builder.Configuration.GetConnectionString("QlattpContext");
+var connectionString = builder.Configuration.GetConnectionString("conString");
 builder.Services.AddDbContext<QlattpContext>(x =>x.UseSqlServer(connectionString));
 
 //Đọc cấu hình từ appsettings.json
