@@ -17,7 +17,7 @@ namespace WebAnToanVeSinhThucPhamDemo.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.4")
+                .HasAnnotation("ProductVersion", "8.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -455,6 +455,9 @@ namespace WebAnToanVeSinhThucPhamDemo.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IDTinTuc"));
+
+                    b.Property<string>("AnhBia")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("IDCanBo")
                         .IsRequired()

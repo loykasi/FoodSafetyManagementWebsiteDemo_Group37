@@ -2,9 +2,7 @@
 
 @if (Model.LoadLibrary)
 {
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- Summernote -->
+   <!-- Summernote -->
     <section>
         <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
@@ -16,9 +14,10 @@
         <link rel="stylesheet" href="~/lib/jqueryui/themes/base/jquery-ui.css" />
         <link rel="stylesheet" href="~/lib/elfinder/css/elfinder.full.css" />
         <link rel="stylesheet" href="~/lib/elfinder/css/theme.min.css" />
-        <script src="~/lib/jqueryui/jquery-ui.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.min.css" />
+
         <script src="~/lib/elfinder/js/elfinder.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/elfinder/2.1.59/js/elfinder.full.js"></script>
     </section>
 }
 <script>
@@ -63,7 +62,6 @@
 
         });
     }));
-
 
     function elfinderDialog(editor) {
         var fm = $('<div/>').dialogelfinder({
