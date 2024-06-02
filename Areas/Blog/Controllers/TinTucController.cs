@@ -105,7 +105,7 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.Blog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TieuDe,MoTa,Slug,NoiDung,Published,IDChuyenMucs")] CreatePostModel post)
+        public async Task<IActionResult> Create([Bind("AnhBia,TieuDe,MoTa,Slug,NoiDung,Published,IDChuyenMucs")] CreatePostModel post)
         {
             var categories = await _dbcontext.DanhMuc.ToListAsync();
             ViewData["categories"] = new MultiSelectList(categories, "Id", "TenDanhMuc");
@@ -170,6 +170,7 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.Blog.Controllers
             var postEdit = new CreatePostModel()
             {
                 IDTinTuc = post.IDTinTuc,
+                AnhBia = post.AnhBia,
                 TieuDe = post.TieuDe,
                 MoTa = post.MoTa,
                 NoiDung = post.NoiDung,
@@ -189,7 +190,7 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.Blog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IDTinTuc,TieuDe,MoTa,Slug,NoiDung,Published,IDChuyenMucs")] CreatePostModel post)
+        public async Task<IActionResult> Edit(int id, [Bind("IDTinTuc,AnhBia,TieuDe,MoTa,Slug,NoiDung,Published,IDChuyenMucs")] CreatePostModel post)
         {
             if (id != post.IDTinTuc)
             {
@@ -221,7 +222,7 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.Blog.Controllers
                     {
                         return NotFound();
                     }
-
+                    postUpdate.AnhBia = post.AnhBia;
                     postUpdate.TieuDe = post.TieuDe;
                     postUpdate.MoTa = post.MoTa;
                     postUpdate.NoiDung = post.NoiDung;
