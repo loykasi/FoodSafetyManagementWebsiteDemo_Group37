@@ -37,6 +37,11 @@ namespace WebAnToanVeSinhThucPhamDemo.Controllers
 			return View(postsByCategory);
 		}
 
+		public IActionResult Guide()
+        {
+            return View();
+        }
+
 		public IActionResult Privacy()
 		{
 			return View();
