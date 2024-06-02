@@ -1,12 +1,38 @@
-﻿@{
+﻿@model Dictionary<WebAnToanVeSinhThucPhamDemo.Models.Blog.DanhMuc, List<WebAnToanVeSinhThucPhamDemo.Models.Blog.TinTuc>>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 @{
 
     Layout = "_Layout";
 }
-<partial name="_AlertMessage"></partial>
+<style>
+	.post-thumbnail {
+		width: 300px; /* Đặt chiều rộng cố định */
+		height: 200px; /* Đặt chiều cao cố định */
+		object-fit: cover; /* Giữ nguyên tỷ lệ khung hình */
+		display: block;
+		margin: 0 auto;
+	}
 
+	.category-title {
+		position: relative;
+		display: inline-block;
+		padding-bottom: 5px; /* Điều chỉnh khoảng cách giữa tiêu đề và thanh ngang */
+	}
+
+		.category-title::after {
+			content: "";
+			position: absolute;
+			left: 0;
+			bottom: 0;
+			width: 100%;
+			height: 3px; /* Điều chỉnh chiều rộng của thanh ngang */
+			background-color: green; /* Màu của thanh ngang */
+		}
+</style>
+<partial name="_AlertMessage"></partial>
 	<div class="content container-fluid">
 		<div class="page-header">
 			<div class="row">
@@ -15,6 +41,30 @@
 				</div>
 			</div>
 		</div>
+	<h1>Bản tin</h1>
+
+	@foreach (var category in Model.Keys)
+	{
+		<h2 class="category-title">@category.TenDanhMuc</h2>
+		<hr>
+
+		@foreach (var post in Model[category])
+		{
+			<div class="media border-bottom mb-3 pb-3">
+				<img src="@Url.Content("~/" + post.AnhBia)" class="mr-3 post-thumbnail">
+				<div class="media-body">
+					<h5 class="mt-0">
+						<a asp-area="Blog" asp-controller="HienThiTinTuc" asp-action="Detail" asp-route-postslug="@post.Slug">
+							@post.TieuDe
+						</a>
+					</h5>
+					@post.MoTa
+					<div>
+					</div>
+				</div>
+			</div>
+		}
+	}
 		@* <div class="row">
 			<div class="col-xl-3 col-sm-6 col-12">
 				<div class="card board1 fill">

@@ -46,7 +46,7 @@ public partial class QlattpContext : IdentityDbContext<AppUser>
 
     public virtual DbSet<DanhMucBaiDang> DanhMucBaiDang { get; set; }
     public virtual DbSet<TinTuc> TinTuc { get; set; }
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {}
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
