@@ -1,0 +1,108 @@
+﻿@model IEnumerable<WebAnToanVeSinhThucPhamDemo.Models.CoSo>
+
+@{
+    ViewData["Title"] = "Danh sách Cơ Sở";
+    Layout = "_Layout";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<partial name="_AlertMessage" />
+
+<div class="content container-fluid" style="margin-top:-150px;>
+    <div class="page-header">
+        <aside class="col-md-4">
+            <div class="widget search-widget">
+                <h5>Tìm Kiếm Cơ Sở</h5>
+                <form asp-action="Index" method="get" class="search-form">
+                    <div class="input-group mt-3">
+                        <input type="text" name="searchString" placeholder="Tìm cơ sở, chủ cơ sở, số giấy phép..." class="form-control">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </aside>
+        <div class="row align-items-center">
+            <div class="col">
+                <div class="mt-5">
+                    <h4 class="card-title float-left mt-2">Danh Sách Cơ Sở Kinh Doanh</h4>
+                    <a asp-action="Create" class="btn btn-primary float-right veiwbutton">Thêm Cơ Sở</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card card-table">
+                <div class="card-body booking_card">
+                    <div class="table-responsive">
+                        <table class="datatable table table-stripped table table-hover table-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Cơ Sở</th>
+                                    <th>Họ Tên</th>
+                                    <th>Địa Chỉ</th>
+                                    <th>Loại Hình KD</th>
+                                    <th>Số Giấy Phép KD</th>
+                                    <th>Ngày Cấp Giấy Phép KD</th>
+                                    <th>Ngày Cấp Chứng Nhận ATTP</th>
+                                    <th>Ngày Hết Hạn Chứng Nhận ATTP</th>
+                                    <th>Phường Xã</th>
+                                    <th class="text-right">Hành Động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            @foreach (var item in Model)
+                            {
+                                    <tr>
+                                        <td>
+                                            <a asp-action="Details" asp-route-id="@item.IdcoSo">
+                                            @Html.DisplayFor(modelItem => item.TenCoSo)
+                                            </a>
+                                        </td>
+                                        <td>@Html.DisplayFor(modelItem => item.ChuCoSo.HoTen)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.DiaChi)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.LoaiHinhKinhDoanh)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.SoGiayPhepKd)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.NgayCapGiayPhepKd)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.NgayCapCnattp)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.NgayHetHanCnattp)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.PhuongXa.TenPhuongXa)</td>
+                                        <td class="text-right">
+                                            <div class="dropdown dropdown-action">
+                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-v ellipse_color"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right">
+                                                    <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.IdcoSo">
+                                                        <i class="fas fa-pencil-alt m-r-5"></i> Edit
+                                                    </a>
+                                                    <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.IdcoSo">
+                                                        <i class="fas fa-trash-alt m-r-5"></i> Xóa
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        $(function () {
+            $('#datetimepicker3').datetimepicker({
+                format: 'LT'
+            });
+        });
+    </script>
+}

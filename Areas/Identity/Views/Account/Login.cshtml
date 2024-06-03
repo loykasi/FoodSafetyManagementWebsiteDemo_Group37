@@ -1,0 +1,115 @@
+﻿@using System.Collections.Generic
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Authentication
+@model LoginViewModel
+@inject SignInManager<AppUser> SignInManager
+@{
+	Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+	<title>Hệ Thống Quản Lý An Toàn Thực Phẩm</title>
+	<link rel="shortcut icon" type="image/x-icon" href="~/asset/assets/img/logo1.png">
+	<link rel="stylesheet" href="~/asset/assets/css/bootstrap.min.css">
+	<link rel="stylesheet" href="~/asset/assets/plugins/fontawesome/css/fontawesome.min.css">
+	<link rel="stylesheet" type="text/css" href="~/asset/assets/plugins/fontawesome/css/all.min.css">
+	<link rel="stylesheet" href="~/asset/assets/css/feathericon.min.css">
+	<link rel="stylesheet" href="~/asset/assets/plugins/morris/morris.css">
+	<link rel="stylesheet" href="~/asset/assets/css/style.css">
+</head>
+
+<body>
+	<div class="main-wrapper login-body">
+		<div class="login-wrapper">
+			<div class="container">
+				<div class="loginbox">
+					<div class="login-left"> <img class="img-fluid" src="~/asset/assets/img/logo1.png" alt="Logo"> </div>
+					<div class="login-right">
+						<div class="login-right-wrap">
+							<h1>Đăng Nhập</h1>
+							<p class="account-subtitle">Đăng nhập vào tài khoản của bạn để tiếp tục</p>
+							<form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
+								<div class="form-group">
+									<input asp-for="UserNameOrEmail" class="form-control" type="text" placeholder="Tên Đăng Nhập Hoặc Email">
+								</div>
+								<div class="form-group">
+									<input asp-for="Password" class="form-control" placeholder="Mật Khẩu">
+								</div>
+								<div class="form-group">
+									<div class="col-md-offset-2 col-md-10">
+										<div class="checkbox">
+											<label asp-for="RememberMe">
+												<input asp-for="RememberMe" />
+												@Html.DisplayNameFor(m => m.RememberMe)
+											</label>
+										</div>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<button class="btn btn-primary btn-block" type="submit">Đăng Nhập</button>
+								</div>
+
+							</form>
+							<div class="text-center forgotpass"><a asp-action="ForgotPassword">Quên mật khẩu?</a></div>
+							<div class="login-or"> <span class="or-line"></span> <span class="span-or">Hoặc</span> </div>
+							<div class="social-login">
+								<section>
+									@{
+										var schemes = await SignInManager.GetExternalAuthenticationSchemesAsync();
+										var loginProviders = schemes.ToList();
+										if (loginProviders.Count == 0)
+										{
+											<p>Ứng dụng chưa hỗ trợ đăng nhập từ tài khoản ngoài</p>
+										}
+										else
+										{
+											<form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
+												@foreach (var provider in loginProviders)
+												{
+													var providerIcon = "";
+													if (provider.Name == "Facebook")
+													{
+														providerIcon = "fab fa-facebook-f";
+													}
+													else if (provider.Name == "Google")
+													{
+														providerIcon = "fab fa-google";
+													}
+													else
+													{
+														providerIcon = "fas fa-user";
+													}
+
+													<button type="submit" class="btn btn-primary btn-block mb-2" name="provider" value="@provider.Name" title="Log in using your @provider.Name account">
+														<i class="@providerIcon"></i> @provider.Name
+													</button>
+												}
+											</form>
+										}
+									}
+								</section>
+							</div>
+							<div class="text-center dont-have">Chưa Có Tài Khoản? <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Đăng ký ngay</a></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	
+	<script src="~/asset/assets/js/jquery-3.5.1.min.js"></script>
+	<script src="~/asset/assets/js/popper.min.js"></script>
+	<script src="~/asset/assets/js/bootstrap.min.js"></script>
+	<script src="~/asset/assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="~/asset/assets/js/script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,94 @@
+﻿@model WebAnToanVeSinhThucPhamDemo.Models.CoSo
+
+@{
+    ViewData["Title"] = "Chi tiết cơ sở";
+}
+<div class="content container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Thông tin cơ sở</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Duyet" method="post">
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <h5 class="card-title">Thông tin cơ sở</h5>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Tên cơ sở</label>
+                                    <div class="col-lg-9">
+                                        <input type="text" name="tencoso" class="form-control" value="@Model.TenCoSo" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Tên chủ cơ sở</label>
+                                    <div class="col-lg-9">
+                                        <input type="text" name="tenchucoso" class="form-control" value="@Model.ChuCoSo.HoTen" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Số điện thoại</label>
+                                    <div class="col-lg-9">
+                                        <input type="text" name="sdt" class="form-control" value="@Model.ChuCoSo.PhoneNumber" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Địa chỉ</label>
+                                    <div class="col-lg-9">
+                                        <input type="text" name="diachi" class="form-control" value="@Model.DiaChi" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Loại hình kinh doanh</label>
+                                    <div class="col-lg-9">
+                                        <input type="text" name="sdt" class="form-control" value="@Model.LoaiHinhKinhDoanh" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Số giấy phép kinh doanh</label>
+                                    <div class="col-lg-9">
+                                        <input type="text" name="sogiayphep" class="form-control" value="@Model.SoGiayPhepKd" readonly>
+                                    </div>
+                                </div>
+                               
+
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Ngày cấp giấy phép</label>
+                                    <div class="col-lg-9">
+                                        <input type="text" name="ngaycap" class="form-control" value="@Model.NgayCapGiayPhepKd" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Ngày cấp chứng nhận ATTP</label>
+                                    <div class="col-lg-9">
+                                        <input type="text" name="loaithucpham" class="form-control" value="@Model.NgayCapCnattp" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Ngày hết hạn chứng nhận ATTP</label>
+                                    <div class="col-lg-9">
+                                        <input type="text" name="loaithucpham" class="form-control" value="@Model.NgayHetHanCnattp" readonly>
+                                    </div>
+                                </div>
+                               
+                            </div>
+                        </div>
+
+                        @* <div class="text-end">
+                        <button type="submit" class="btn btn-primary">Duyệt hồ sơ</button>
+                        </div> *@
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Quay lại danh sách</a>
+</div>

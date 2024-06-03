@@ -1,0 +1,56 @@
+﻿@model Dictionary<WebAnToanVeSinhThucPhamDemo.Models.Blog.DanhMuc, List<WebAnToanVeSinhThucPhamDemo.Models.Blog.TinTuc>>
+
+@{
+	ViewData["Title"] = "Home Page";
+	var topViewedPosts = ViewBag.TopViewedPosts as List<WebAnToanVeSinhThucPhamDemo.Models.Blog.TinTuc>;
+}
+<partial name="_AlertMessage"></partial>
+<div class="col-sm-12 mt-5">
+	<h3 class="page-title mt-3"> Chào Mừng Bạn Đến Với Hệ Thống An Toàn Vệ Sinh Thực Phẩm Thành phố Đà Nẵng</h3>
+</div>
+<h1>Bản tin</h1>
+@foreach (var category in Model.Keys)
+{
+	<h2 class="category-title">@category.TenDanhMuc</h2>
+	<hr>
+	@foreach (var post in Model[category])
+	{
+		<div class="media border-bottom mb-3 pb-3">
+			<img src="@Url.Content("~/" + post.AnhBia)" class="mr-3 w-25 post-thumbnail">
+			<div class="media-body">
+				<h5 class="mt-0">
+					<a asp-area="Blog" asp-controller="HienThiTinTuc" asp-action="Detail" asp-route-postslug="@post.Slug">
+						@post.TieuDe
+					</a>
+				</h5>
+				@post.MoTa
+				<div>
+				</div>
+			</div>
+		</div>
+	}
+}
+@section Sidebar {
+	@if (topViewedPosts != null && topViewedPosts.Any())
+	{
+		<div class="card">
+			<div class="card-header">
+				<h5 class="card-title">TIN ĐỌC NHIỀU</h5>
+			</div>
+			<div class="card-body">
+				<ul class="list-group">
+					@foreach (var post in topViewedPosts)
+					{
+						<li class="list-group-item">
+							<a asp-area="Blog" asp-controller="HienThiTinTuc" asp-action="Detail" asp-route-postslug="@post.Slug">
+								@post.TieuDe
+							</a>
+							<span class="badge badge-primary badge-pill">@post.LuotXem lượt xem</span>
+						</li>
+					}
+				</ul>
+			</div>
+		</div>
+	}
+}
+

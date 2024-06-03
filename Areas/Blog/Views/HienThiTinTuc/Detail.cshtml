@@ -1,0 +1,68 @@
+﻿@model TinTuc
+@using WebAnToanVeSinhThucPhamDemo.Components
+
+@{ 
+    List<DanhMuc> categories = ViewBag.categories as List<DanhMuc>;
+    DanhMuc category = ViewBag.category as DanhMuc;  
+    ViewData["Title"] = Model.TieuDe;    
+
+    IQueryable<TinTuc> otherPosts = ViewBag.otherPosts as IQueryable<TinTuc>;
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="~/">Tin Tức</a></li>
+        @if (category != null)
+        {
+            var li = category.ListParents();
+            foreach (var l in li)
+            {
+                <li class="breadcrumb-item">
+                    <a asp-action="Index" asp-route-categoryslug="@l.Slug">@l.TenDanhMuc</a>
+                </li>
+            }
+            <li class="breadcrumb-item">
+                <a asp-action="Index" asp-route-categoryslug="@category.Slug">@category.TenDanhMuc</a>
+            </li>
+        }
+    </ol>
+</nav>
+
+<div class="detailpost">
+    <h1>@Model.TieuDe</h1>
+    <div class="sapo">
+        @Model.MoTa
+    </div>
+    <div>
+        <i>Cập nhật: @Model.NgayCapNhat</i> /
+        Tác giả: <strong>@Model.CanBo.UserName</strong> /
+        Lượt xem: <strong>@Model.LuotXem</strong>
+    </div>
+    <hr>
+
+    @Html.Raw(Model.NoiDung)
+
+</div>
+
+@section Sidebar {
+    @await Component.InvokeAsync("WebAnToanVeSinhThucPhamDemo.Components.CategorySidebar",
+                        new CategorySidebar.CategorySidebarData()
+                {
+                    Categories = categories,
+                    level = 0,
+                    categoryslug = category.Slug
+                })
+    <ul class="list-group">
+        @foreach (var post in otherPosts)
+        {
+            <li class="list-group-item">
+                <a asp-controller="HienThiTinTuc" asp-action="Detail" asp-route-postslug="@post.Slug">
+                    @post.TieuDe
+                </a>
+            </li>
+        }
+    </ul>
+
+
+}
+

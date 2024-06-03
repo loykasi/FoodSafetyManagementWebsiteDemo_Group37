@@ -1,0 +1,34 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@using WebAnToanVeSinhThucPhamDemo.Data
+@inject IAuthorizationService authorizationService
+
+@{
+    var isMember = await authorizationService.AuthorizeAsync(this.User, "MemberManagerMenu");
+
+}
+
+@if (isMember.Succeeded)
+{
+    <div class="dropdown">
+        <a class="btn btn-outline-danger dropdown-toggle" href="#" id="managedropdownmenu" data-toggle="dropdown">
+            Manage
+        </a>
+        <div class="dropdown-menu" aria-labelledby="managedropdownmenu">
+            @if (isMember.Succeeded)
+            {
+
+
+                <a class="dropdown-item" asp-area="Identity" asp-controller="Manage" asp-action="Index">
+                    Thông Tin Cá Nhân
+                </a>
+                
+            }
+            
+        </div>
+    </div>
+    <style>
+        .dropdown {
+            margin-right: 50px; /* Tạo khoảng cách 20px với rìa phải */
+        }
+    </style>
+}

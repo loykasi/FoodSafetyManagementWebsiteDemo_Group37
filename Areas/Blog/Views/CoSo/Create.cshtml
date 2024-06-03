@@ -1,0 +1,86 @@
+﻿@model WebAnToanVeSinhThucPhamDemo.Models.CoSo
+@{
+    ViewData["Title"] = "Create New CoSo";
+}
+<style>
+    /* Căn giữa form */
+    .form-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* Chiều cao của form */
+    }
+
+    /* Kích thước form */
+    .form {
+        width: 400px; /* Chiều rộng của form */
+    }
+
+    h4 {
+        color: #004d;
+    }
+
+    .short-input {
+        width: 550px;
+    }
+</style>
+<h2>@ViewData["Title"]</h2>
+<h4>Đăng Ký Cơ Sở Kinh Doanh</h4>
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="TenCoSo">Tên Cơ Sở</label>
+        <input asp-for="TenCoSo" class="form-control short-input" />
+        <span asp-validation-for="TenCoSo" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DiaChi">Địa Chỉ</label>
+        <input asp-for="DiaChi" class="form-control short-input" />
+        <span asp-validation-for="DiaChi" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="LoaiHinhKinhDoanh">Loại Hình Kinh Doanh</label>
+        <input asp-for="LoaiHinhKinhDoanh" class="form-control short-input" />
+        <span asp-validation-for="LoaiHinhKinhDoanh" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SoGiayPhepKd">Số Giấy Phép Kinh Doanh</label>
+        <input asp-for="SoGiayPhepKd" class="form-control short-input" />
+        <span asp-validation-for="SoGiayPhepKd" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="NgayCapGiayPhepKd">Ngày Cấp Giấy Phép Kinh Doanh</label>
+        <input asp-for="NgayCapGiayPhepKd" class="form-control short-input" />
+        <span asp-validation-for="NgayCapGiayPhepKd" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="NgayCapCnattp">Ngày Cấp CNATTP</label>
+        <input asp-for="NgayCapCnattp" class="form-control short-input" />
+        <span asp-validation-for="NgayCapCnattp" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="NgayHetHanCnattp">Ngày Hết Hạn CNATTP</label>
+        <input asp-for="NgayHetHanCnattp" class="form-control short-input" />
+        <span asp-validation-for="NgayHetHanCnattp" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="IDPhuongXa">Phường Xã</label>
+        <select id="IDPhuongXa" name="IDPhuongXa" class="form-control short-input">
+            @foreach (var item in (MultiSelectList)ViewData["phuongxa"])
+            {
+                <option value="@item.Value">@item.Text</option>
+            }
+        </select>
+    </div>
+
+
+
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>
+

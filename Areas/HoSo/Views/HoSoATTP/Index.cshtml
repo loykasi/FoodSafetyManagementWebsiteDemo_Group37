@@ -1,0 +1,139 @@
+﻿@model IEnumerable<WebAnToanVeSinhThucPhamDemo.Models.HoSoCapGiayChungNhan>
+
+
+@{
+    Layout = "_Layout";
+}
+
+<div class="content container-fluid" style="margin-top:-100px;">
+
+    <div class="row">
+        <div class="col-lg-12">
+
+            <aside class="col-md-4">
+                <div class="widget search-widget">
+                    <h5>Tìm Kiếm Hồ Sơ</h5>
+                    <form asp-action="Index" method="get" class="search-form">
+                        <div class="input-group mt-3">
+                            <input type="text" name="searchString" placeholder="Tìm tên cơ sở, chủ cơ sở, số giấy phép..." class="form-control">
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </aside>
+
+            <form action="Index" method="get">
+                <div class="row formtype">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Lọc Theo Phường Xã</label>
+                            <select class="form-control" id="phuongXaId" name="phuongXaId">
+                                <option value="">Chọn Phường Xã</option>
+                                @foreach (var phuongXa in ViewBag.PhuongXaList)
+                                {
+                                    <option value="@phuongXa.IDPhuongXa" @(phuongXa.IDPhuongXa == ViewBag.SelectedPhuongXaId ? "selected" : "")>@phuongXa.TenPhuongXa</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Lọc Theo Trạng Thái</label>
+                            <select class="form-control" id="trangThai" name="trangThai">
+                                <option value="">Tất cả</option>
+                                <option value="1" @(ViewBag.SelectedTrangThai == 1 ? "selected" : "")>Đã duyệt</option>
+                                <option value="0" @(ViewBag.SelectedTrangThai == 0 ? "selected" : "")>Chưa duyệt</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Ngày Bắt Đầu</label>
+                            <input type="date" class="form-control" id="ngayBatDau" name="ngayBatDau" value="@ViewBag.SelectedNgayBatDau">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Ngày Kết Thúc</label>
+                            <input type="date" class="form-control" id="ngayKetThuc" name="ngayKetThuc" value="@ViewBag.SelectedNgayKetThuc">
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary" style="margin-top: 32px;">Lọc</button>
+                            @if (ViewBag.SelectedPhuongXaId != null || ViewBag.SelectedTrangThai != null)
+                            {
+                                <a href="@Url.Action("Index", "HoSoATTP")" class="btn btn-secondary" style="margin-top: 32px;">Bỏ lọc</a>
+                            }
+                        </div>
+                    </div>
+
+
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="datatable table table-stripped">
+                            <thead>
+                                <tr>
+                                    <th>Mã Hồ Sơ</th>
+                                    <th>Ngày Đăng Ký</th>
+                                    <th>Loại Thực Phẩm</th>
+                                    <th>Tên Cơ Sở</th>
+                                    <th>Họ Tên Chủ Cơ Sở</th>
+                                    <th>Phường Xã</th>
+                                    <th>Trạng Thái</th>
+                                    <th class="text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+
+                                        <td>@Html.DisplayFor(modelItem => item.IdgiayChungNhan)</td>
+                                        <td>@String.Format("{0:dd/MM/yyyy}", item.NgayDangKy)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.LoaiThucPham)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.IdcoSoNavigation.TenCoSo)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.IdcoSoNavigation.ChuCoSo.HoTen)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.IdcoSoNavigation.PhuongXa.TenPhuongXa)</td>
+                                        <td>@(item.TrangThai == 1 ? "Đã duyệt" : "Chưa duyệt")</td>
+                                        <td class="text-right">
+                                            <div class="dropdown dropdown-action">
+                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-v ellipse_color"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right">
+                                                    <a class="dropdown-item" href="@Url.Action("Details", "HoSoATTP", new { id = item.IdgiayChungNhan })">
+                                                        <i class="fas fa-pencil-alt m-r-5"></i> Xem chi tiết
+                                                    </a>
+                                                    <a class="dropdown-item" href="@Url.Action("Delete", "HoSoATTP", new { id = item.IdgiayChungNhan })">
+                                                        <i class="fas fa-trash-alt m-r-5"></i> Xóa
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+
+</div>

@@ -1,0 +1,70 @@
+﻿@model IEnumerable<WebAnToanVeSinhThucPhamDemo.Models.Blog.TinTuc>
+
+@{
+    ViewData["Title"] = "Danh sách Tin Tức";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<partial name="_AlertMessage" />
+
+<p>
+    <a asp-action="Create">Tạo bài viết mới</a>
+</p>
+<p>Tổng số bài viết: @ViewBag.totalPosts</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>STT</th>
+            <th>
+                @Html.DisplayNameFor(model => model.TieuDe)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Published)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CanBo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NgayCapNhat)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @(++ViewBag.postIndex)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.IDTinTuc">
+                        @Html.DisplayFor(modelItem => item.TieuDe)
+                    </a>
+                    <br>
+                    <small>
+                        @string.Join(", ", item.DanhMucBaiDangs.Select(pc => pc.DanhMuc.TenDanhMuc))
+                    </small>
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Published)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CanBo.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NgayCapNhat)
+                </td>
+                <td>
+
+                    <a asp-action="Details" asp-route-id="@item.IDTinTuc">Chi tiết</a> |
+                    <a asp-action="Delete" asp-route-id="@item.IDTinTuc">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<partial name="_PagingXTL" model="@ViewBag.pagingModel" />

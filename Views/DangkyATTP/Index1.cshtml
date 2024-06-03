@@ -1,0 +1,117 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Đăng ký giấy chứng nhận vệ sinh an toàn thực phẩm";
+}
+<div class="content container-fluid">
+
+    @* <div class="page-header">
+    <div class="row">
+    <div class="col">
+    <h3 class="page-title">Horizontal Form</h3>
+    <ul class="breadcrumb">
+    <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+    <li class="breadcrumb-item active">Horizontal Form</li>
+    </ul>
+    </div>
+    </div>
+    </div> *@
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Đăng ký giấy chứng nhận vệ sinh an toàn thực phẩm</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="DangKyLaiGiayChungNhan" method="post" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="form-group col-12">
+                                <label class="col-form-label">Cơ Sở</label>
+                                <div class="">
+                                    <select name="coso" asp-items="ViewBag.listCoSo"></select>
+                                </div>
+                            </div>
+                            <div class="form-group col-12">
+                                <label class=" col-form-label">Loại thực phẩm</label>
+                                <div class="">
+                                    <input type="text" name="loaithucpham" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group col-12">
+                                <label class="col-form-label">Hình ảnh minh chứng</label>
+                                <div class="">
+                                    <input id="files" type="file" name="hinhanh" class="form-control" multiple>
+                                    <div id="preview"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#quanhuyen").change(function () {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetPhuongXa")', // we are calling json method
+                dataType: 'json',
+                data: { id: $("#quanhuyen").val() },
+                success: function (phuongxas) {
+                    $("#phuongxa").empty();
+                    $.each(phuongxas, function (i, item) {
+                        $("#phuongxa").append('<option value="'
+                            + item.value + '">'
+                            + item.text + '</option>');
+
+                    });
+                },
+                error: function (ex) {
+                    alert('failed to retrieve states.' + ex);
+                }
+            })
+        })
+    });
+</script>
+<script type="text/javascript">
+    const removeoldImg = () => {
+        var container = document.getElementById("preview");
+        container.replaceChildren();
+    }
+    const preview = (file) => {
+        removeoldImg();
+        const fr = new FileReader();
+        fr.onload = () => {
+            const img = document.createElement("img");
+            img.src = fr.result;  // String Base64
+            img.alt = file.name;
+            img.width = 100;
+            img.height = 100;
+            img.className = "myImages";
+            img.onclick = function (evt) {
+                modal.style.display = "block";
+                modalImg.src = this.currentSrc;
+            }
+            document.querySelector('#preview').append(img);
+            // to all images -- note I'm using a class!
+            var images = document.getElementsByClassName('myImages');
+        };
+        fr.readAsDataURL(file);
+    };
+    // đổi #files sang id của input files
+    document.querySelector("#files").addEventListener("change", (ev) => {
+        if (!ev.target.files) return; // Do nothing.
+        [...ev.target.files].forEach(preview);
+    });
+</script>

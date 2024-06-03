@@ -1,0 +1,170 @@
+﻿@model WebAnToanVeSinhThucPhamDemo.Models.HoSoCapGiayChungNhan
+
+@{
+    Layout = "_Layout";
+}
+@{
+    ViewBag.Title = "Chi tiết hồ sơ";
+}
+
+<h1>Chi tiết hồ sơ</h1>
+
+@if (ViewBag.DuyetSuccess != null)
+{
+    <div class="alert alert-success">
+        @ViewBag.DuyetSuccess
+    </div>
+}
+
+@if (ViewBag.DuyetWarning != null)
+{
+    <div class="alert alert-warning">
+        @ViewBag.DuyetWarning
+    </div>
+}
+
+@if (ViewBag.KhongDuyetSuccess != null)
+{
+    <div class="alert alert-danger">@ViewBag.KhongDuyetSuccess</div>
+}
+<div class="content container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Chi tiết hồ sơ</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Duyet" method="post">
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <h5 class="card-title">Thông tin cơ sở</h5>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Tên cơ sở</label>
+                                    <div class="col-lg-9">
+                                        <input type="text" name="tencoso" class="form-control" value="@Model.IdcoSoNavigation.TenCoSo" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Tên chủ cơ sở</label>
+                                    <div class="col-lg-9">
+                                        <input type="text" name="tenchucoso" class="form-control" value="@Model.IdcoSoNavigation.ChuCoSo.HoTen" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Số điện thoại</label>
+                                    <div class="col-lg-9">
+                                        <input type="text" name="sdt" class="form-control" value="@Model.IdcoSoNavigation.ChuCoSo.PhoneNumber" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Địa chỉ</label>
+                                    <div class="col-lg-9">
+                                        <input type="text" name="diachi" class="form-control" value="@Model.IdcoSoNavigation.DiaChi" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Loại hình kinh doanh</label>
+                                    <div class="col-lg-9">
+                                        <input type="text" name="sdt" class="form-control" value="@Model.IdcoSoNavigation.LoaiHinhKinhDoanh" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Số giấy phép kinh doanh</label>
+                                    <div class="col-lg-9">
+                                        <input type="text" name="sogiayphep" class="form-control" value="@Model.IdcoSoNavigation.SoGiayPhepKd" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Ngày cấp giấy phép</label>
+                                    <div class="col-lg-9">
+                                        <input type="text" name="ngaycap" class="form-control" value="@Model.IdcoSoNavigation.NgayCapGiayPhepKd" readonly>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-xl-6">
+                                <h5 class="card-title">Thông tin giấy chứng nhận</h5>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Ngày đăng ký</label>
+                                    <div class="col-lg-9">
+                                        <input type="text" name="loaithucpham" class="form-control" value="@Model.NgayDangKy" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Loại thực phẩm</label>
+                                    <div class="col-lg-9">
+                                        <input type="text" name="loaithucpham" class="form-control" value="@Model.LoaiThucPham" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Trạng thái hồ sơ</label>
+                                    <div class="col-lg-9">
+                                        @if (Model.TrangThai == 1)
+                                        {
+                                            <input type="text" name="trangthai" class="form-control" value="Đã duyệt" readonly>
+                                        }
+                                        else if (Model.TrangThai == 0)
+                                        {
+                                            <input type="text" name="trangthai" class="form-control" value="Chưa duyệt" readonly>
+                                        }
+                                        else
+                                        {
+                                            <input type="text" name="trangthai" class="form-control" value="Không xác định" readonly>
+                                        }
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Hình ảnh minh chứng</label>
+                                    <div class="col-lg-9">
+                                        @foreach (var image in Model.HinhAnhMinhChung.Split(","))
+                                        {
+                                            if (!string.IsNullOrEmpty(image))
+                                            {
+                                                <img src="@Url.Content("~/HoSoDangKyATTP/" + Model.IdgiayChungNhan + "/" + image)" alt="Hình ảnh" class="img-fluid" style="margin-bottom: 5px;">
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @* <div class="text-end">
+                            <button type="submit" class="btn btn-primary">Duyệt hồ sơ</button>
+                        </div> *@
+                        
+                    </form>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label></label>
+                            <!-- Form Duyệt -->
+                            <form method="post" action="@Url.Action("Duyet", "HoSoATTP")">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@Model.IdgiayChungNhan" />
+                                <div class="form-group">
+                                    <label for="duyetGhiChu">Ghi chú:</label>
+                                    <textarea id="duyetGhiChu" name="ghiChu" class="form-control" placeholder="Nhập ghi chú..."></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-success">Duyệt hồ sơ</button>
+                            </form>
+
+                            <!-- Form Không Duyệt -->
+                            <form method="post" action="@Url.Action("KhongDuyet", "HoSoATTP")">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@Model.IdgiayChungNhan" />
+                                <div class="form-group">
+                                    <label for="khongDuyetGhiChu">Ghi chú:</label>
+                                    <textarea id="khongDuyetGhiChu" name="ghiChu" class="form-control" placeholder="Nhập ghi chú..."></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-danger">Không duyệt hồ sơ</button>
+                            </form>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

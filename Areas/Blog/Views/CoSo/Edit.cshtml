@@ -1,0 +1,65 @@
+﻿@model WebAnToanVeSinhThucPhamDemo.Models.CoSo
+
+@if (TempData["StatusMessage"] != null)
+{
+    <div class="alert alert-success text-center">
+        @TempData["StatusMessage"]
+    </div>
+}
+
+<div class="row justify-content-center" style="margin-top: 45px">
+    <div class="col-md-6">
+        <h2>Chỉnh sửa cơ sở</h2>
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="IdcoSo" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="TenCoSo" class="control-label">Tên Cơ Sở</label>
+                <input asp-for="TenCoSo" class="form-control" />
+                <span asp-validation-for="TenCoSo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DiaChi" class="control-label">Địa chỉ</label>
+                <input asp-for="DiaChi" class="form-control" />
+                <span asp-validation-for="DiaChi" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LoaiHinhKinhDoanh" class="control-label">Loại Hình Kinh Doanh</label>
+                <input asp-for="LoaiHinhKinhDoanh" class="form-control" />
+                <span asp-validation-for="LoaiHinhKinhDoanh" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SoGiayPhepKd" class="control-label">Số Giấy Phép Kinh Doanh</label>
+                <input asp-for="SoGiayPhepKd" class="form-control" />
+                <span asp-validation-for="SoGiayPhepKd" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NgayCapGiayPhepKd" class="control-label">Ngày Cấp Giấy Phép Kinh Doanh</label>
+                <input asp-for="NgayCapGiayPhepKd" class="form-control" />
+                <span asp-validation-for="NgayCapGiayPhepKd" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NgayCapCnattp" class="control-label">Ngày Cấp Chứng Nhận ATTP</label>
+                <input asp-for="NgayCapCnattp" class="form-control" />
+                <span asp-validation-for="NgayCapCnattp" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NgayHetHanCnattp" class="control-label">Ngày Hết Hạn Chứng Nhận ATTP</label>
+                <input asp-for="NgayHetHanCnattp" class="form-control" />
+                <span asp-validation-for="NgayHetHanCnattp" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IDPhuongXa" class="control-label">Phường Xã</label>
+                <select asp-for="IDPhuongXa" class="form-control" asp-items="@ViewBag.PhuongXaList"></select>
+                <span asp-validation-for="IDPhuongXa" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center">
+                <input type="submit" value="Lưu" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="text-center mt-3">
+    <a asp-action="Index">Quay lại danh sách</a>
+</div>

@@ -1,0 +1,195 @@
+﻿@{
+	ViewBag.Title = "Index";
+}
+<link href="~/css/ImageClick.css" rel="stylesheet" />
+<hr />
+
+@if (TempData["AlertMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["AlertMessage"]
+    </div>
+}
+<div class="content container-fluid">
+    
+    @*<div class="page-header">
+        <div class="row">
+            <div class="col">
+                <h3 class="page-title">Horizontal Form</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Horizontal Form</li>
+                </ul>
+            </div>
+        </div>
+    </div>*@
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Đăng ký giấy chứng nhận vệ sinh an toàn thực phẩm</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Insert" method="post" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <h5 class="card-title">Thông tin cơ sở</h5>
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label">Tên cơ sở<span class=".text-danger"> (*)</span></label>
+                                    <div class="col-lg-8">
+                                        <input type="text" name="tencoso" class="form-control" value="@TempData["tenCoSo"]">
+                                        <div style="margin-top: .25rem;font-size: .875em;color: #dc3545;">@TempData["errorTenCoSo"]</div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label">Địa chỉ<span class=".text-danger"> (*)</span></label>
+                                    <div class="col-lg-8">
+                                        <input type="text" name="diachi" class="form-control" value="@TempData["diaChi"]">
+                                        <div style="margin-top: .25rem;font-size: .875em;color: #dc3545;">@TempData["errorDiaChi"]</div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label">Quận/Huyện</label>
+                                    <div class="col-lg-8">
+                                            <select class="form-select" id="quanhuyen" asp-items="@ViewBag.quanhuyen"></select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label">Phường/Xã<span class=".text-danger"> (*)</span></label>
+                                    <div class="col-lg-8">
+                                        <select id="phuongxa"  asp-items="@ViewBag.phuongxa" name="phuongxa">
+                                        </select>
+                                        <div style="margin-top: .25rem;font-size: .875em;color: #dc3545;">@TempData["errorPhuongXa"]</div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label">Loại hình kinh doanh<span class=".text-danger"> (*)</span></label>
+                                    <div class="col-lg-8">
+                                        <select class="form-select" name="loaihinhkinhdoanh" >
+                                            <option value="0">Select</option>
+                                            <option value="1">Cơ sở sản xuất, kinh doanh thực phẩm</option>
+                                            <option value="2">Cơ sở kinh doanh dịch vụ ăn uống</option>
+                                        </select>
+                                        <div style="margin-top: .25rem;font-size: .875em;color: #dc3545;">@TempData["errorLoaiHinhKinhDoanh"]</div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label">Số giấy phép kinh doanh<span class=".text-danger"> (*)</span></label>
+                                    <div class="col-lg-8">
+                                        <input type="text" name="sogiayphep" class="form-control" value="@TempData["soGiayPhep"]">
+                                        <div style="margin-top: .25rem;font-size: .875em;color: #dc3545;">@TempData["errorSoGiayPhep"]</div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label">Ngày cấp giấy phép<span class=".text-danger"> (*)</span></label>
+                                    <div class="col-lg-8">
+                                        <input type="date" name="ngaycap" class="form-control" value="@TempData["ngayCap"]" >
+                                        <div style="margin-top: .25rem;font-size: .875em;color: #dc3545;">@TempData["errorNgayCap"]</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <h5 class="card-title">Thông tin giấy chứng nhận</h5>
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label">Loại thực phẩm<span class=".text-danger"> (*)</span></label>
+                                    <div class="col-lg-8">
+                                        <input type="text" name="loaithucpham" class="form-control" value="@TempData["loaiThucPham"]">
+                                        <div style="margin-top: .25rem;font-size: .875em;color: #dc3545;">@TempData["errorLoaiThucPham"]</div>
+                                    </div>            
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label">Hình ảnh minh chứng<span class=".text-danger"> (*)</span></label>
+                                    <div class="col-lg-8">
+                                        <input id="files" type="file" name="hinhanh" class="form-control" accept="image/*" multiple>
+                                        <div style="margin-top: .25rem;font-size: .875em;color: #dc3545;">@TempData["errorHinhAnh"]</div>
+                                        <div id="preview"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                    <div id="myModal" class="modal">
+                        <span class="close">&times;</span>
+                        <img class="modal-content" id="img01">
+                        <!-- <div id="caption"></div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+    	$("#quanhuyen").change(function () {
+    		$.ajax({
+    			type: 'POST',
+    			url: '@Url.Action("GetPhuongXa")', // we are calling json method
+    			dataType: 'json',
+    			data: { id: $("#quanhuyen").val() },
+    				success: function(phuongxas) {
+                        $("#phuongxa").empty();
+    					$.each(phuongxas, function (i, item ) {
+                                $("#phuongxa").append('<option value="'
+                            + item.value + '">'
+                            + item.text + '</option>');
+
+                    });
+    				},
+    			error: function (ex) {
+    				alert('failed to retrieve states.' + ex);
+    			}
+    		})
+    	})
+    });
+</script>
+
+<script type="text/javascript">
+    const removeoldImg = () => {
+        var container = document.getElementById("preview");
+        container.replaceChildren();
+    }
+    const preview = (file) => {
+        removeoldImg();
+        const fr = new FileReader();
+        fr.onload = () => {
+            const img = document.createElement("img");
+            img.src = fr.result;  // String Base64
+            img.alt = file.name;
+            img.width = 100;
+            img.height = 100;
+            img.className = "myImages";
+            img.onclick = function (evt) {
+                modal.style.display = "block";
+                modalImg.src = this.currentSrc;
+            }
+            document.querySelector('#preview').append(img);
+            // to all images -- note I'm using a class!
+            var images = document.getElementsByClassName('myImages');
+        };
+        fr.readAsDataURL(file);
+    };
+    // đổi #files sang id của input files
+    document.querySelector("#files").addEventListener("change", (ev) => {
+        if (!ev.target.files) return; // Do nothing.
+        [...ev.target.files].forEach(preview);
+    });
+</script>
+<script>
+    // create references to the modal...
+    var modal = document.getElementById('myModal');
+    // to all images -- note I'm using a class!
+    var images = document.getElementsByClassName('myImages');
+    // the image in the modal
+    var modalImg = document.getElementById("img01");
+    var span = document.getElementsByClassName("close")[0];
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+</script>
