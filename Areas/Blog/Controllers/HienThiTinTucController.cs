@@ -105,6 +105,16 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.Blog.Controllers
                                .ThenInclude(pc => pc.DanhMuc)
                                .FirstOrDefault();
 
+            if (post != null)
+            {
+
+                var existingPost = _context.TinTuc.Find(post.IDTinTuc);
+                if (existingPost != null)
+                {
+                    existingPost.LuotXem++;
+                    _context.SaveChanges();
+                }
+            }
             if (post == null)
             {
                 return NotFound("Không thấy bài viết");

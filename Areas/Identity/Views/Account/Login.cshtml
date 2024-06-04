@@ -58,14 +58,53 @@
 							</form>
 							<div class="text-center forgotpass"><a asp-action="ForgotPassword">Quên mật khẩu?</a></div>
 							<div class="login-or"> <span class="or-line"></span> <span class="span-or">Hoặc</span> </div>
-							<div class="social-login"> <span>Đăng Nhập Với</span> <a href="#" class="facebook"><i class="fab fa-facebook-f"></i></a><a href="#" class="google"><i class="fab fa-google"></i></a> </div>
-							<div class="text-center dont-have">Chưa Có Tài Khoản?  <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Đăng ký ngay</a></div>
+							<div class="social-login">
+								<section>
+									@{
+										var schemes = await SignInManager.GetExternalAuthenticationSchemesAsync();
+										var loginProviders = schemes.ToList();
+										if (loginProviders.Count == 0)
+										{
+											<p>Ứng dụng chưa hỗ trợ đăng nhập từ tài khoản ngoài</p>
+										}
+										else
+										{
+											<form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
+												@foreach (var provider in loginProviders)
+												{
+													var providerIcon = "";
+													if (provider.Name == "Facebook")
+													{
+														providerIcon = "fab fa-facebook-f";
+													}
+													else if (provider.Name == "Google")
+													{
+														providerIcon = "fab fa-google";
+													}
+													else
+													{
+														providerIcon = "fas fa-user";
+													}
+
+													<button type="submit" class="btn btn-primary btn-block mb-2" name="provider" value="@provider.Name" title="Log in using your @provider.Name account">
+														<i class="@providerIcon"></i> @provider.Name
+													</button>
+												}
+											</form>
+										}
+									}
+								</section>
+							</div>
+							<div class="text-center dont-have">Chưa Có Tài Khoản? <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Đăng ký ngay</a></div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+
+
+	
 	<script src="~/asset/assets/js/jquery-3.5.1.min.js"></script>
 	<script src="~/asset/assets/js/popper.min.js"></script>
 	<script src="~/asset/assets/js/bootstrap.min.js"></script>
