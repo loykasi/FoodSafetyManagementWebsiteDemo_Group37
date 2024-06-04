@@ -62,11 +62,17 @@
                 <div id="sidebar-menu" class="sidebar-menu">
                     <ul>
                         <li>
-                            <a href="@Url.Action("Index", "Home")">
+                            <a href="/">
                                 <i class="fas fa-tachometer-alt"></i> <span>Trang Chủ</span>
                             </a>
+                            
                         </li>
-                        
+                        <li>
+                            <a href="@Url.Action("Index", "HienThiTinTuc", new { area = "Blog" })">
+                                <i class="fa fa-book"></i> <span>Tin Tức</span>
+                            </a>
+
+                        </li>
                         <li class="submenu">
                             <a href="#"><i class="fas fa-suitcase"></i> <span> Đăng Ký Chứng Nhận  </span> <span class="menu-arrow"></span></a>
                             <ul class="submenu_class" style="display: none;">
@@ -92,11 +98,6 @@
                         <li>
                             <a href="@Url.Action("SendContact", "Contact", new { area = "Contact" })">
                                 <i class="fas fa-tachometer-alt"></i> <span>Liên Hệ</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="@Url.Action("Guide", "Home")">
-                                <i class="fas fa-tachometer-alt"></i> <span>Hướng dẫn sử dụng</span>
                             </a>
                         </li>
                       
