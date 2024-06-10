@@ -318,7 +318,6 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.Identity.Controllers
                     }
                 }
 
-
                 if ((externalEmailUser != null) && (registeredUser == null))
                 {
                     ModelState.AddModelError(string.Empty, "Không hỗ trợ tạo tài khoản mới - có email khác email từ dịch vụ ngoài");
@@ -341,10 +340,12 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.Identity.Controllers
                         var code = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
                         await _userManager.ConfirmEmailAsync(newUser, code);
 
+                        // Thêm người dùng vào role "Member"
+                        await _userManager.AddToRoleAsync(newUser, RoleName.Member);
+
                         await _signInManager.SignInAsync(newUser, isPersistent: false);
 
                         return LocalRedirect(returnUrl);
-
                     }
                     else
                     {
@@ -353,7 +354,6 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.Identity.Controllers
                     }
                 }
 
-
                 var user = new AppUser { UserName = model.Email, Email = model.Email };
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
@@ -361,6 +361,9 @@ namespace WebAnToanVeSinhThucPhamDemo.Areas.Identity.Controllers
                     result = await _userManager.AddLoginAsync(user, info);
                     if (result.Succeeded)
                     {
+                        // Thêm người dùng vào role "Member"
+                        await _userManager.AddToRoleAsync(user, RoleName.Member);
+
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         _logger.LogInformation(6, "User created an account using {Name} provider.", info.LoginProvider);
 
