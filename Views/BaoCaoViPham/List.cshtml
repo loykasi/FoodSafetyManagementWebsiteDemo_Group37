@@ -25,7 +25,7 @@
                         </div>
                     </div>
                 </form>
-                <table id="reportTable" class="table table-hover" data-order='[[ 0, "desc" ]]'>
+                <table id="reportTable" class="table table-hover">
                     <thead>
                         <tr>
                             <th>
@@ -55,8 +55,7 @@
                     <tbody>
                 @foreach (var item in Model) {
                         <tr onclick="window.location.href = '/BaoCaoViPham/Detail/' + @item.IdbaoCao;" style="cursor: pointer;" >
-                            <td>
-                                @* @Html.DisplayFor(modelItem => item.NgayBaoCao) *@
+                            <td data-sort='@item.NgayBaoCao.Value.ToString("yyyyMMdd")'>
                                 @item.NgayBaoCao.Value.ToString("dd/MM/yyyy")
                             </td>
                             <td>
@@ -132,8 +131,9 @@
                     }
                 },
                 "columnDefs": [
-                    { "orderable": false, "targets": 7 }
+                    { "orderable": false, "targets": 7 },
                 ],
+                "order": [[ 0, 'desc' ]]
             });
 
             $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
