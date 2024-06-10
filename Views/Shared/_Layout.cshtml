@@ -51,7 +51,7 @@
             <ul class="nav user-menu">
                 @await Html.PartialAsync("_LoginPartial")
                 @await Html.PartialAsync("_MenuManagePartial")
-                @await Html.PartialAsync("_MenuMemberManager")
+               @*  @await Html.PartialAsync("_MenuMemberManager") *@
             </ul>
 
         </div>
@@ -69,7 +69,7 @@
                         </li>
                         <li>
                             <a href="@Url.Action("Index", "HienThiTinTuc", new { area = "Blog" })">
-                                <i class="fa fa-book"></i> <span>Tin Tức</span>
+                                <i class="fa fa-spinner fa-spin"></i> <span>Tin Tức</span>
                             </a>
 
                         </li>
@@ -100,11 +100,7 @@
                                 <i class="fas fa-tachometer-alt"></i> <span>Liên Hệ</span>
                             </a>
                         </li>
-                        <li>
-                            <a href="@Url.Action("Guide", "Home")">
-                                <i class="fas fa-tachometer-alt"></i> <span>Hướng dẫn sử dụng</span>
-                            </a>
-                        </li>
+                      
                     </ul>
                 </div>
             </div>

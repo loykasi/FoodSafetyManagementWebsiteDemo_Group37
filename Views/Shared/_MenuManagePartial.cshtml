@@ -2,13 +2,12 @@
 @using WebAnToanVeSinhThucPhamDemo.Data
 @inject IAuthorizationService authorizationService
 
-@{
+@if (User.Identity.IsAuthenticated)
+{
     var isAdmin = await authorizationService.AuthorizeAsync(this.User, "ViewManageMenu");
     var isEditor = this.User.IsInRole(RoleName.Editor);
-}
+    var isMember = await authorizationService.AuthorizeAsync(this.User, "MemberManagerMenu");
 
-@if (isAdmin.Succeeded || isEditor)
-{
     <div class="dropdown">
         <a class="btn btn-outline-danger dropdown-toggle" href="#" id="managedropdownmenu" data-toggle="dropdown">
             Manage
@@ -16,38 +15,28 @@
         <div class="dropdown-menu" aria-labelledby="managedropdownmenu">
             @if (isAdmin.Succeeded)
             {
-                <a class="dropdown-item" asp-action="Index" asp-controller="DbManage" asp-area="Database">
-                    Database
-                </a>
-                <a class="dropdown-item" asp-action="Index" asp-controller="Contact" asp-area="Contact">
-                    Quản lý liên hệ
-                </a>
-                <a class="dropdown-item" asp-action="Index" asp-controller="Role" asp-area="Identity">
-                    Quản lý role (vai trò)
-                </a>
-                <a class="dropdown-item" asp-action="Index" asp-controller="User" asp-area="Identity">
-                    Quản lý thành viên
-                </a>
-                <a class="dropdown-item" asp-action="Index" asp-controller="CoSo" asp-area="Blog">
-                    Quản lý Cơ Sở
-                </a>
-               
+                <a class="dropdown-item" asp-action="Index" asp-controller="DbManage" asp-area="Database">Database</a>
+                <a class="dropdown-item" asp-action="Index" asp-controller="Contact" asp-area="Contact">Quản lý liên hệ</a>
+                <a class="dropdown-item" asp-action="Index" asp-controller="Role" asp-area="Identity">Quản lý role (vai trò)</a>
+                <a class="dropdown-item" asp-action="Index" asp-controller="User" asp-area="Identity">Quản lý thành viên</a>
+                <a class="dropdown-item" asp-action="Index" asp-controller="CoSo" asp-area="Blog">Quản lý Cơ Sở</a>
             }
-            <a class="dropdown-item" asp-action="Index" asp-controller="DanhMuc" asp-area="Blog">
-                Quản lý chuyên mục tin tức
-            </a>
-            <a class="dropdown-item" asp-action="Index" asp-controller="TinTuc" asp-area="Blog">
-                Quản lý tin tức
-            </a>
-            <a target="_blank" class="dropdown-item" asp-action="Index" asp-controller="FileManager" asp-area="Files">
-                Quản lý files
-            </a>
-            
-            <a class="dropdown-item" asp-action="Index" asp-controller="HoSoATTP" asp-area="HoSo">
-                Quản lý hồ Sơ
-            </a>
+
+            @if (isAdmin.Succeeded || isEditor)
+            {
+                <a class="dropdown-item" asp-action="Index" asp-controller="DanhMuc" asp-area="Blog">Quản lý chuyên mục tin tức</a>
+                <a class="dropdown-item" asp-action="Index" asp-controller="TinTuc" asp-area="Blog">Quản lý tin tức</a>
+                <a target="_blank" class="dropdown-item" asp-action="Index" asp-controller="FileManager" asp-area="Files">Quản lý files</a>
+                <a class="dropdown-item" asp-action="Index" asp-controller="HoSoATTP" asp-area="HoSo">Quản lý hồ Sơ</a>
+            }
+
+            @if (isAdmin.Succeeded || isEditor || isMember.Succeeded)
+            {
+                <a class="dropdown-item" asp-area="Identity" asp-controller="Manage" asp-action="Index">Thông Tin Cá Nhân</a>
+            }
         </div>
     </div>
+
     <style>
         .dropdown {
             margin-right: 50px; /* Tạo khoảng cách 20px với rìa phải */
